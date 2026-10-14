@@ -1,0 +1,75 @@
+# Contexto del proyecto — EuroTrip 2027
+
+Actualizado: **14 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero.
+
+## 1. Propósito
+Aplicación web de itinerarios privada/mobile-first para 4 viajeros durante Europa 2027. Consultar visitas, agrupar actividades sin prisas, ahorrar desplazamientos, gestionar transportes/alojamientos y presupuesto. Desarrollo incremental en Next.js y aprendizaje guiado de backend y bases de datos. Idealmente Vercel + PWA.
+
+## 2. Viaje — confirmado por el viajero
+- **Viajeros:** 4.
+- **Ida intercontinental comprada:** Iberia Bogotá (BOG) → Madrid (MAD), 29/05/2027 a las 21:40, salida hora local de Bogotá. Hora de llegada a Madrid por confirmar con reserva.
+- **Vuelta intercontinental comprada:** Iberia Madrid (MAD) → Bogotá (BOG), 14/06/2027 a las 12:10, salida hora local de Madrid.
+- **Tarifa:** Iberia Basic; condiciones específicas de equipaje pendientes de verificar en los billetes.
+- **Ruta de alojamientos:** Madrid → Barcelona → París → Bolonia → Roma → Madrid.
+- **Excursiones prioritarias:** Toledo desde Madrid; Venecia y Florencia desde Bolonia; Vaticano desde Roma.
+- **No visitar:** Sevilla, Segovia, Pisa. Versalles solamente si cabe sin quitar tiempo a París.
+- **Presupuesto de alojamientos comunicado previamente:** $10.061.140 COP por los cuatro ($2.515.285 por persona), sujeto a comprobantes y tasas.
+- **Fecha límite general para pagar alojamientos mencionada:** 25/04/2027; confirmar plazos por reserva.
+
+## 3. Las SEIS reservas Airbnb (confirmadas según capturas, ubicaciones por zona)
+**IMPORTANTE:** Las direcciones completas y nombres de anfitriones están EXCLUSIVAMENTE en `docs/ACCOMMODATIONS_PRIVATE.md` (local, ignorado por Git); no copiarlos a archivos públicos ni fixtures cliente.
+
+| ID | Zona | Fechas | Noches | Check-in desde | Check-out |
+|---|---|---|---:|---|---|
+| madrid-centro | Madrid centro, entorno Sol | 30/05–02/06/2027 | 3 | 15:00 | Por confirmar |
+| barcelona-hospitalet | L'Hospitalet de Llobregat | 02/06–04/06/2027 | 2 | 14:00 | Por confirmar |
+| paris-centro | París 2e, Bonne-Nouvelle / Réaumur-Sébastopol | 04/06–07/06/2027 | 3 | 15:00 | Por confirmar |
+| bologna-centro | Bolonia centro, entorno de Via Indipendenza | 07/06–10/06/2027 | 3 | 15:00 | Por confirmar |
+| roma-termini | Roma, zona Termini / Monti | 10/06–13/06/2027 | 3 | 14:00 | Por confirmar |
+| madrid-aeropuerto | Madrid 28042, zona noreste de Madrid | 13/06–14/06/2027 | 1 | 15:00 | Por confirmar |
+
+**Total: 15 noches de alojamiento** más la noche de vuelo transatlántico del 29 al 30 de mayo. Son 17 fechas naturales del 29 de mayo al 14 de junio inclusives. La localización exacta indicada por Airbnb debe validarse con la comunicación del anfitrión cerca del viaje.
+
+## 4. Datos de interés geográfico, por verificar en aplicación de rutas
+- **Madrid 1:** zona céntrica, buena para recorrer barrios turísticos a pie; Toledo requiere desplazamiento hasta Madrid Puerta de Atocha-Almudena Grandes.
+- **Barcelona:** alojamiento en L'Hospitalet; estimar trayecto real hasta Barcelona Sants y aeropuerto de Barcelona (BCN) antes de comprar vuelo temprano.
+- **París:** alojamiento céntrico cerca de Réaumur-Sébastopol (líneas 3 y 4) y del entorno Châtelet–Les Halles; estudiar ambos aeropuertos ORY/CDG según horarios y precio total. No dar por hecho conexión/tiempo al aeropuerto.
+- **Bolonia:** alojamiento en zona céntrica y relativamente cerca de Bologna Centrale; excelente base para Venecia y Florencia y para pasear por Bolonia la tarde del 7 de junio.
+- **Roma:** zona central de Termini/Monti; recomendable llegar en tren a Roma Termini, verificar ruta peatonal a hospedaje.
+- **Madrid última noche:** comprobar transporte desde el alojamiento al aeropuerto MAD para salir temprano el 14/06.
+
+## 5. Transportes internos NO COMPRADOS
+- Madrid ↔ Toledo (tren Avant previsto).
+- Madrid → Barcelona (alta velocidad; estación habitual Madrid Puerta de Atocha–Almudena Grandes → Barcelona Sants, sujeto a servicio concreto).
+- Barcelona → París (vuelo de mañana preferido; aeropuertos de París aún sin decidir).
+- París → Bolonia (vuelo preferido sujeto a servicios y aeropuertos).
+- Bolonia ↔ Venecia (tren, visita de día completo).
+- Bolonia ↔ Florencia (tren, visita de día completo).
+- Bolonia → Roma (tren alta velocidad).
+- Roma → Madrid (vuelo directo preferido; ideal desde FCO si es competitivo).
+
+**Ver `docs/TRANSPORT_PLAN.md` para las franjas horarias sugeridas y reglas de compra.** No se han confirmado ni adquirido horarios internos.
+
+## 6. Ritmo y criterios
+- Evitar excursiones apresuradas y excesos de caminatas; dejar tiempo para comida y descanso.
+- Organizar por proximidad real, ventanas horarias de atracciones, traslados, reservas fijas y gestión de maletas.
+- Para días de traslado, contar con llegada anticipada a estaciones/aeropuertos, trayecto aeropuerto ↔ ciudad y check-in (el check-in no implica poder depositar maletas antes).
+- Revisar apariciones de feriados, cierres, huelgas y cambios de oferta con antelación.
+- Plan por fecha y zonas; mapas, fichas con precios y atracciones, navegación externa a Google Maps, presupuesto COP/EUR, modo parcialmente offline.
+
+## 7. Pendientes del viajero
+- Horarios de salida (check-out) y posibilidad de guardar equipaje en cada reserva.
+- Lista de atracciones imprescindibles de cada ciudad; intereses del grupo y tolerancia a caminatas.
+- Elegir/comprar horarios de vuelos/trenes internos, aeropuerto de salida/llegada, condiciones de equipaje.
+- Tiempos y rutas verificadas entre los alojamientos y estaciones/aeropuertos; coordenadas sin inferir.
+- Acordar si la web será privada para cuatro con acceso de edición compartida.
+- Confirmar precio/pagos por reserva y hora real de llegada del vuelo BOG→MAD.
+
+## 8. Decisiones técnicas
+- Next.js App Router + React + TypeScript + Tailwind, primero MVP con datos no sensibles en JSON/TS.
+- Sin API de IA ni base de datos en la primera fase. Coste inicial objetivo $0 COP sujeto a límites de proveedores gratuitos.
+- Despliegue Vercel sin exponer alojamientos/datos privados. Mapas: MapLibre y proveedor con licencia adecuada; Google Maps para navegación externa.
+- ChatGPT Plus/Codex usados para planificar/programar, no API de IA en producción.
+
+## 9. Estado del código
+Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.
