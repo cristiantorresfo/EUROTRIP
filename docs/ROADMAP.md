@@ -51,7 +51,10 @@
 - [ ] Reordenación, descansos, rutas alternativas y limitaciones documentadas.
 
 ## Fase 5 — Preparación de viaje
-- [ ] PWA, contenido esencial offline y pruebas iPhone.
+- [x] Base PWA instalable con manifest, iconos, caché de rutas públicas y
+  pantalla de respaldo sin conexión.
+- [ ] Validar instalación, actualización y contenido esencial offline en un
+  iPhone real mediante un despliegue HTTPS.
 - [ ] Registro editable de gastos COP/EUR para cuatro y documentos privados protegidos.
 - [ ] Revisar enlaces, precios y aperturas cerca de salida.
 

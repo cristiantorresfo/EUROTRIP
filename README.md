@@ -42,3 +42,18 @@ npm run build
 
 La arquitectura acordada y el orden del MVP están documentados en
 `docs/ARCHITECTURE.md`.
+
+## Probar la PWA
+
+El service worker se registra solo en producción para no mezclar caché offline
+con el desarrollo mediante recarga en caliente:
+
+```bash
+npm run build
+npm run start
+```
+
+En `http://localhost:3000` se puede comprobar el manifest, la instalación y el
+fallback `/offline`. La validación final de «Añadir a pantalla de inicio» en
+iPhone requiere un despliegue HTTPS. El caché incluye únicamente rutas y
+recursos públicos; los enlaces externos de Maps siguen necesitando conexión.

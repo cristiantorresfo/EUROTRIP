@@ -129,16 +129,38 @@ autorización reales antes de servirse al navegador.
 
 ## Sistema visual
 
-La interfaz usa una paleta fría y contemporánea centralizada en propiedades
-personalizadas de `src/app/globals.css`: azul noche para superficies de alto
-contraste, índigo como acento y grises azulados para fondos, bordes y texto
-secundario. Los estados de producto mantienen colores semánticos propios
-(verde confirmado, azul planeado, violeta estimado, ámbar tentativo y rosa por
-verificar) para que un cambio de identidad no altere su significado.
+La interfaz usa una paleta cálida inspirada en el lenguaje visual de Airbnb,
+centralizada en propiedades personalizadas de `src/app/globals.css`: coral
+para identidad y acciones, carbón para texto y controles compactos, y neutros
+claros para fondos, tarjetas y bordes. Las tarjetas destacadas usan una
+gradación blanca con un matiz coral suave, sin grandes superficies negras. El
+coral brillante se reserva para elementos decorativos; textos pequeños y
+botones usan una variante más profunda que conserva contraste AA. Los estados
+de producto mantienen colores semánticos propios (verde confirmado, azul
+planeado, violeta estimado, ámbar tentativo y rosa por verificar) para que la
+identidad no altere su significado.
 
-El color de tema del navegador y de la futura PWA replica el azul noche de la
-interfaz. Cualquier componente nuevo debe consumir estos tokens en lugar de
-introducir colores de marca aislados.
+El color de tema del navegador y de la futura PWA usa el coral de identidad.
+Cualquier componente nuevo debe consumir estos tokens en lugar de introducir
+colores de marca aislados. La referencia es cromática y no implica afiliación
+ni reutilización de logotipos o elementos distintivos de Airbnb.
+
+## PWA y funcionamiento offline
+
+`src/app/manifest.ts` define el nombre, colores, accesos directos e iconos de la
+aplicación instalable. El service worker se registra únicamente en producción:
+las navegaciones usan estrategia *network first* para priorizar datos actuales
+y recurren a la última copia pública disponible o a `/offline` cuando falla la
+red. Los recursos versionados de Next.js y los iconos usan *cache first*.
+
+La precarga se limita a Itinerario, Traslados, Presupuesto y la pantalla
+offline. No se interceptan APIs ni dominios externos, y el caché no contiene
+direcciones, documentos o datos privados. Los enlaces de Google Maps requieren
+conexión. El encabezado muestra «Datos públicos» porque esta fase todavía no
+tiene autenticación; llamarla privada sería una garantía falsa.
+
+La instalación y actualización deben validarse en un iPhone real desde un
+origen HTTPS antes de marcar la preparación PWA como terminada.
 
 Las actividades aún muestran un estado vacío explícito: no se inventarán
 visitas ni horarios hasta incorporar información verificada al modelo.

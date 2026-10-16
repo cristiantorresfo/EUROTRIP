@@ -1,4 +1,4 @@
-import { LockKeyhole } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -26,9 +26,12 @@ export function AppShell({ children }: AppShellProps) {
           </span>
         </Link>
 
-        <span className="privacy-badge">
-          <LockKeyhole aria-hidden="true" size={14} />
-          Privado
+        <span
+          className="privacy-badge"
+          aria-label="Esta versión solo contiene datos públicos"
+        >
+          <ShieldCheck aria-hidden="true" size={14} />
+          Datos públicos
         </span>
       </header>
 

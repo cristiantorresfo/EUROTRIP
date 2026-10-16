@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">EuroTrip 2027</title>
+  <desc id="description">Monograma E blanco sobre fondo coral</desc>
+  <rect width="512" height="512" rx="112" fill="#ff385c"/>
+  <path fill="#ffffff" d="M136 112h240v72H216v48h132v72H216v24h160v72H136z"/>
+  <circle cx="370" cy="142" r="22" fill="#ffb3c1"/>
+</svg>
