@@ -1,9 +1,9 @@
 # Contexto del proyecto — EuroTrip 2027
 
-Actualizado: **14 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero.
+Actualizado: **16 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero.
 
 ## 1. Propósito
-Aplicación web de itinerarios privada/mobile-first para 4 viajeros durante Europa 2027. Consultar visitas, agrupar actividades sin prisas, ahorrar desplazamientos, gestionar transportes/alojamientos y presupuesto. Desarrollo incremental en Next.js y aprendizaje guiado de backend y bases de datos. Idealmente Vercel + PWA.
+Aplicación web mobile-first y PWA para acompañar a 4 viajeros durante Europa 2027. Su función principal es consultar el plan del día, ver paradas ordenadas y recorridos optimizados sobre un mapa, saber qué actividad sigue y recibir recordatorios del itinerario. Los vuelos y trenes se comparan y compran fuera de la aplicación; después se registran aquí como logística confirmada. La información privada solo podrá mostrarse cuando exista autenticación real.
 
 ## 2. Viaje — confirmado por el viajero
 - **Viajeros:** 4.
@@ -50,6 +50,10 @@ Aplicación web de itinerarios privada/mobile-first para 4 viajeros durante Euro
 
 **Ver `docs/TRANSPORT_PLAN.md` para las franjas horarias sugeridas y reglas de compra.** No se han confirmado ni adquirido horarios internos.
 
+La comparación y compra se hará fuera de EuroTrip 2027. La aplicación no será
+un buscador de precios: cuando se adquiera cada billete, mostrará sus datos
+confirmados dentro del día correspondiente y sus recordatorios.
+
 ## 6. Ritmo y criterios
 - Evitar excursiones apresuradas y excesos de caminatas; dejar tiempo para comida y descanso.
 - Organizar por proximidad real, ventanas horarias de atracciones, traslados, reservas fijas y gestión de maletas.
@@ -68,7 +72,7 @@ Aplicación web de itinerarios privada/mobile-first para 4 viajeros durante Euro
 ## 8. Decisiones técnicas
 - Next.js App Router + React + TypeScript + Tailwind, primero MVP con datos no sensibles en JSON/TS.
 - Sin API de IA ni base de datos en la primera fase. Coste inicial objetivo $0 COP sujeto a límites de proveedores gratuitos.
-- Despliegue Vercel sin exponer alojamientos/datos privados. Mapas: MapLibre y proveedor con licencia adecuada; Google Maps para navegación externa.
+- Despliegue Vercel sin exponer alojamientos/datos privados. Los recorridos diarios son la siguiente prioridad: MapLibre y un proveedor con licencia adecuada para visualización, geometrías verificables para la ruta y Google Maps como navegación externa.
 - ChatGPT Plus/Codex usados para planificar/programar, no API de IA en producción.
 
 ## 9. Estado del código

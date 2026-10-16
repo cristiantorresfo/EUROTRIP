@@ -9,7 +9,11 @@ Representarlo al inicio mediante interfaces TypeScript y fixtures; NO obliga a i
 - **Place:** id, city, title, geoCoordinates opcional y solo tras validación, category, visitDurationMin, officialUrl opcional.
 - **DayPlan:** id, localDate `YYYY-MM-DD`, baseCity, suggestedDayTrip opcional, plannedActivities y status (`confirmed|planned|estimated|to_verify`).
 - **Activity:** id, dayId, placeId opcional, title, category (`visit|meal|rest|transfer|other`), startsAtLocal/endsAtLocal nullable, expectedDurationMinutes, fixedReservation boolean, order, notes, status.
+- **DailyRoute:** recorrido de una jornada, asociado a `DayPlan`, con paradas ordenadas, segmentos, estado de verificación y resumen de distancia/duración nullable.
+- **RouteStop:** posición ordenada dentro de `DailyRoute`, vinculada a un `Place` público o a un punto privado opaco. Las coordenadas públicas deben estar validadas; una dirección de alojamiento nunca forma parte del fixture público.
+- **RouteSegment:** unión entre dos paradas consecutivas, con medio (`walk|metro|bus|train|other`), geometría verificable, distancia y duración nullable, proveedor y fecha de consulta.
 - **TransportLeg:** id, originId, destinationId, mode (`walk|metro|bus|train|flight|other`), preferredDepartureWindow optional, actualDepartureAt/actualArrivalAt nullable, fare estimate, `bookingStatus` (`not_booked|booked`), actualAirportOrStation optional. **No convertir ventanas en reservas.**
+- **Reminder:** aviso vinculado a una actividad, reserva o traslado confirmado; incluye instante con zona horaria, anticipación y mecanismo (`calendar|notification`).
 - **Expense:** id, amount, currency, category, paidBy, splits, paidStatus, exchangeRateAtBooking opcional.
 - **BudgetReference:** cifra de planificación comunicada por los viajeros, separada de `Expense` porque no acredita pago, pagador ni reparto definitivo. Incluye total y valor por viajero en una sola moneda, número de viajeros, fecha general de pago nullable y estado `to_verify`.
 
@@ -36,3 +40,6 @@ Accommodations: seis registros con ids:
 9. Las coordenadas de alojamientos requieren confirmación y controles de acceso si se usan en producción.
 10. El archivo privado no se lee en tiempo de compilación para embeber su contenido en el frontend.
 11. COP y EUR se presentan por separado hasta contar con una tasa y fecha de referencia explícitas; nunca se suman automáticamente.
+12. La aplicación no compara ni compra transportes: incorpora el servicio real solamente después de que el viajero confirme la compra.
+13. El orden visual de las paradas no demuestra que una ruta sea transitable. La línea, distancia y duración deben proceder de un motor de rutas o de una fuente verificable y conservar su fecha de consulta.
+14. Los recordatorios críticos deben poder exportarse al calendario del teléfono; no depender exclusivamente de notificaciones web.

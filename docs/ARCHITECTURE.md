@@ -1,13 +1,22 @@
 # Arquitectura inicial — EuroTrip 2027
 
-Actualizado: **14 de octubre de 2026**.
+Actualizado: **16 de octubre de 2026**.
+
+## Norte del producto
+
+EuroTrip 2027 se diseña como acompañante durante el viaje: itinerario diario,
+recorridos optimizados sobre mapa, siguiente actividad, logística confirmada y
+recordatorios. No pretende ser comparador de vuelos o trenes ni motor de
+reservas; esas decisiones ocurren fuera de la aplicación y luego se registran
+como hechos confirmados.
 
 ## Decisión base
 
 La primera versión usa Next.js con App Router, React, TypeScript estricto y
-Tailwind CSS. Los datos del viaje comenzarán como fixtures TypeScript no
-sensibles. No se añade backend, base de datos, autenticación, mapas ni APIs
-externas hasta que una funcionalidad concreta los justifique.
+Tailwind CSS. Los datos del viaje comienzan como fixtures TypeScript no
+sensibles. Mapas y rutas se incorporan ahora porque son una función central;
+backend, base de datos y autenticación se mantienen fuera hasta que datos
+privados o edición compartida los justifiquen.
 
 Esta separación permitirá reemplazar los fixtures por un repositorio remoto en
 el futuro sin acoplar las pantallas a PostgreSQL, Supabase u otro proveedor.
@@ -42,6 +51,19 @@ en falso hasta que exista una reserva real. `DayOverview` consume el plan por
 fecha tanto en el detalle del itinerario como en la vista «Hoy»; los enlaces de
 Maps se construyen desde nombres de lugares públicos, nunca desde alojamientos.
 
+`daily-routes.ts` inicia el patrón de recorridos con el 31 de mayo en Madrid.
+Sus dos paradas apuntan a lugares públicos con coordenadas y fuente de
+verificación. El segmento peatonal conserva una geometría GeoJSON calculada con
+Valhalla sobre datos de OpenStreetMap el 16/10/2026, además de distancia y
+duración estimadas. No se consulta el servidor público de rutas desde la app:
+el resultado queda versionado y debe revisarse cerca del viaje.
+
+`DailyRouteMap` usa MapLibre GL JS y el estilo Positron de OpenFreeMap, sin API
+key. MapLibre mantiene la atribución visible del proveedor y de OpenStreetMap.
+Las teselas son externas y necesitan conexión; el itinerario, las paradas, la
+geometría guardada y el enlace a Google Maps conservan su presentación de
+respaldo cuando el mapa base no carga.
+
 Los fixtures contienen exclusivamente zonas públicas y datos de planificación.
 Las reglas de fechas y alojamientos son funciones puras, independientes de
 React y de cualquier futura fuente de persistencia.
@@ -60,7 +82,8 @@ internacionales; las estaciones y aeropuertos de transporte interno permanecen
 ## Modelo inicial
 
 El modelo canónico está en `docs/DATA_MODEL.md`: `Trip`, `Accommodation`,
-`CityStay`, `Place`, `DayPlan`, `Activity`, `TransportLeg` y `Expense`. Al
+`CityStay`, `Place`, `DayPlan`, `Activity`, `DailyRoute`, `RouteStop`,
+`RouteSegment`, `TransportLeg`, `Reminder` y `Expense`. Al
 llevarlo a TypeScript se mantendrán estas reglas:
 
 - Fechas civiles (`YYYY-MM-DD`) separadas de instantes con zona horaria.
@@ -80,9 +103,10 @@ llevarlo a TypeScript se mantendrán estas reglas:
 4. **Estancias:** seis reservas con zona pública, fechas y estado de check-out.
 5. **Presupuesto:** resumen COP/EUR sin conversión automática inicialmente.
 
-Mapas interactivos, edición compartida, persistencia y documentos privados se
-incorporarán en fases posteriores. Las direcciones requieren autenticación y
-autorización reales antes de servirse al navegador.
+Los mapas y recorridos son el siguiente incremento activo. Edición compartida,
+persistencia y documentos privados se incorporarán únicamente si son
+necesarios. Las direcciones requieren autenticación y autorización reales antes
+de servirse al navegador.
 
 ## Información pendiente que afecta el producto
 
@@ -93,14 +117,15 @@ autorización reales antes de servirse al navegador.
 - Atracciones prioritarias, ritmo de caminata y presupuesto acordado.
 - Decisión sobre acceso privado y permisos de edición de los cuatro viajeros.
 
-## Orden de implementación recomendado
+## Orden de implementación actual
 
-1. Tipos y fixtures públicos con pruebas de invariantes (seis estancias y 15
-   noches).
-2. Shell móvil y navegación inferior.
-3. Inicio e itinerario diario.
-4. Traslados y estancias con estados explícitos.
-5. Presupuesto; después mapas, PWA y persistencia según necesidad.
+1. Base pública, shell móvil, calendario, itinerario y PWA — completado.
+2. Modelo de recorridos y jornada piloto con coordenadas públicas verificadas.
+3. MapLibre, paradas numeradas y geometría real para el recorrido diario.
+4. Extensión del patrón a todas las ciudades y excursiones.
+5. Modo «Hoy», exportación de recordatorios al calendario y cobertura offline.
+6. Autenticación y persistencia solo cuando se incorporen datos privados o
+   edición compartida.
 
 ## Rutas implementadas
 
@@ -115,13 +140,16 @@ autorización reales antes de servirse al navegador.
 - `/itinerario/[fecha]`: detalle estático de cada una de las 17 jornadas, con
   navegación anterior/siguiente, traslados propuestos y contexto público de
   check-in/check-out. Las 15 jornadas activas incluyen un borrador ordenado de
-  visitas, comidas y descansos sin horas ni reservas ficticias.
+  visitas, comidas y descansos sin horas ni reservas ficticias. El 31 de mayo
+  incluye además el primer recorrido piloto con dos puntos públicos verificados.
 - `/hoy`: selecciona la fecha civil relevante para el viaje y muestra una
   cuenta regresiva, la jornada activa o el estado de viaje finalizado. Se
   renderiza dinámicamente para no congelar la fecha en la compilación.
 - `/traslados`: separa los dos vuelos internacionales comprados de los once
   tramos internos pendientes y agrupa las ventanas propuestas en ocho fechas
-  de búsqueda. También permite abrir en Google Maps las terminales públicas de
+  de búsqueda. No compara precios ni servicios: su función es mostrar logística
+  confirmada y recordar qué tramos aún debe comprar el viajero fuera de la
+  aplicación. También permite abrir en Google Maps las terminales públicas de
   referencia sin vincularlas a direcciones privadas.
 - `/presupuesto`: muestra la referencia comunicada para los seis alojamientos,
   separa COP de EUR y deja transporte, comidas, entradas y otros rubros sin
@@ -159,8 +187,9 @@ direcciones, documentos o datos privados. Los enlaces de Google Maps requieren
 conexión. El encabezado muestra «Datos públicos» porque esta fase todavía no
 tiene autenticación; llamarla privada sería una garantía falsa.
 
-La instalación y actualización deben validarse en un iPhone real desde un
-origen HTTPS antes de marcar la preparación PWA como terminada.
+La instalación, actualización y navegación offline fueron validadas por el
+usuario en un iPhone real desde el despliegue HTTPS de Vercel el 16/10/2026.
 
-Las actividades aún muestran un estado vacío explícito: no se inventarán
-visitas ni horarios hasta incorporar información verificada al modelo.
+Las jornadas activas contienen un borrador de actividades sin horas ficticias.
+Solo el piloto del 31 de mayo tiene actualmente geometría, distancia y duración
+de ruta; las demás jornadas esperarán a que se validen sus paradas públicas.

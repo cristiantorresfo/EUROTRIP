@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { DayOverview } from "@/components/itinerary/day-overview";
 import { accommodations } from "@/data/eurotrip-2027/accommodations";
 import { tripCalendar } from "@/data/eurotrip-2027/calendar";
+import { dailyRoutes } from "@/data/eurotrip-2027/daily-routes";
 import { tripDayPlans } from "@/data/eurotrip-2027/day-plans";
 import { tripPlaces } from "@/data/eurotrip-2027/places";
 import { plannedTransportLegs } from "@/data/eurotrip-2027/transport";
@@ -12,6 +13,7 @@ import {
   findAccommodationForNight,
   findCheckInForDate,
   findCheckOutForDate,
+  findDailyRouteForDate,
   findDayPlanForDate,
   getTransportLegsForDate,
 } from "@/domain/trip/selectors";
@@ -63,6 +65,7 @@ export default async function DayPage({ params }: DayPageProps) {
         checkOut={findCheckOutForDate(accommodations, localDate)}
         transportLegs={getTransportLegsForDate(plannedTransportLegs, localDate)}
         dayPlan={findDayPlanForDate(tripDayPlans, localDate)}
+        dailyRoute={findDailyRouteForDate(dailyRoutes, localDate)}
         places={tripPlaces}
       />
 

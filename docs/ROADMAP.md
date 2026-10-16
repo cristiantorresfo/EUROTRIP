@@ -1,62 +1,90 @@
 # Roadmap incremental — EuroTrip 2027
 
-## Fase 0 — Preparación
-- [x] Abrir proyecto en VS Code y verificar que Codex lee `AGENTS.md` y `docs`.
-- [x] Consolidar 6 alojamientos, 15 noches y horas de entrada según Airbnb (14/10/2026).
-- [x] Documentar ventanas de compra tentativas para vuelos internos/trenes.
-- [x] Definir diseño mobile-first y crear repo Next.js si aún no existe.
-- [x] Verificar `.gitignore` y que `docs/ACCOMMODATIONS_PRIVATE.md` aparece ignorado antes del primer commit.
-- [ ] Decidir cuándo pedir horarios checkout/consigna al anfitrión.
+Actualizado: **16 de octubre de 2026**.
 
-## Fase 1 — MVP sin backend
-- [x] Crear modelos tipados y fixtures SOLO con zonas amplias, ids y fechas.
-- [x] Home con 15 noches de alojamiento, 6 reservas y ruta general.
-- [x] Dashboard con próximo evento confirmado o primer bloque diario y avance
-  del borrador, sin presentar actividades como reservas.
-- [x] Calendario del 29 mayo al 14 junio; 4 viajeros.
-- [x] Vista «Hoy»: estado antes/durante/después, estancia y traslados con
-  estados confirmados vs. propuestos.
-- [x] Añadir un primer borrador de visitas y descansos a las jornadas activas,
-  sin horas ficticias y con fuentes oficiales para los lugares principales.
-- [ ] Confirmar intereses del grupo y verificar horarios, entradas y recorridos
-  reales de 2027 antes de convertir el borrador en itinerario definitivo.
-- [x] Pantalla de traslados con franjas ideales **sin mostrar horas como reservadas**.
-- [x] Tarjetas de alojamiento solo con datos públicos no sensibles, check-in y
-  check-out pendientes.
-- [x] Botones de navegación a Google Maps para aeropuertos y estaciones
-  públicas, sin API de pago y con candidatos marcados por verificar.
-- [x] Resumen inicial de presupuesto COP/EUR con la única cifra comunicada de
-  alojamiento y los demás rubros marcados como pendientes.
-- [x] Añadir enlaces de Maps para las atracciones públicas del borrador diario,
-  sin coordenadas ni direcciones de alojamientos.
-- [x] Tests básicos para suma de noches, cruces de fechas, moneda, fechas locales, ventana de vuelo.
-- [ ] Demo Vercel sin dirección privada ni documentos de reserva.
+## Norte del producto
 
-## Fase 2 — Investigación y planificación del viaje
-- [ ] Contrastar vuelos Barcelona-París (4/06), París-Bolonia (7/06), Roma-Madrid (13/06): aeropuertos, equipaje, coste real y puertas.
-- [ ] Trenes Madrid-Toledo y Madrid-Barcelona, Bolonia-Venecia, Bolonia-Florencia, Bolonia-Roma.
-- [ ] Definir recorridos reales por día; priorizar visita Vaticano viernes 11/06, verificando horarios 2027.
-- [ ] Investigar y validar coordenadas, estaciones, tiempos de acceso y alojamiento↔terminal.
-- [ ] Recoger horario de checkout y política para maletas; horas reales una vez comprado cada ticket.
+EuroTrip 2027 es un acompañante mobile-first para usar durante el viaje. Su
+función principal es mostrar qué hacer cada día, en qué orden, cómo desplazarse
+entre paradas y qué viene después. La comparación y compra de vuelos o trenes
+se realiza fuera de la aplicación; una vez comprados, la app conserva solamente
+los datos confirmados necesarios para el itinerario.
 
-## Fase 3 — Backend / datos sincronizados cuando haya necesidad
-- [ ] Route Handlers y validación de request/response, con explicación de REST.
-- [ ] Evaluar PostgreSQL/Supabase solo si se necesita sincronización de usuarios.
-- [ ] Autenticación/autorización real antes de guardar/servir direcciones y reservas privadas.
-- [ ] CRUD con migraciones, permisos y UI de edición.
+No son prioridad: un comparador de precios, un motor de reservas, IA dentro de
+la aplicación, edición compartida o un backend sin una necesidad concreta.
 
-## Fase 4 — Optimización y mapas
-- [ ] MapLibre + proveedor con licencia compatible y plan gratuito cuando aplique.
-- [ ] Enrutamiento con tiempos realmente consultados; matriz tiempos/distancias; restricciones horarios y reservas.
-- [ ] Reordenación, descansos, rutas alternativas y limitaciones documentadas.
+## Fase 0 — Base segura y desplegable (completada)
 
-## Fase 5 — Preparación de viaje
-- [x] Base PWA instalable con manifest, iconos, caché de rutas públicas y
-  pantalla de respaldo sin conexión.
-- [ ] Validar instalación, actualización y contenido esencial offline en un
-  iPhone real mediante un despliegue HTTPS.
-- [ ] Registro editable de gastos COP/EUR para cuatro y documentos privados protegidos.
-- [ ] Revisar enlaces, precios y aperturas cerca de salida.
+- [x] Consolidar 6 alojamientos, 15 noches, 4 viajeros y vuelos internacionales.
+- [x] Mantener direcciones y anfitriones fuera de Git y del navegador público.
+- [x] Crear proyecto Next.js, modelos tipados, fixtures y pruebas de invariantes.
+- [x] Implementar diseño mobile-first, navegación y paleta visual clara.
+- [x] Publicar demo en Vercel sin información privada.
+- [x] Instalar y validar la PWA y su contenido público offline en un iPhone real.
 
-## Primera tarea recomendada para Codex
-Leer AGENTS.md y docs, confirmar 6 estancias y 15 noches, proponer MVP y arquitectura Next.js sin código inicialmente. Nunca implementar una página con direcciones exactas sin autorización real.
+## Fase 1 — Itinerario base consultable (completada)
+
+- [x] Calendario del 29 de mayo al 14 de junio de 2027.
+- [x] Detalle para las 17 jornadas y borrador de actividades para las 15 activas.
+- [x] Inicio y vista «Hoy» según la fecha civil del viaje.
+- [x] Traslados comprados y pendientes claramente diferenciados.
+- [x] Estancias con zona pública, fechas y estados pendientes visibles.
+- [x] Presupuesto inicial COP/EUR sin conversiones ni pagos ficticios.
+- [x] Enlaces externos a Google Maps para lugares y terminales públicos.
+- [ ] Confirmar los intereses imprescindibles del grupo y su tolerancia a caminatas.
+
+## Fase 2 — Recorridos diarios y mapas (fase activa)
+
+- [x] Definir `DailyRoute`, `RouteStop` y `RouteSegment` sin direcciones privadas.
+- [x] Validar coordenadas públicas de las atracciones de una jornada piloto
+  (Plaza Mayor y Puerta de la Independencia, 16/10/2026).
+- [x] Mostrar el orden piloto del 31 de mayo y permitir abrirlo externamente en
+  Google Maps, manteniendo distancia, duración y geometría como pendientes.
+- [x] Construir el primer recorrido completo de Madrid: orden, paradas numeradas,
+  descansos y medios de desplazamiento.
+- [x] Integrar MapLibre con un proveedor de mapas compatible y sin API paga para
+  mostrar marcadores y la línea del recorrido.
+- [x] Usar geometrías y tiempos provenientes de un motor de rutas verificable;
+  no dibujar líneas rectas ni presentar estimaciones como rutas reales.
+- [x] Añadir resumen de distancia, duración y botón para abrir el recorrido en
+  Google Maps.
+- [ ] Validar el patrón en iPhone y extenderlo progresivamente a cada ciudad y
+  excursión: Toledo, Barcelona, París, Bolonia, Venecia, Florencia y Roma.
+
+## Fase 3 — Modo viaje y recordatorios
+
+- [ ] Convertir «Hoy» en el centro de uso durante el viaje: próxima actividad,
+  siguiente parada, salida recomendada y acceso directo al mapa del día.
+- [ ] Mostrar una línea de tiempo que distinga reservas fijas de bloques flexibles.
+- [ ] Generar eventos `.ics` para añadir vuelos, trenes, entradas y check-ins al
+  calendario del teléfono sin depender de un backend.
+- [ ] Evaluar notificaciones PWA únicamente si aportan fiabilidad suficiente en
+  iPhone; el calendario será el respaldo para recordatorios críticos.
+- [ ] Definir qué información y recorridos esenciales deben permanecer disponibles
+  sin conexión y probarlos en condiciones reales.
+
+## Fase 4 — Incorporación de reservas y datos privados
+
+- [ ] Sustituir cada ventana de transporte por el servicio real después de que el
+  viajero lo compre fuera de la aplicación.
+- [ ] Registrar horarios de check-out, consignas, terminales, equipaje y entradas.
+- [ ] Implementar autenticación y autorización antes de servir direcciones,
+  documentos o códigos de reserva al navegador.
+- [ ] Evaluar Supabase/PostgreSQL y edición compartida solo si los cuatro viajeros
+  necesitan sincronizar cambios.
+- [ ] Añadir registro editable de gastos únicamente si continúa siendo útil.
+
+## Fase 5 — Preparación final del viaje
+
+- [ ] Verificar horarios, precios, cierres, festivos y enlaces cerca de la salida.
+- [ ] Revisar todos los recorridos con reservas fijas, pausas, equipaje y márgenes.
+- [ ] Probar accesibilidad, actualización de la PWA, mapas y funcionamiento offline
+  en el iPhone que se usará durante el viaje.
+- [ ] Preparar alternativas simples para lluvia, cierres o cansancio.
+
+## Siguiente incremento recomendado
+
+Validar el mapa piloto en iPhone y acordar las atracciones imprescindibles del
+grupo antes de extender el patrón. La próxima ciudad será Barcelona o París,
+según la prioridad confirmada por los viajeros. Las direcciones exactas de
+alojamientos quedan fuera hasta contar con autenticación.

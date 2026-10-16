@@ -8,6 +8,14 @@ export const tripPlaces = [
     category: "attraction",
     visitDurationMin: 120,
     officialUrl: "https://www.esmadrid.com/informacion-turistica/Plaza-mayor-madrid",
+    geoCoordinates: {
+      latitude: 40.4156,
+      longitude: -3.707256,
+      verificationStatus: "verified",
+      sourceUrl:
+        "https://pares.cultura.gob.es/ParesBusquedas20/catalogo/autoridad/85000",
+      verifiedAt: "2026-10-16",
+    },
   },
   {
     id: "madrid-retiro",
@@ -17,6 +25,13 @@ export const tripPlaces = [
     visitDurationMin: 120,
     officialUrl:
       "https://www.esmadrid.com/informacion-tur%C3%ADstica/parque-del-retiro",
+    geoCoordinates: {
+      latitude: 40.419641,
+      longitude: -3.687922,
+      verificationStatus: "verified",
+      sourceUrl: "https://www.wikidata.org/wiki/Q6091845",
+      verifiedAt: "2026-10-16",
+    },
   },
   {
     id: "toledo-casco-historico",

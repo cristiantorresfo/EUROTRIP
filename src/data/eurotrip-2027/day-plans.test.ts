@@ -45,7 +45,27 @@ describe("EuroTrip 2027 proposed day plans", () => {
 
     for (const place of tripPlaces) {
       expect(place.officialUrl).toMatch(/^https:\/\//);
-      expect("geoCoordinates" in place).toBe(false);
+    }
+  });
+
+  it("limits verified coordinates to the public Madrid pilot stops", () => {
+    const geocodedPlaces = tripPlaces.filter(
+      (place) => "geoCoordinates" in place,
+    );
+
+    expect(geocodedPlaces.map(({ id }) => id)).toEqual([
+      "madrid-plaza-mayor",
+      "madrid-retiro",
+    ]);
+
+    for (const place of geocodedPlaces) {
+      expect(place.geoCoordinates.verificationStatus).toBe("verified");
+      expect(place.geoCoordinates.sourceUrl).toMatch(/^https:\/\//);
+      expect(place.geoCoordinates.verifiedAt).toBe("2026-10-16");
+      expect(place.geoCoordinates.latitude).toBeGreaterThanOrEqual(-90);
+      expect(place.geoCoordinates.latitude).toBeLessThanOrEqual(90);
+      expect(place.geoCoordinates.longitude).toBeGreaterThanOrEqual(-180);
+      expect(place.geoCoordinates.longitude).toBeLessThanOrEqual(180);
     }
   });
 });

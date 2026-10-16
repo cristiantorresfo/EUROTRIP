@@ -1,10 +1,18 @@
 import { differenceInLocalDates, localDateRangesOverlap } from "./dates";
 import type {
   Accommodation,
+  DailyRoute,
   DayPlan,
   LocalDate,
   PlannedTransportLeg,
 } from "./types";
+
+export function findDailyRouteForDate(
+  dailyRoutes: readonly DailyRoute[],
+  localDate: LocalDate,
+): DailyRoute | undefined {
+  return dailyRoutes.find((route) => route.localDate === localDate);
+}
 
 export function findDayPlanForDate(
   dayPlans: readonly DayPlan[],

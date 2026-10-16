@@ -1,6 +1,10 @@
 # Plan de transporte — ventanas RECOMENDADAS, NO reservas ni horarios reales
 
-Actualizado 14/10/2026. Comparar conexiones reales para 2027 y precio final para 4 con maletas antes de comprar. Este documento es un criterio de búsqueda, **no un horario de servicios confirmados**.
+Actualizado 16/10/2026. Comparar conexiones reales para 2027 y precio final para 4 con maletas antes de comprar. Este documento es un criterio de búsqueda, **no un horario de servicios confirmados**.
+
+La investigación, comparación y compra se realizará fuera de la aplicación. Una
+vez comprado un billete, EuroTrip 2027 incorporará el servicio confirmado al
+itinerario y a los recordatorios del día correspondiente.
 
 ## Reglas
 1. Para vuelos internacionales europeos, valorar **hora de salida, aeropuerto de salida y llegada, desplazamientos terrestres, equipaje, check-in y tiempo útil en destino**, no solamente el precio del vuelo.

@@ -12,10 +12,12 @@ import {
 } from "lucide-react";
 
 import { buildGoogleMapsSearchUrl } from "@/lib/google-maps";
+import { DailyRoutePreview } from "@/components/itinerary/daily-route-preview";
 
 import type {
   Accommodation,
   ActivityCategory,
+  DailyRoute,
   DayPlan,
   Place,
   PlannedTransportLeg,
@@ -65,6 +67,7 @@ interface DayOverviewProps {
   readonly checkOut?: Accommodation;
   readonly transportLegs: readonly PlannedTransportLeg[];
   readonly dayPlan?: DayPlan;
+  readonly dailyRoute?: DailyRoute;
   readonly places: readonly Place[];
 }
 
@@ -82,6 +85,7 @@ export function DayOverview({
   checkOut,
   transportLegs,
   dayPlan,
+  dailyRoute,
   places,
 }: DayOverviewProps) {
   return (
@@ -221,6 +225,10 @@ export function DayOverview({
           </div>
         )}
       </section>
+
+      {dailyRoute ? (
+        <DailyRoutePreview route={dailyRoute} places={places} />
+      ) : null}
 
       <section className="day-section" aria-labelledby="activities-heading">
         <div className="section-heading">

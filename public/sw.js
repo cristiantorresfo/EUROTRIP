@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "eurotrip-2027";
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const PAGE_CACHE = `${CACHE_PREFIX}-pages-${CACHE_VERSION}`;
 const ASSET_CACHE = `${CACHE_PREFIX}-assets-${CACHE_VERSION}`;
 

@@ -51,6 +51,8 @@ export interface GeoCoordinates {
   readonly latitude: number;
   readonly longitude: number;
   readonly verificationStatus: "verified";
+  readonly sourceUrl: string;
+  readonly verifiedAt: LocalDate;
 }
 
 export type PlaceCategory =
@@ -95,6 +97,60 @@ export interface DayPlan {
   readonly suggestedDayTrip?: string;
   readonly plannedActivities: readonly Activity[];
   readonly status: PlanningStatus;
+}
+
+export type RouteTravelMode = "walk" | "metro" | "bus" | "train" | "other";
+export type DailyRouteStatus = "draft" | "routed" | "verified";
+
+export interface RouteStop {
+  readonly id: string;
+  readonly activityId: Activity["id"];
+  readonly placeId: Place["id"];
+  readonly label: string;
+  readonly order: number;
+}
+
+export interface PendingRouteSegment {
+  readonly id: string;
+  readonly fromStopId: RouteStop["id"];
+  readonly toStopId: RouteStop["id"];
+  readonly mode: RouteTravelMode;
+  readonly routingStatus: "pending";
+  readonly distanceMeters: null;
+  readonly durationMinutes: null;
+  readonly geometry: null;
+  readonly sourceUrl: null;
+  readonly verifiedAt: null;
+}
+
+export interface VerifiedRouteSegment {
+  readonly id: string;
+  readonly fromStopId: RouteStop["id"];
+  readonly toStopId: RouteStop["id"];
+  readonly mode: RouteTravelMode;
+  readonly routingStatus: "verified";
+  readonly distanceMeters: number;
+  readonly durationMinutes: number;
+  readonly geometry: {
+    readonly type: "LineString";
+    /** GeoJSON order: longitude, latitude. */
+    readonly coordinates: readonly (readonly [number, number])[];
+  };
+  readonly sourceUrl: string;
+  readonly verifiedAt: LocalDate;
+}
+
+export type RouteSegment = PendingRouteSegment | VerifiedRouteSegment;
+
+export interface DailyRoute {
+  readonly id: string;
+  readonly dayPlanId: DayPlan["id"];
+  readonly localDate: LocalDate;
+  readonly title: string;
+  readonly status: DailyRouteStatus;
+  readonly stops: readonly RouteStop[];
+  readonly segments: readonly RouteSegment[];
+  readonly notes?: string;
 }
 
 export type CalendarDayKind = "travel" | "base" | "day_trip";

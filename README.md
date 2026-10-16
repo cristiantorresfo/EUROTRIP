@@ -43,6 +43,8 @@ npm run build
 La arquitectura acordada y el orden del MVP están documentados en
 `docs/ARCHITECTURE.md`.
 
+Demo pública: https://eurotrip-2027-delta.vercel.app/
+
 ## Probar la PWA
 
 El service worker se registra solo en producción para no mezclar caché offline
@@ -55,5 +57,11 @@ npm run start
 
 En `http://localhost:3000` se puede comprobar el manifest, la instalación y el
 fallback `/offline`. La validación final de «Añadir a pantalla de inicio» en
-iPhone requiere un despliegue HTTPS. El caché incluye únicamente rutas y
-recursos públicos; los enlaces externos de Maps siguen necesitando conexión.
+iPhone requiere un despliegue HTTPS; la instalación y navegación offline se
+validaron en el despliegue público el 16/10/2026. El caché incluye únicamente
+rutas y recursos públicos; los enlaces externos de Maps siguen necesitando
+conexión.
+
+El mapa interactivo del recorrido piloto usa MapLibre y teselas de OpenFreeMap.
+La lista del itinerario y la geometría quedan en la aplicación, pero el mapa
+base y la navegación externa requieren conexión.
