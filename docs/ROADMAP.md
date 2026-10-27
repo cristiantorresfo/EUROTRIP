@@ -31,6 +31,8 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [x] Estancias con zona pública, fechas y estados pendientes visibles.
 - [x] Presupuesto inicial COP/EUR sin conversiones ni pagos ficticios.
 - [x] Enlaces externos a Google Maps para lugares y terminales públicos.
+- [x] Mostrar una franja horaria orientativa en todas las actividades y en las
+  paradas detalladas de Madrid, sin confundirlas con reservas.
 - [ ] Confirmar los intereses imprescindibles del grupo y su tolerancia a caminatas.
 
 ## Fase 2 — Recorridos diarios y mapas (fase activa)
@@ -52,8 +54,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
   completa, selección local y cambio a la ruta corta durante la marcha.
 - [x] Recalcular ambas variantes como circuitos peatonales que salen del
   alojamiento `madrid-centro` y terminan en el mismo punto.
-- [x] Convertir también el recorrido del 31 de mayo en un circuito
-  `madrid-centro` → Plaza Mayor → Retiro → `madrid-centro`.
+- [x] Convertir el 31 de mayo en un circuito adaptable desde/hasta
+  `madrid-centro`, con Cibeles, Puerta de Alcalá, hitos interiores del Retiro,
+  Prado, Neptuno y Barrio de las Letras; Mirador y Chueca quedan opcionales.
 - [ ] Validar el patrón en iPhone y extenderlo progresivamente a cada ciudad y
   excursión: Toledo, Barcelona, París, Bolonia, Venecia, Florencia y Roma.
 
@@ -90,9 +93,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 
 ## Siguiente incremento recomendado
 
-Validar en iPhone la selección y el mapa adaptable del 30 de mayo, además del
-piloto del 31 de mayo. Después, acordar las atracciones imprescindibles del
-grupo antes de extender el patrón; la próxima ciudad será Barcelona o París.
-Las demás direcciones exactas de alojamientos quedan fuera hasta contar con
-autenticación. `madrid-centro` es una excepción pública autorizada por el
-viajero para la navegación de regreso.
+Validar en iPhone la selección y los mapas adaptables del 30 y 31 de mayo.
+Después, comprar o definir la franja del Prado para reordenar el Día 2 y
+extender el patrón; la próxima jornada será Toledo. Las demás direcciones
+exactas de alojamientos quedan fuera hasta contar con autenticación.
+`madrid-centro` es una excepción pública autorizada por el viajero para la
+navegación de regreso.

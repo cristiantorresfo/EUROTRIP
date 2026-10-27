@@ -4,6 +4,11 @@ import { tripDayPlans } from "./day-plans";
 import { tripPlaces } from "./places";
 
 describe("EuroTrip 2027 proposed day plans", () => {
+  const toMinutes = (value: string) => {
+    const [hours, minutes] = value.split(":").map(Number);
+    return (hours ?? 0) * 60 + (minutes ?? 0);
+  };
+
   it("covers every non-flight date with at least one recovery block", () => {
     expect(tripDayPlans).toHaveLength(15);
 
@@ -16,9 +21,10 @@ describe("EuroTrip 2027 proposed day plans", () => {
     }
   });
 
-  it("keeps activities untimed, unbooked and ordered", () => {
+  it("keeps activities unbooked, ordered and inside planning windows", () => {
     for (const dayPlan of tripDayPlans) {
       const orders = dayPlan.plannedActivities.map((activity) => activity.order);
+      let previousWindowEnd = 0;
 
       expect(orders).toEqual([...orders].sort((left, right) => left - right));
       expect(new Set(orders).size).toBe(orders.length);
@@ -28,6 +34,14 @@ describe("EuroTrip 2027 proposed day plans", () => {
         expect(activity.endsAtLocal).toBeNull();
         expect(activity.fixedReservation).toBe(false);
         expect(activity.status).not.toBe("confirmed");
+        expect(activity.suggestedTimeWindow.source).toBe("planning");
+
+        const windowStart = toMinutes(activity.suggestedTimeWindow.start);
+        const windowEnd = toMinutes(activity.suggestedTimeWindow.end);
+
+        expect(windowStart).toBeGreaterThanOrEqual(previousWindowEnd);
+        expect(windowEnd).toBeGreaterThan(windowStart);
+        previousWindowEnd = windowEnd;
       }
     }
   });
@@ -53,7 +67,7 @@ describe("EuroTrip 2027 proposed day plans", () => {
       (place) => "geoCoordinates" in place,
     );
 
-    expect(geocodedPlaces).toHaveLength(13);
+    expect(geocodedPlaces).toHaveLength(22);
 
     for (const place of geocodedPlaces) {
       expect(place.city).toBe("Madrid");

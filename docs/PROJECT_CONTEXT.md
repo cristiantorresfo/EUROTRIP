@@ -78,6 +78,16 @@ confirmados dentro del día correspondiente y sus recordatorios.
   rígidas y con posibilidad de cambiar a la corta durante el recorrido. Ambas
   parten del alojamiento `madrid-centro` y terminan allí; su dirección y
   coordenadas son públicas por autorización explícita del viajero.
+- El 31 de mayo también ofrece variantes relajada y completa desde/hasta
+  `madrid-centro`. El circuito prioriza Cibeles, Puerta de Alcalá, Estanque
+  Grande, Monumento a Alfonso XII, Palacio de Cristal, Museo del Prado,
+  Neptuno y Barrio de las Letras. El Mirador de Cibeles y Chueca son
+  extensiones opcionales; la entrada del Prado y todos los horarios de 2027
+  siguen pendientes de verificación.
+- Todas las actividades del borrador muestran una ventana local orientativa.
+  Estas horas organizan el ritmo del viaje, pero no sustituyen entradas,
+  horarios de apertura ni transportes confirmados. En los recorridos detallados
+  de Madrid, cada parada muestra además su propia franja aproximada.
 
 ## 9. Estado del código
 Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.

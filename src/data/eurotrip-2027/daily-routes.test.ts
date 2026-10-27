@@ -5,7 +5,12 @@ import { tripDayPlans } from "./day-plans";
 import { tripPlaces } from "./places";
 
 describe("EuroTrip 2027 daily routes", () => {
-  it("stores an adaptive arrival route and the Madrid pilot", () => {
+  const toMinutes = (value: string) => {
+    const [hours, minutes] = value.split(":").map(Number);
+    return (hours ?? 0) * 60 + (minutes ?? 0);
+  };
+
+  it("stores adaptive routes for both Madrid days", () => {
     expect(dailyRoutes).toHaveLength(2);
     expect(dailyRoutes.map(({ localDate }) => localDate)).toEqual([
       "2027-05-30",
@@ -41,6 +46,30 @@ describe("EuroTrip 2027 daily routes", () => {
       { distanceMeters: 5912, durationMinutes: 77 },
       { distanceMeters: 6149, durationMinutes: 80 },
     ]);
+
+    const dayTwoRoute = dailyRoutes[1];
+
+    expect(dayTwoRoute).toMatchObject({
+      dayPlanId: "day-2027-05-31",
+      defaultOptionId: "complete",
+      switchDuringRoute: true,
+    });
+    expect(dayTwoRoute?.options.map(({ id }) => id)).toEqual([
+      "relaxed",
+      "complete",
+    ]);
+    expect(dayTwoRoute?.options.map(({ stops }) => stops.length)).toEqual([
+      10, 13,
+    ]);
+    expect(
+      dayTwoRoute?.options.map(({ segments }) => ({
+        distanceMeters: segments[0]?.distanceMeters,
+        durationMinutes: segments[0]?.durationMinutes,
+      })),
+    ).toEqual([
+      { distanceMeters: 5411, durationMinutes: 71 },
+      { distanceMeters: 8148, durationMinutes: 105 },
+    ]);
   });
 
   it("starts and finishes every mapped Madrid route at the Airbnb", () => {
@@ -54,8 +83,8 @@ describe("EuroTrip 2027 daily routes", () => {
     }
 
     expect(dailyRoutes[1]?.options[0]?.segments[0]).toMatchObject({
-      distanceMeters: 4343,
-      durationMinutes: 57,
+      distanceMeters: 5411,
+      durationMinutes: 71,
     });
   });
 
@@ -78,9 +107,19 @@ describe("EuroTrip 2027 daily routes", () => {
           option.stops.map((_, index) => index + 1),
         );
 
+        let previousWindowEnd = 0;
+
         for (const stop of option.stops) {
           expect(activityIds.has(stop.activityId)).toBe(true);
           expect(publicPlaceIds.has(stop.placeId)).toBe(true);
+          expect(stop.suggestedTimeWindow.source).toBe("planning");
+
+          const windowStart = toMinutes(stop.suggestedTimeWindow.start);
+          const windowEnd = toMinutes(stop.suggestedTimeWindow.end);
+
+          expect(windowStart).toBeGreaterThanOrEqual(previousWindowEnd);
+          expect(windowEnd).toBeGreaterThan(windowStart);
+          previousWindowEnd = windowEnd;
         }
       }
     }

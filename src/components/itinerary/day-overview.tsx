@@ -235,7 +235,7 @@ export function DayOverview({
           <MapPin aria-hidden="true" size={19} />
           <div>
             <h2 id="activities-heading">Actividades</h2>
-            <p>Borrador por orden, sin convertir estimaciones en reservas.</p>
+            <p>Horas orientativas; se ajustarán al comprar entradas y transportes.</p>
           </div>
         </div>
 
@@ -266,8 +266,16 @@ export function DayOverview({
                       </span>
                     </div>
                     <h3>{plannedActivity.title}</h3>
+                    <p className="activity-card__time">
+                      <Clock3 aria-hidden="true" size={14} />
+                      <strong>
+                        {plannedActivity.suggestedTimeWindow.start}–
+                        {plannedActivity.suggestedTimeWindow.end}
+                      </strong>
+                      <span>Hora orientativa</span>
+                    </p>
                     <p>
-                      Sin hora · duración de planificación: aprox. {" "}
+                      Duración de planificación: aprox. {" "}
                       {plannedActivity.expectedDurationMinutes} min
                     </p>
                     {plannedActivity.notes ? (

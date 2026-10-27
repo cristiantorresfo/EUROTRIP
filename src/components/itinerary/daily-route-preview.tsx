@@ -2,6 +2,7 @@
 
 import {
   CheckCircle2,
+  Clock3,
   Coffee,
   ExternalLink,
   Footprints,
@@ -202,6 +203,16 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
                   <h4>{stop.label}</h4>
                   {stop.optional ? <small>Opcional</small> : null}
                 </div>
+                {stop.suggestedTimeWindow ? (
+                  <p className="route-stop-list__time">
+                    <Clock3 aria-hidden="true" size={13} />
+                    <strong>
+                      {stop.suggestedTimeWindow.start}–
+                      {stop.suggestedTimeWindow.end}
+                    </strong>
+                    <span>orientativo</span>
+                  </p>
+                ) : null}
                 <p>
                   <MapPinCheck aria-hidden="true" size={13} />
                   {stop.estimatedVisitMinutes

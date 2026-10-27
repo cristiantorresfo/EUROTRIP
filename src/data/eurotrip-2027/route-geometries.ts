@@ -1,3 +1,93 @@
+type RouteCoordinate = readonly [number, number];
+
+function decodeValhallaShape(encoded: string): RouteCoordinate[] {
+  const coordinates: RouteCoordinate[] = [];
+  let index = 0;
+  let latitude = 0;
+  let longitude = 0;
+
+  while (index < encoded.length) {
+    let latitudeResult = 0;
+    let latitudeShift = 0;
+    let byte: number;
+
+    do {
+      byte = encoded.charCodeAt(index++) - 63;
+      latitudeResult |= (byte & 0x1f) << latitudeShift;
+      latitudeShift += 5;
+    } while (byte >= 0x20);
+
+    latitude +=
+      latitudeResult & 1 ? ~(latitudeResult >> 1) : latitudeResult >> 1;
+
+    let longitudeResult = 0;
+    let longitudeShift = 0;
+
+    do {
+      byte = encoded.charCodeAt(index++) - 63;
+      longitudeResult |= (byte & 0x1f) << longitudeShift;
+      longitudeShift += 5;
+    } while (byte >= 0x20);
+
+    longitude +=
+      longitudeResult & 1
+        ? ~(longitudeResult >> 1)
+        : longitudeResult >> 1;
+
+    coordinates.push([longitude / 1e6, latitude / 1e6]);
+  }
+
+  return coordinates;
+}
+
+function mergeValhallaShapes(
+  encodedShapes: readonly string[],
+): readonly RouteCoordinate[] {
+  const merged: RouteCoordinate[] = [];
+
+  for (const encodedShape of encodedShapes) {
+    const decoded = decodeValhallaShape(encodedShape);
+    merged.push(...(merged.length === 0 ? decoded : decoded.slice(1)));
+  }
+
+  return merged;
+}
+
+/**
+ * Pedestrian geometries calculated by Valhalla from OpenStreetMap data on
+ * 2026-10-27. Both include the authorized accommodation as start/end.
+ */
+export const madridDayTwoRelaxedGeometry = mergeValhallaShapes(
+  [
+  "q_walA~b|`Fak@{D_PkWcAuAEEqHmJGGy@_AaJgHaEAw@[}AiAoAaA_@}@wKeHyCkCg[uR~@cDeAqAuCkDuAuCa@{@s@sBmNuo@I_@EYMs@SeA_Pa`AXmAaCoQsBqEk@qDaFe\\IcDCe@Gg@g@oDgDoVc@yDEa@Gm@QaBaBkE}@wHqAiKqDyYa@{CqBmTqBgULuBTqA}AK]HcEbAgGxAa@Jq@PoCl@m@mHeAcJWi@mC}A}CoBwA_BwCaEkAaBsDqAJs@Hm@HqC{CoONcGh@uCx@j@dEvDfCvC`D|E~FnJ",
+  "cj_blAdml`F_GoJaD}EgCwCeEwDy@k@hA{G\\iB~@{FZgBT}ALg@dD`@p@q@JcB{@wM|Ei@K_ByFw{@yJozAKaBc@yCsAcEoAsBsDkDdCl@~BNjDs@",
+  "ub`blAvmd`FhAWbCw@dC_CdBsCbAoCr@oDpFaAzEFjA@FaC?kAEwBKqBQoB_BoIsCkHcEwFc@[eE}CpAoD_A_IiBkAdAwCbEuMhB`ArFcQvKm]fKe\\pJkZX}@Le@dCiNDqATmA`@eAn@w@t@g@|@W@qFcCgo@cEoi@j@g@b@w@TaAHgAEgAScAtGaDhLyF~O{E`JiCzAeA|AuAjAgBjJnGHVT~A\\nBxF}AtBk@h@v@n@l@t@`@x@Tz@Dz@E??",
+  "a_{alAr|x_F{@D{@Ey@Uu@a@o@m@i@w@c@gAYqAKsA?uALuAVoAd@gARY",
+  "mh{alAhex_FXc@t@o@z@a@]aC{@sFbCq@nGVtEdCjDtEt@fDXsTvHlC~Ed@pENrGBbWiBdS{BqCcUfFaAxSdTpCNvBMdT_FfDu@`OkDtb@kL|EyFjEiCfC}BrCq@\\~C",
+  "izsalAtcv_F]_DdE}@bIjBbDv@~DlH|DjHlGlIvG~GhEd[eG|BbBnNjCdVfCvRvBtRxBtSDnHsAbJElIwOvBBvAEtAQrAYlAc@fAu@hA_Ax@eAh@kAT^~Lv@jHGpFoBpG_DjEaAjFn@xa@hMGAz@Z`Nl@Lh@^`@h@Vt@LhA?l@M~@[x@e@j@m@Zq@HNrMJpBF~Dt@dTp@`ShAnQB\\Bh@jJS@Z@fBF`H}@BkHFh@xAVxBJnA@lAT|k@JdVAfBIlAGl@Mh@]b@_FHn@pl@PhWKpB{\\r@eEh@gEBWBwKTwAdJ",
+  "idtalAfmi`FvAeJmKNwMRmEFoDDB`ANpIHrBgDZ_BD{ARkA^wAl@kA\\eBX}AV_Bj@y@vA{@dBa@~AWnBGvCN`DhBnXLfCxB]nAxQ\\|ETnI\\pGE|C{A`FtB`Ll@|Gh@dJy@ViGjB{UtE",
+  "wyvalAvsn`FuGzFcKzDaGrA}DDWhD@ZzFdARj@K~Ag@nCaPx{@o@d@QbAMh@~Al@p@LNz@NrBGzAu@fEkAzGiEnUuApHeC~Ma@|BuF|[kCxNaE|TsAxGmChOs@pGQ`BElBEjBa@xZE`LO|_@AbAAvB?rBa@~D`JfHx@~@FFpHlJDDbAtA~OjWrv@lF`Gd@dB@~Ac@gBc]",
+  "_ivalApf{`FfBb]_Bb@eBAaGe@qJq@"
+],
+);
+
+export const madridDayTwoCompleteGeometry = mergeValhallaShapes(
+  [
+  "q_walA~b|`Fak@{D_PkWcAuAEEqHmJGGy@_AaJgHaEAw@[}AiAoAaA_@}@wKeHyCkCg[uR~@cDeAqAuCkDuAuCa@{@s@sBmNuo@I_@EYMs@SeA_Pa`AXmAaCoQsBqEk@qDaFe\\IcDCe@Gg@g@oDgDoVc@yDEa@Gm@QaBaBkE}@wHqAiKqDyYa@{CqBmTqBgULuBTqA}AK]HcEbAgGxAa@Jq@PoCl@m@mHeAcJWi@mC}A}CoBwA_BwCaEkAaBsDqAJs@Hm@HqC{CoONcGh@uCx@j@dEvDfCvC`D|E~FnJ",
+  "cj_blAdml`F_GoJaD}EgCwCeEwDy@k@hA{G\\iB~@{FZgBT}ALg@dD`@p@q@JcB{@wM|Ei@bGcAeLs}AdCDjA?nj@?ri@c@pFG`@jEmAt|@wCEkDIgE@o]V",
+  "aa~alAbbi`Fn]WfEAjDHvCDlAu|@a@kEqFFsi@b@oj@?kA?eCEcGuv@UeCGqJz@gKcCv@iAV",
+  "ub`blAvmd`FhAWbCw@dC_CdBsCbAoCr@oDpFaAzEFjA@FaC?kAEwBKqBQoB_BoIsCkHcEwFc@[eE}CpAoD_A_IiBkAdAwCbEuMhB`ArFcQvKm]fKe\\pJkZX}@Le@dCiNDqATmA`@eAn@w@t@g@|@W@qFcCgo@cEoi@j@g@b@w@TaAHgAEgAScAtGaDhLyF~O{E`JiCzAeA|AuAjAgBjJnGHVT~A\\nBxF}AtBk@h@v@n@l@t@`@x@Tz@Dz@E??",
+  "a_{alAr|x_F{@D{@Ey@Uu@a@o@m@i@w@c@gAYqAKsA?uALuAVoAd@gARY",
+  "mh{alAhex_FXc@t@o@z@a@]aC{@sFbCq@nGVtEdCjDtEt@fDXsTvHlC~Ed@pENrGBbWiBdS{BqCcUfFaAxSdTpCNvBMdT_FfDu@`OkDtb@kL|EyFjEiCfC}BrCq@\\~C",
+  "izsalAtcv_F]_DdE}@bIjBbDv@~DlH|DjHlGlIvG~GhEd[eG|BbBnNjCdVfCvRvBtRxBtSDnHsAbJElIwOvBBvAEtAQrAYlAc@fAu@hA_Ax@eAh@kAT^~Lv@jHGpFoBpG_DjEaAjFn@xa@hMGAz@Z`Nl@Lh@^`@h@Vt@LhA?l@M~@[x@e@j@m@Zq@HNrMJpBF~Dt@dTp@`ShAnQB\\Bh@jJS@Z@fBF`H}@BkHFh@xAVxBJnA@lAT|k@JdVAfBIlAGl@Mh@]b@_FHn@pl@PhWKpB{\\r@eEh@gEBWBwKTwAdJ",
+  "idtalAfmi`FvAeJmKNwMRmEFoDDB`ANpIHrBgDZ_BD{ARkA^wAl@kA\\eBX}AV_Bj@y@vA{@dBa@~AWnBGvCN`DhBnXLfCxB]nAxQ\\|ETnI\\pGE|C{A`FtB`Ll@|Gh@dJy@ViGjB{UtE",
+  "wyvalAvsn`FuGzFcKzDaGrA}DDWhD@ZzFdARj@K~Ag@nCaPx{@o@d@QbAMh@~Al@p@LNz@NrBGzAu@fEkAzGiEnUuApHeC~Ma@|BuF|[kCxNaE|TsAxGmChOs@pGQ`BElBEjBa@xZE`LO|_@AbAAvB?rBa@~D`JfHx@~@FFpHlJDDbAtA~OjWrv@lF`Gd@dB@~Ac@gBc]",
+  "_ivalApf{`FfBb]_Bb@eBAaGe@qJq@",
+  "q_walA~b|`Fak@{D_PkWcAuAEEqHmJGGy@_AaJgHaEAw@[}AiAoAaA_@}@wKeHyCkCg[uReH_FgBmA_Aw@{@gASaAWNMFaC`As@kDuA_As@}@c@{@g@j@_At@eBr@wNjDwFzA_WnDaLzAiEr@oCDuVkCe@CsBMu@WeBg@uRkGyW}JaBo@]Qb@aCdAyC`Lmm@iz@sRku@aTcPsGqJmDgAhF",
+  "{neblAr}t`FfAiFpJlDbPrGju@`TKdBgJda@lSfIjBpAdDxEjA|@lEdBdExAnFxBvAj@l@Vc@`C\\P`Bn@xW|JtRjGdBf@t@VrBLd@BtVjCnCEhEs@`L{A~VoDvF{AvNkDdBs@~@u@f@k@b@z@r@|@tA~@r@jD`CaALGVOb@OtDyAn@Y`@z@tAtCtCjDdApA_AbDf[tRxCjCvKdH^|@nA`A|AhAv@Z`E@`JfHx@~@FFpHlJDDbAtA~OjW`k@zD"
+],
+);
+
 /**
  * Pedestrian geometry calculated by Valhalla from OpenStreetMap data on
  * 2026-10-27. Round trip from the explicitly authorized Madrid accommodation.

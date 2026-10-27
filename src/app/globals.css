@@ -1413,6 +1413,24 @@ a {
   color: var(--success);
 }
 
+.route-stop-list .route-stop-list__time {
+  width: fit-content;
+  padding: 0.28rem 0.45rem;
+  border-radius: 999px;
+  background: var(--featured-surface);
+  color: var(--foreground);
+}
+
+.route-stop-list__time strong {
+  font-size: 0.7rem;
+}
+
+.route-stop-list__time span {
+  color: var(--muted);
+  font-size: 0.58rem;
+  font-weight: 750;
+}
+
 .route-stop-list a {
   display: inline-flex;
   min-height: 2rem;
@@ -1580,6 +1598,32 @@ a {
 .activity-card h3 {
   margin: 0.5rem 0 0;
   font-size: 0.9rem;
+}
+
+.activity-card .activity-card__time {
+  display: flex;
+  width: fit-content;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 999px;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--featured-surface);
+  color: var(--foreground);
+}
+
+.activity-card__time svg {
+  color: var(--accent);
+}
+
+.activity-card__time strong {
+  font-size: 0.73rem;
+}
+
+.activity-card__time span {
+  color: var(--muted);
+  font-size: 0.58rem;
+  font-weight: 750;
 }
 
 .activity-card p,

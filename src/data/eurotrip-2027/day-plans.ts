@@ -1,15 +1,25 @@
-import type { Activity, DayPlan } from "@/domain/trip/types";
+import type { Activity, DayPlan, LocalTime } from "@/domain/trip/types";
 
 type ActivityInput = Omit<
   Activity,
-  "startsAtLocal" | "endsAtLocal" | "fixedReservation"
->;
+  | "startsAtLocal"
+  | "endsAtLocal"
+  | "fixedReservation"
+  | "suggestedTimeWindow"
+> & {
+  readonly timeWindow: readonly [LocalTime, LocalTime];
+};
 
-function activity(input: ActivityInput): Activity {
+function activity({ timeWindow, ...input }: ActivityInput): Activity {
   return {
     ...input,
     startsAtLocal: null,
     endsAtLocal: null,
+    suggestedTimeWindow: {
+      start: timeWindow[0],
+      end: timeWindow[1],
+      source: "planning",
+    },
     fixedReservation: false,
   };
 }
@@ -23,6 +33,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-05-30-arrival-recovery",
+        timeWindow: ["13:00", "16:30"],
         dayId: "day-2027-05-30",
         title: "Instalación y recuperación del vuelo",
         category: "rest",
@@ -33,6 +44,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-05-30-madrid-austrias",
+        timeWindow: ["17:00", "22:30"],
         dayId: "day-2027-05-30",
         placeId: "madrid-plaza-mayor",
         title: "Recorrido flexible por el centro histórico",
@@ -49,39 +61,96 @@ export const tripDayPlans = [
     id: "day-2027-05-31",
     localDate: "2027-05-31",
     baseCity: "Madrid",
-    status: "planned",
+    status: "to_verify",
     plannedActivities: [
       activity({
-        id: "2027-05-31-madrid-austrias",
+        id: "2027-05-31-cibeles-alcala",
+        timeWindow: ["09:00", "10:30"],
         dayId: "day-2027-05-31",
-        placeId: "madrid-plaza-mayor",
-        title: "Plaza Mayor y entorno de los Austrias",
+        placeId: "madrid-cibeles",
+        title: "Cibeles y Puerta de Alcalá",
         category: "visit",
-        expectedDurationMinutes: 120,
+        expectedDurationMinutes: 60,
         order: 1,
-        notes: "Recorrido peatonal por el centro; ruta exacta pendiente.",
-        status: "planned",
-      }),
-      activity({
-        id: "2027-05-31-lunch-rest",
-        dayId: "day-2027-05-31",
-        title: "Almuerzo y pausa larga",
-        category: "meal",
-        expectedDurationMinutes: 120,
-        order: 2,
-        notes: "Bloque protegido para evitar una jornada apresurada.",
-        status: "planned",
+        notes:
+          "El Mirador de Cibeles es opcional. El horario general consultado cierra los lunes; confirmar la programación específica del 31 de mayo de 2027 antes de contar con esta visita.",
+        status: "to_verify",
       }),
       activity({
         id: "2027-05-31-retiro",
+        timeWindow: ["10:30", "12:30"],
         dayId: "day-2027-05-31",
-        placeId: "madrid-retiro",
-        title: "Paseo por El Retiro",
+        placeId: "madrid-retiro-estanque",
+        title: "El Retiro: estanque, monumento y Palacio de Cristal",
         category: "visit",
         expectedDurationMinutes: 120,
-        order: 3,
-        notes: "Comprobar clima y posibles cierres preventivos del parque.",
+        order: 2,
+        notes:
+          "Recorrido por el Estanque Grande, Monumento a Alfonso XII, jardines y Palacio de Cristal. Confirmar clima, accesos y cierres preventivos cerca de la fecha.",
         status: "to_verify",
+      }),
+      activity({
+        id: "2027-05-31-lunch-rest",
+        timeWindow: ["12:45", "14:00"],
+        dayId: "day-2027-05-31",
+        title: "Almuerzo y pausa",
+        category: "meal",
+        expectedDurationMinutes: 75,
+        order: 3,
+        notes:
+          "Bloque protegido antes del Prado. Elegir el lugar en el momento sin fijar un restaurante todavía.",
+        status: "planned",
+      }),
+      activity({
+        id: "2027-05-31-prado",
+        timeWindow: ["14:15", "16:15"],
+        dayId: "day-2027-05-31",
+        placeId: "madrid-prado",
+        title: "Museo Nacional del Prado",
+        category: "visit",
+        expectedDurationMinutes: 120,
+        order: 4,
+        notes:
+          "Visita prioritaria. La entrada y su franja horaria de 2027 siguen pendientes de compra y deben condicionar el orden final del día.",
+        status: "to_verify",
+      }),
+      activity({
+        id: "2027-05-31-neptuno-letras",
+        timeWindow: ["16:25", "17:45"],
+        dayId: "day-2027-05-31",
+        placeId: "madrid-neptuno",
+        title: "Neptuno y Barrio de las Letras",
+        category: "visit",
+        expectedDurationMinutes: 75,
+        order: 5,
+        notes:
+          "Paseo flexible por Huertas y Plaza de Santa Ana antes de regresar al alojamiento.",
+        status: "planned",
+      }),
+      activity({
+        id: "2027-05-31-airbnb-rest",
+        timeWindow: ["18:00", "19:30"],
+        dayId: "day-2027-05-31",
+        title: "Regreso al Airbnb y descanso",
+        category: "rest",
+        expectedDurationMinutes: 90,
+        order: 6,
+        notes:
+          "Fin del circuito principal. La salida nocturna se decide después de esta pausa y según la energía del grupo.",
+        status: "planned",
+      }),
+      activity({
+        id: "2027-05-31-chueca",
+        timeWindow: ["20:30", "22:30"],
+        dayId: "day-2027-05-31",
+        placeId: "madrid-chueca",
+        title: "Chueca por la noche",
+        category: "visit",
+        expectedDurationMinutes: 120,
+        order: 7,
+        notes:
+          "Extensión opcional del plan completo. Mantenerla corta porque al día siguiente está propuesta la excursión a Toledo.",
+        status: "tentative",
       }),
     ],
   },
@@ -94,6 +163,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-01-toledo-old-town",
+        timeWindow: ["10:30", "12:30"],
         dayId: "day-2027-06-01",
         placeId: "toledo-casco-historico",
         title: "Recorrido por el casco histórico",
@@ -105,6 +175,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-01-lunch-rest",
+        timeWindow: ["12:45", "14:15"],
         dayId: "day-2027-06-01",
         title: "Almuerzo y descanso",
         category: "meal",
@@ -114,6 +185,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-01-toledo-cathedral",
+        timeWindow: ["14:30", "16:00"],
         dayId: "day-2027-06-01",
         placeId: "toledo-catedral",
         title: "Catedral Primada",
@@ -133,6 +205,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-02-transfer-recovery",
+        timeWindow: ["08:30", "16:30"],
         dayId: "day-2027-06-02",
         title: "Llegada, check-in y recuperación",
         category: "rest",
@@ -143,6 +216,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-02-neighbourhood-walk",
+        timeWindow: ["17:00", "18:30"],
         dayId: "day-2027-06-02",
         title: "Paseo corto sin reserva",
         category: "visit",
@@ -161,6 +235,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-03-sagrada-familia",
+        timeWindow: ["09:30", "11:30"],
         dayId: "day-2027-06-03",
         placeId: "barcelona-sagrada-familia",
         title: "Sagrada Família",
@@ -172,6 +247,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-03-lunch-rest",
+        timeWindow: ["12:00", "14:00"],
         dayId: "day-2027-06-03",
         title: "Almuerzo y pausa",
         category: "meal",
@@ -181,6 +257,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-03-park-guell",
+        timeWindow: ["15:00", "17:00"],
         dayId: "day-2027-06-03",
         placeId: "barcelona-park-guell",
         title: "Park Güell",
@@ -200,6 +277,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-04-transfer-recovery",
+        timeWindow: ["07:00", "16:30"],
         dayId: "day-2027-06-04",
         title: "Llegada, check-in y descanso",
         category: "rest",
@@ -210,6 +288,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-04-seine-walk",
+        timeWindow: ["17:30", "19:30"],
         dayId: "day-2027-06-04",
         placeId: "paris-tuileries-seine",
         title: "Paseo tranquilo por Tullerías y el Sena",
@@ -229,6 +308,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-05-louvre",
+        timeWindow: ["09:30", "12:30"],
         dayId: "day-2027-06-05",
         placeId: "paris-louvre",
         title: "Selección priorizada del Louvre",
@@ -240,6 +320,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-05-lunch-rest",
+        timeWindow: ["12:45", "14:45"],
         dayId: "day-2027-06-05",
         title: "Almuerzo y descanso fuera del museo",
         category: "meal",
@@ -249,6 +330,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-05-tuileries-seine",
+        timeWindow: ["15:00", "17:00"],
         dayId: "day-2027-06-05",
         placeId: "paris-tuileries-seine",
         title: "Tullerías y ribera del Sena",
@@ -267,6 +349,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-06-eiffel",
+        timeWindow: ["09:30", "12:00"],
         dayId: "day-2027-06-06",
         placeId: "paris-eiffel",
         title: "Torre Eiffel y Champ-de-Mars",
@@ -278,6 +361,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-06-lunch-rest",
+        timeWindow: ["12:30", "14:30"],
         dayId: "day-2027-06-06",
         title: "Almuerzo y pausa larga",
         category: "meal",
@@ -287,6 +371,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-06-flexible-paris",
+        timeWindow: ["15:00", "17:30"],
         dayId: "day-2027-06-06",
         title: "Bloque flexible en París",
         category: "other",
@@ -305,6 +390,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-07-transfer-recovery",
+        timeWindow: ["07:30", "16:30"],
         dayId: "day-2027-06-07",
         title: "Llegada, check-in y recuperación",
         category: "rest",
@@ -315,6 +401,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-07-bologna-centre",
+        timeWindow: ["17:30", "19:30"],
         dayId: "day-2027-06-07",
         placeId: "bologna-piazza-porticoes",
         title: "Piazza Maggiore y pórticos",
@@ -335,6 +422,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-08-rialto",
+        timeWindow: ["10:00", "11:30"],
         dayId: "day-2027-06-08",
         placeId: "venice-rialto",
         title: "Rialto y San Polo",
@@ -346,6 +434,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-08-lunch-rest",
+        timeWindow: ["12:00", "14:00"],
         dayId: "day-2027-06-08",
         title: "Almuerzo y descanso",
         category: "meal",
@@ -355,6 +444,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-08-san-marco",
+        timeWindow: ["14:30", "17:00"],
         dayId: "day-2027-06-08",
         placeId: "venice-san-marco",
         title: "Plaza de San Marcos",
@@ -375,6 +465,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-09-duomo",
+        timeWindow: ["10:00", "12:00"],
         dayId: "day-2027-06-09",
         placeId: "florence-duomo",
         title: "Complejo del Duomo",
@@ -386,6 +477,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-09-lunch-rest",
+        timeWindow: ["12:15", "13:45"],
         dayId: "day-2027-06-09",
         title: "Almuerzo y descanso",
         category: "meal",
@@ -395,6 +487,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-09-uffizi",
+        timeWindow: ["14:00", "16:30"],
         dayId: "day-2027-06-09",
         placeId: "florence-uffizi",
         title: "Galería Uffizi",
@@ -406,6 +499,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-09-ponte-vecchio",
+        timeWindow: ["16:45", "17:45"],
         dayId: "day-2027-06-09",
         placeId: "florence-ponte-vecchio",
         title: "Ponte Vecchio y Arno",
@@ -425,6 +519,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-10-transfer-recovery",
+        timeWindow: ["08:00", "15:30"],
         dayId: "day-2027-06-10",
         title: "Llegada, check-in y pausa",
         category: "rest",
@@ -435,6 +530,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-10-rome-centre",
+        timeWindow: ["17:00", "19:00"],
         dayId: "day-2027-06-10",
         placeId: "rome-historic-centre",
         title: "Primer paseo por el centro histórico",
@@ -455,6 +551,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-11-vatican-museums",
+        timeWindow: ["09:00", "12:00"],
         dayId: "day-2027-06-11",
         placeId: "vatican-museums",
         title: "Museos Vaticanos",
@@ -466,6 +563,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-11-lunch-rest",
+        timeWindow: ["12:15", "14:15"],
         dayId: "day-2027-06-11",
         title: "Almuerzo y descanso",
         category: "meal",
@@ -475,6 +573,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-11-st-peter",
+        timeWindow: ["14:30", "16:30"],
         dayId: "day-2027-06-11",
         placeId: "vatican-st-peter",
         title: "Basílica de San Pedro",
@@ -494,6 +593,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-12-colosseum-forum",
+        timeWindow: ["09:00", "13:00"],
         dayId: "day-2027-06-12",
         placeId: "rome-colosseum-forum",
         title: "Coliseo, Foro Romano y Palatino",
@@ -505,6 +605,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-12-lunch-rest",
+        timeWindow: ["13:15", "15:15"],
         dayId: "day-2027-06-12",
         title: "Almuerzo y recuperación",
         category: "meal",
@@ -514,6 +615,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-12-rome-centre",
+        timeWindow: ["16:00", "18:00"],
         dayId: "day-2027-06-12",
         placeId: "rome-historic-centre",
         title: "Centro histórico, solo si queda energía",
@@ -533,6 +635,7 @@ export const tripDayPlans = [
     plannedActivities: [
       activity({
         id: "2027-06-13-checkout-pack",
+        timeWindow: ["08:00", "10:00"],
         dayId: "day-2027-06-13",
         title: "Check-out, equipaje y margen de salida",
         category: "rest",
@@ -543,6 +646,7 @@ export const tripDayPlans = [
       }),
       activity({
         id: "2027-06-13-meal-buffer",
+        timeWindow: ["11:00", "12:30"],
         dayId: "day-2027-06-13",
         title: "Comida y margen antes del aeropuerto",
         category: "meal",

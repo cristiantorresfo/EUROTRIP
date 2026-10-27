@@ -83,6 +83,8 @@ export interface Activity {
   readonly category: ActivityCategory;
   readonly startsAtLocal: LocalTime | null;
   readonly endsAtLocal: LocalTime | null;
+  /** Flexible planning window; it is not a reservation or confirmed opening time. */
+  readonly suggestedTimeWindow: LocalTimeWindow;
   readonly expectedDurationMinutes: number;
   readonly fixedReservation: boolean;
   readonly order: number;
@@ -112,6 +114,8 @@ export interface RouteStop {
   readonly order: number;
   readonly priority?: RouteStopPriority;
   readonly estimatedVisitMinutes?: number;
+  /** Flexible planning window; it may change when tickets or transport are booked. */
+  readonly suggestedTimeWindow?: LocalTimeWindow;
   readonly optional?: boolean;
   readonly visitMode?: "exterior" | "walk_through";
   readonly preferredMoment?: "sunset";

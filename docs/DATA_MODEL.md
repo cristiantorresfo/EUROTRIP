@@ -8,10 +8,10 @@ Representarlo al inicio mediante interfaces TypeScript y fixtures; NO obliga a i
 - **CityStay:** id, city, arrivalDate, departureDate, accommodationId. Madrid tiene dos estancias/ids distintos.
 - **Place:** id, city, title, geoCoordinates opcional y solo tras validación, category, visitDurationMin, officialUrl opcional.
 - **DayPlan:** id, localDate `YYYY-MM-DD`, baseCity, suggestedDayTrip opcional, plannedActivities y status (`confirmed|planned|estimated|to_verify`).
-- **Activity:** id, dayId, placeId opcional, title, category (`visit|meal|rest|transfer|other`), startsAtLocal/endsAtLocal nullable, expectedDurationMinutes, fixedReservation boolean, order, notes, status.
+- **Activity:** id, dayId, placeId opcional, title, category (`visit|meal|rest|transfer|other`), startsAtLocal/endsAtLocal nullable, `suggestedTimeWindow` de planificación, expectedDurationMinutes, fixedReservation boolean, order, notes, status. La ventana sugerida no implica una reserva.
 - **DailyRoute:** recorrido de una jornada, asociado a `DayPlan`, con una o más opciones, opción predeterminada y regla para cambiar de intensidad durante la marcha.
 - **DailyRouteOption:** variante concreta (`relaxed`, `complete`, etc.) con intensidad, criterio de selección, duración total orientativa, paradas ordenadas, segmentos calculados, regreso sugerido y destino de regreso opcional.
-- **RouteStop:** posición ordenada dentro de `DailyRoute`, vinculada a un `Place` público o a un punto privado opaco. Las coordenadas públicas deben estar validadas. `madrid-centro` es la única dirección de alojamiento autorizada actualmente como `Place` público para iniciar y cerrar el circuito.
+- **RouteStop:** posición ordenada dentro de `DailyRoute`, vinculada a un `Place` público o a un punto privado opaco, con `suggestedTimeWindow` opcional. Las coordenadas públicas deben estar validadas. `madrid-centro` es la única dirección de alojamiento autorizada actualmente como `Place` público para iniciar y cerrar el circuito.
 - **RouteSegment:** unión entre dos paradas consecutivas, con medio (`walk|metro|bus|train|other`), geometría verificable, distancia y duración nullable, proveedor y fecha de consulta.
 - **TransportLeg:** id, originId, destinationId, mode (`walk|metro|bus|train|flight|other`), preferredDepartureWindow optional, actualDepartureAt/actualArrivalAt nullable, fare estimate, `bookingStatus` (`not_booked|booked`), actualAirportOrStation optional. **No convertir ventanas en reservas.**
 - **Reminder:** aviso vinculado a una actividad, reserva o traslado confirmado; incluye instante con zona horaria, anticipación y mecanismo (`calendar|notification`).
@@ -45,3 +45,4 @@ Accommodations: seis registros con ids:
 13. El orden visual de las paradas no demuestra que una ruta sea transitable. La línea, distancia y duración deben proceder de un motor de rutas o de una fuente verificable y conservar su fecha de consulta.
 14. Los recordatorios críticos deben poder exportarse al calendario del teléfono; no depender exclusivamente de notificaciones web.
 15. Un día de llegada puede ofrecer una ruta base y una extensión. La selección es flexible, no una reserva, y puede cambiar durante el recorrido sin alterar los datos confirmados.
+16. Las horas orientativas de actividades y paradas usan ventanas locales con fuente `planning`. Deben sustituirse o ajustarse cuando exista una entrada o un transporte comprado, sin copiarlas a `startsAtLocal`/`endsAtLocal` como si fueran datos confirmados.
