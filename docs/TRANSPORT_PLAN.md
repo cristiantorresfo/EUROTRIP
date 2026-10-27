@@ -19,7 +19,7 @@ itinerario y a los recordatorios del día correspondiente.
 | Fecha | Trayecto | Medio deseado | Ventana de salida objetivo | Objetivo logístico |
 |---|---|---|---|---|
 | 2027-06-01 | Madrid ↔ Toledo | Renfe Avant propuesto | Ida 08:30–09:00 / vuelta 18:00–20:00 | Excursión prevista; conservar margen entre Mirador, taxi, estación y tren |
-| 2027-06-02 | Madrid → Barcelona | Tren rápido | 09:00–10:30 | Llegar Barcelona hacia mediodía y aproximarse al check-in 14:00; ajustar a servicios reales |
+| 2027-06-02 | Madrid → Barcelona | Tren rápido | 09:00–09:30 | Buscar llegada aproximada 11:45–12:30, ir primero al alojamiento y hacer check-in desde las 14:00; ajustar a servicios reales |
 | 2027-06-04 | Barcelona → París | Vuelo directo preferido | 08:00–11:00 | Aprovechar tarde en París, check-in 15:00; calcular salida del Airbnb y llegada a aeropuerto BCN |
 | 2027-06-07 | París → Bolonia | Vuelo directo si existe útil | 09:00–11:30 | Llegar a Bolonia temprano, check-in 15:00; dejar tarde para centro histórico |
 | 2027-06-08 (tentativo) | Bolonia ↔ Venecia | Tren | Ida 07:30–09:00 / vuelta 18:30–21:00 | Visitar la Venecia insular; buscar llegada a Venezia Santa Lucia, no Venezia Mestre |
@@ -46,7 +46,9 @@ NOTA: Las fechas de Venecia/Florencia son reversibles; el orden final debe consi
 - 31/05: Madrid (actividades centrales, caminatas, posible museos según apertura).
 - 01/06: Toledo ida/vuelta; ruta este–oeste desde Zocodover hasta San Martín,
   taxi al Mirador del Valle y taxi directo a la estación. Billetes pendientes.
-- 02/06: AVE u otro tren rápido a Barcelona, tarde Barcelona.
+- 02/06: tren rápido pendiente a Barcelona; check-in y descanso, seguido por
+  una caminata continua Plaça de Catalunya → Barrio Gótico → Port Vell. La
+  extensión a Barceloneta depende de energía y hora real de llegada.
 - 03/06: día completo Barcelona.
 - 04/06: vuelo a París, tarde París.
 - 05/06 y 06/06: París días completos.

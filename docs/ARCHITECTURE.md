@@ -12,9 +12,11 @@ como hechos confirmados.
 
 ## Decisión base
 
-La primera versión usa Next.js con App Router, React, TypeScript estricto y
-Tailwind CSS. Los datos del viaje comienzan como fixtures TypeScript no
-sensibles. Mapas y rutas se incorporan ahora porque son una función central;
+La primera versión usa Next.js con App Router, React y TypeScript estricto. Los
+datos del viaje comienzan como fixtures TypeScript. Las seis direcciones de
+alojamiento están autorizadas para mostrarse públicamente; anfitriones, códigos
+y documentos permanecen fuera. Mapas y rutas se incorporan ahora porque son
+una función central;
 backend, base de datos y autenticación se mantienen fuera hasta que datos
 privados o edición compartida los justifiquen.
 
@@ -49,8 +51,8 @@ Los lugares públicos y los planes diarios viven en fixtures separados. Las
 actividades se ordenan sin horas de inicio o fin y conservan `fixedReservation`
 en falso hasta que exista una reserva real. `DayOverview` consume el plan por
 fecha tanto en el detalle del itinerario como en la vista «Hoy»; los enlaces de
-Maps se construyen desde lugares verificados. `madrid-centro` es la única
-ubicación de alojamiento autorizada como origen y destino público.
+Maps se construyen desde lugares verificados o desde las direcciones exactas
+autorizadas de los alojamientos.
 
 `daily-routes.ts` conserva el piloto del 31 de mayo y añade el día de llegada
 del 30 de mayo como recorrido adaptable. `DailyRouteOption` contiene la ruta
@@ -68,8 +70,8 @@ Las teselas son externas y necesitan conexión; el itinerario, las paradas, la
 geometría guardada y el enlace a Google Maps conservan su presentación de
 respaldo cuando el mapa base no carga.
 
-Los fixtures contienen zonas públicas, datos de planificación y la única
-ubicación de alojamiento autorizada explícitamente (`madrid-centro`).
+Los fixtures contienen zonas públicas, datos de planificación y las seis
+direcciones de alojamiento autorizadas explícitamente el 27/10/2026.
 Las reglas de fechas y alojamientos son funciones puras, independientes de
 React y de cualquier futura fuente de persistencia.
 
@@ -95,8 +97,8 @@ llevarlo a TypeScript se mantendrán estas reglas:
 - Estados discriminados para distinguir confirmado, planeado y por verificar.
 - Ventanas de transporte separadas de salidas y llegadas efectivamente
   reservadas.
-- Referencias privadas opacas por defecto. Solo una dirección autorizada
-  explícitamente puede aparecer en un fixture enviado al navegador.
+- Direcciones exactas de alojamiento autorizadas explícitamente; anfitriones,
+  códigos y documentos continúan excluidos de los fixtures del navegador.
 - Reglas de dominio como funciones puras, probables candidatas a pruebas
   unitarias.
 
@@ -105,14 +107,14 @@ llevarlo a TypeScript se mantendrán estas reglas:
 1. **Inicio:** cuenta regresiva, siguiente evento, progreso y resumen del viaje.
 2. **Itinerario:** navegación por fecha y ciudad, actividades y descansos.
 3. **Traslados:** ventanas propuestas claramente diferenciadas de reservas.
-4. **Estancias:** seis reservas con zona pública, fechas y estado de check-out.
+4. **Estancias:** seis reservas con dirección exacta, enlace a Google Maps,
+   fechas y estado de check-out.
 5. **Presupuesto:** resumen COP/EUR sin conversión automática inicialmente.
 
 Los mapas y recorridos son el siguiente incremento activo. Edición compartida,
-persistencia y documentos privados se incorporarán únicamente si son
-necesarios. Las direcciones requieren autenticación y autorización reales antes
-de servirse al navegador, salvo la excepción explícita de `madrid-centro`
-autorizada para navegación de regreso.
+persistencia, anfitriones y documentos privados se incorporarán únicamente si
+son necesarios y cuentan con protección adecuada. Las seis direcciones ya
+cuentan con autorización explícita para navegación pública.
 
 ## Información pendiente que afecta el producto
 
@@ -158,7 +160,7 @@ autorizada para navegación de regreso.
   de búsqueda. No compara precios ni servicios: su función es mostrar logística
   confirmada y recordar qué tramos aún debe comprar el viajero fuera de la
   aplicación. También permite abrir en Google Maps las terminales públicas de
-  referencia sin vincularlas a direcciones privadas.
+  referencia; las estancias enlazan por separado sus direcciones publicadas.
 - `/presupuesto`: muestra la referencia comunicada para los seis alojamientos,
   separa COP de EUR y deja transporte, comidas, entradas y otros rubros sin
   monto hasta disponer de información verificable.
@@ -190,9 +192,9 @@ first* para priorizar datos actuales y recurren a la última copia disponible o
 a `/offline` cuando falla la red. Los iconos usan *cache first*.
 
 La precarga se limita a Itinerario, Traslados, Presupuesto y la pantalla
-offline. No se interceptan APIs ni dominios externos. El caché puede contener la
-dirección de `madrid-centro`, publicada por autorización explícita; no contiene
-las demás direcciones, documentos o datos privados. Los enlaces de Google Maps
+offline. No se interceptan APIs ni dominios externos. El caché puede contener
+las seis direcciones de alojamiento publicadas por autorización explícita; no
+contiene anfitriones, documentos, códigos u otros datos privados. Los enlaces de Google Maps
 requieren conexión. El encabezado muestra «Datos públicos» porque esta fase
 todavía no tiene autenticación; llamarla privada sería una garantía falsa.
 

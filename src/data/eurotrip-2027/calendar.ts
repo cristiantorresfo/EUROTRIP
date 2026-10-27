@@ -40,10 +40,10 @@ export const tripCalendar: readonly TripDaySummary[] = [
     localDate: "2027-06-02",
     baseCity: "Barcelona",
     locationLabel: "Madrid → Barcelona",
-    title: "Traslado y tarde en Barcelona",
-    detail: "Tren sin comprar · salida objetivo 09:00–10:30",
+    title: "Tren y primer recorrido por Barcelona",
+    detail: "Tren sin comprar · salida objetivo 09:00–09:30 · check-in desde las 14:00",
     kind: "travel",
-    status: "planned",
+    status: "to_verify",
   },
   {
     localDate: "2027-06-03",

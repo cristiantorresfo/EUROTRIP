@@ -16,7 +16,15 @@ planificación, no tiempos publicados por las atracciones.
   [Santa María la Blanca](https://turismo.toledo.es/recursos/museos-y-monumentos/id606-sinagoga-de-santa-maria-la-blanca.html),
   [San Juan de los Reyes](https://turismo.toledo.es/recursos/museos-y-monumentos/id600-monasterio-de-san-juan-de-los-reyes.html)
   y [Mirador del Valle](https://turismo.toledo.es/hacer/naturaleza-en-toledo.html).
-- Barcelona: [Sagrada Família](https://sagradafamilia.org/en/) y [Park Güell](https://parkguell.barcelona/en), sitios oficiales.
+- Barcelona: [Plaça de Catalunya](https://www.barcelonaturisme.com/wv3/es/page/5069/placa-de-catalunya.html),
+  [Barri Gòtic](https://www.barcelonaturisme.com/wv3/ca/page/376/barri-gotic.html),
+  [Port Vell](https://www.barcelonaturisme.com/wv3/es/page/379/port-vell.html),
+  [Catedral de Barcelona](https://catedralbcn.org/visita-turistica/horaris-visita-turistica/),
+  [Mercat de la Boqueria](https://www.boqueria.barcelona/),
+  [Barcelona Sants](https://www.adif.es/w/71801-barcelona-sants),
+  [Sagrada Família](https://sagradafamilia.org/en/) y
+  [Park Güell](https://parkguell.barcelona/en), sitios oficiales o portales
+  institucionales. Los horarios de junio de 2027 siguen pendientes.
 
 ## Francia
 

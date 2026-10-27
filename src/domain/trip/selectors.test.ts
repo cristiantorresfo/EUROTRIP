@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { accommodations } from "../../data/eurotrip-2027/accommodations";
+import { accommodationAddresses } from "../../data/eurotrip-2027/accommodation-addresses";
 import {
   bookedTransportLegs,
   plannedTransportLegs,
@@ -25,6 +26,12 @@ describe("EuroTrip 2027 accommodations", () => {
   it("contains the six confirmed stays and 15 nights", () => {
     expect(accommodations).toHaveLength(6);
     expect(getTotalNights(accommodations)).toBe(15);
+  });
+
+  it("publishes the six explicitly authorized accommodation addresses", () => {
+    expect(new Set(accommodations.map(({ address }) => address))).toEqual(
+      new Set(Object.values(accommodationAddresses)),
+    );
   });
 
   it("keeps every declared night count consistent with its dates", () => {

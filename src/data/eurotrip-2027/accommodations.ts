@@ -1,10 +1,13 @@
 import type { Accommodation } from "@/domain/trip/types";
 
+import { accommodationAddresses } from "./accommodation-addresses";
+
 export const accommodations = [
   {
     id: "madrid-centro",
     city: "Madrid",
     publicArea: "Madrid centro, entorno Sol",
+    address: accommodationAddresses["madrid-centro"],
     checkInDate: "2027-05-30",
     checkOutDate: "2027-06-02",
     checkInFromLocal: "15:00",
@@ -17,6 +20,7 @@ export const accommodations = [
     id: "barcelona-hospitalet",
     city: "Barcelona",
     publicArea: "L'Hospitalet de Llobregat",
+    address: accommodationAddresses["barcelona-hospitalet"],
     checkInDate: "2027-06-02",
     checkOutDate: "2027-06-04",
     checkInFromLocal: "14:00",
@@ -29,6 +33,7 @@ export const accommodations = [
     id: "paris-centro",
     city: "París",
     publicArea: "París 2e, Bonne-Nouvelle / Réaumur-Sébastopol",
+    address: accommodationAddresses["paris-centro"],
     checkInDate: "2027-06-04",
     checkOutDate: "2027-06-07",
     checkInFromLocal: "15:00",
@@ -41,6 +46,7 @@ export const accommodations = [
     id: "bologna-centro",
     city: "Bolonia",
     publicArea: "Bolonia centro, entorno de Via Indipendenza",
+    address: accommodationAddresses["bologna-centro"],
     checkInDate: "2027-06-07",
     checkOutDate: "2027-06-10",
     checkInFromLocal: "15:00",
@@ -53,6 +59,7 @@ export const accommodations = [
     id: "roma-termini",
     city: "Roma",
     publicArea: "Roma, zona Termini / Monti",
+    address: accommodationAddresses["roma-termini"],
     checkInDate: "2027-06-10",
     checkOutDate: "2027-06-13",
     checkInFromLocal: "14:00",
@@ -65,6 +72,7 @@ export const accommodations = [
     id: "madrid-aeropuerto",
     city: "Madrid",
     publicArea: "Madrid 28042, zona noreste",
+    address: accommodationAddresses["madrid-aeropuerto"],
     checkInDate: "2027-06-13",
     checkOutDate: "2027-06-14",
     checkInFromLocal: "15:00",

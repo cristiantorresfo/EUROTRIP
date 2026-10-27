@@ -78,6 +78,27 @@ function transportLabel(leg: PlannedTransportLeg) {
   return `${origin} → ${destination}`;
 }
 
+function AccommodationLocation({
+  accommodation,
+}: {
+  readonly accommodation: Accommodation;
+}) {
+  return (
+    <div className="stay-card__location">
+      <address>{accommodation.address}</address>
+      <a
+        className="maps-link"
+        href={buildGoogleMapsSearchUrl(accommodation.address)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Abrir dirección en Google Maps
+        <ExternalLink aria-hidden="true" size={15} />
+      </a>
+    </div>
+  );
+}
+
 export function DayOverview({
   day,
   accommodation,
@@ -156,7 +177,7 @@ export function DayOverview({
           <BedDouble aria-hidden="true" size={19} />
           <div>
             <h2 id="stay-heading">Estancia</h2>
-            <p>Solo se muestra la zona pública del alojamiento.</p>
+            <p>Dirección exacta autorizada para navegación.</p>
           </div>
         </div>
 
@@ -169,6 +190,7 @@ export function DayOverview({
                 </span>
                 <h3>Salida de {checkOut.city}</h3>
                 <p>{checkOut.publicArea}</p>
+                <AccommodationLocation accommodation={checkOut} />
                 <dl>
                   <div>
                     <dt>Check-out</dt>
@@ -185,6 +207,7 @@ export function DayOverview({
                 </span>
                 <h3>Noche en {accommodation.city}</h3>
                 <p>{accommodation.publicArea}</p>
+                <AccommodationLocation accommodation={accommodation} />
                 <dl>
                   {checkIn?.id === accommodation.id ? (
                     <div>
@@ -209,6 +232,7 @@ export function DayOverview({
                 </span>
                 <h3>Salida de {checkOut.city}</h3>
                 <p>{checkOut.publicArea}</p>
+                <AccommodationLocation accommodation={checkOut} />
                 <dl>
                   <div>
                     <dt>Check-out</dt>

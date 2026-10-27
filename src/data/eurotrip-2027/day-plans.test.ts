@@ -62,15 +62,15 @@ describe("EuroTrip 2027 proposed day plans", () => {
     }
   });
 
-  it("limits verified coordinates to public Madrid route stops", () => {
+  it("limits verified coordinates to public route stops", () => {
     const geocodedPlaces = tripPlaces.filter(
       (place) => "geoCoordinates" in place,
     );
 
-    expect(geocodedPlaces).toHaveLength(34);
+    expect(geocodedPlaces).toHaveLength(47);
 
     for (const place of geocodedPlaces) {
-      expect(["Madrid", "Toledo"]).toContain(place.city);
+      expect(["Madrid", "Toledo", "Barcelona"]).toContain(place.city);
       expect(place.geoCoordinates.verificationStatus).toBe("verified");
       expect(place.geoCoordinates.sourceUrl).toMatch(/^https:\/\//);
       expect(["2026-10-16", "2026-10-27"]).toContain(

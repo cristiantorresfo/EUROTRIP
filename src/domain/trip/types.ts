@@ -29,13 +29,15 @@ export interface Accommodation {
   readonly id: string;
   readonly city: BaseCity;
   readonly publicArea: string;
+  /** Exact address explicitly authorized by the traveler for public display. */
+  readonly address: string;
   readonly checkInDate: LocalDate;
   readonly checkOutDate: LocalDate;
   readonly checkInFromLocal: LocalTime;
   readonly checkOutByLocal: LocalTime | null;
   readonly nights: number;
   readonly status: "confirmed";
-  /** Opaque lookup key only. It must never contain a private address. */
+  /** Stable lookup key; the exact public address lives in `address`. */
   readonly privateLocationRef: string;
 }
 

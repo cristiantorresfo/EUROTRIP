@@ -4,14 +4,20 @@ Representarlo al inicio mediante interfaces TypeScript y fixtures; NO obliga a i
 
 ## Entidades
 - **Trip:** id, name, startDate, endDate, currencyHome (`COP`), currencyTrip (`EUR`), travelerCount (=4).
-- **Accommodation:** id, city, `publicArea` (zona no sensible), checkInDate, checkOutDate, checkInFromLocal (`HH:mm`), checkOutByLocal nullable (sin dato de momento), nights, status (`confirmed`), privateLocationRef (identificador, nunca dirección en seed público).
+- **Accommodation:** id, city, `publicArea`, `address` exacta autorizada para
+  publicación, checkInDate, checkOutDate, checkInFromLocal (`HH:mm`),
+  checkOutByLocal nullable (sin dato de momento), nights, status (`confirmed`)
+  y privateLocationRef como identificador estable.
 - **CityStay:** id, city, arrivalDate, departureDate, accommodationId. Madrid tiene dos estancias/ids distintos.
 - **Place:** id, city, title, geoCoordinates opcional y solo tras validación, category, visitDurationMin, officialUrl opcional.
 - **DayPlan:** id, localDate `YYYY-MM-DD`, baseCity, suggestedDayTrip opcional, plannedActivities y status (`confirmed|planned|estimated|to_verify`).
 - **Activity:** id, dayId, placeId opcional, title, category (`visit|meal|rest|transfer|other`), startsAtLocal/endsAtLocal nullable, `suggestedTimeWindow` de planificación, expectedDurationMinutes, fixedReservation boolean, order, notes, status. La ventana sugerida no implica una reserva.
 - **DailyRoute:** recorrido de una jornada, asociado a `DayPlan`, con una o más opciones, opción predeterminada y regla para cambiar de intensidad durante la marcha.
 - **DailyRouteOption:** variante concreta (`relaxed`, `complete`, etc.) con intensidad, criterio de selección, duración total orientativa, paradas ordenadas, segmentos calculados, regreso sugerido y destino de regreso opcional.
-- **RouteStop:** posición ordenada dentro de `DailyRoute`, vinculada a un `Place` público o a un punto privado opaco, con `suggestedTimeWindow` opcional. Las coordenadas públicas deben estar validadas. `madrid-centro` es la única dirección de alojamiento autorizada actualmente como `Place` público para iniciar y cerrar el circuito.
+- **RouteStop:** posición ordenada dentro de `DailyRoute`, vinculada a un
+  `Place` público, con `suggestedTimeWindow` opcional. Las coordenadas deben
+  estar validadas; las seis direcciones de alojamiento están autorizadas para
+  publicación aunque todavía no todas tengan coordenadas verificadas.
 - **RouteSegment:** unión entre dos paradas consecutivas, con medio (`walk|metro|bus|train|taxi|other`), geometría verificable, distancia y duración nullable, proveedor y fecha de consulta. Un tramo pendiente no debe dibujarse como si estuviera calculado.
 - **TransportLeg:** id, originId, destinationId, mode (`walk|metro|bus|train|flight|other`), preferredDepartureWindow optional, actualDepartureAt/actualArrivalAt nullable, fare estimate, `bookingStatus` (`not_booked|booked`), actualAirportOrStation optional. **No convertir ventanas en reservas.**
 - **Reminder:** aviso vinculado a una actividad, reserva o traslado confirmado; incluye instante con zona horaria, anticipación y mecanismo (`calendar|notification`).
@@ -27,7 +33,9 @@ Accommodations: seis registros con ids:
 5. `roma-termini` 2027-06-10→2027-06-13, check-in 14:00, 3 noches.
 6. `madrid-aeropuerto` 2027-06-13→2027-06-14, check-in 15:00, 1 noche.
 
-**Jamás incluir en un archivo cliente, JSON público, historia de Git o seed de DB pública los contenidos de `docs/ACCOMMODATIONS_PRIVATE.md` sin una autorización explícita. La autorización vigente cubre únicamente dirección y coordenadas de `madrid-centro`.**
+**La autorización explícita vigente desde el 27/10/2026 cubre las direcciones
+exactas de los seis alojamientos. No cubre anfitriones, códigos de reserva,
+teléfonos, documentos ni los demás contenidos privados de las capturas.**
 
 ## Reglas del dominio
 1. Fechas de estancias son fechas locales, el check-out no es una noche adicional.
@@ -38,7 +46,9 @@ Accommodations: seis registros con ids:
 6. Guardar datetimes con zona horaria cuando se conozcan servicios; no inferir huso desde navegador para planificación en país diferente.
 7. Las distancias en línea recta no reemplazan rutas reales; no fingir precisión.
 8. Preservar reservas fijas y límites de apertura antes de reorganizar actividades.
-9. Las coordenadas y direcciones de alojamientos requieren confirmación y controles de acceso si se usan en producción, salvo una autorización explícita y documentada del viajero. La única excepción actual es `madrid-centro`, geocodificado con Nominatim/OpenStreetMap el 27/10/2026 para iniciar y cerrar el recorrido.
+9. Las seis direcciones de alojamiento están autorizadas para publicación. Las
+   coordenadas solo se añaden después de validarlas con un proveedor; por ahora
+   `madrid-centro` es el único alojamiento geocodificado.
 10. El archivo privado no se lee en tiempo de compilación para embeber su contenido en el frontend.
 11. COP y EUR se presentan por separado hasta contar con una tasa y fecha de referencia explícitas; nunca se suman automáticamente.
 12. La aplicación no compara ni compra transportes: incorpora el servicio real solamente después de que el viajero confirme la compra.

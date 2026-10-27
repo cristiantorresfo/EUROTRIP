@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { dailyRoutes } from "./daily-routes";
 import { tripDayPlans } from "./day-plans";
 import { tripPlaces } from "./places";
+import { accommodationAddresses } from "./accommodation-addresses";
 
 describe("EuroTrip 2027 daily routes", () => {
   const toMinutes = (value: string) => {
@@ -10,12 +11,13 @@ describe("EuroTrip 2027 daily routes", () => {
     return (hours ?? 0) * 60 + (minutes ?? 0);
   };
 
-  it("stores adaptive routes for both Madrid days", () => {
-    expect(dailyRoutes).toHaveLength(3);
+  it("stores the first four adaptive daily routes", () => {
+    expect(dailyRoutes).toHaveLength(4);
     expect(dailyRoutes.map(({ localDate }) => localDate)).toEqual([
       "2027-05-30",
       "2027-05-31",
       "2027-06-01",
+      "2027-06-02",
     ]);
 
     const arrivalRoute = dailyRoutes[0];
@@ -101,14 +103,46 @@ describe("EuroTrip 2027 daily routes", () => {
       { distanceMeters: 2059, durationMinutes: 27 },
       { distanceMeters: 2743, durationMinutes: 36 },
     ]);
+
+    const dayFourRoute = dailyRoutes[3];
+
+    expect(dayFourRoute).toMatchObject({
+      dayPlanId: "day-2027-06-02",
+      defaultOptionId: "complete",
+      switchDuringRoute: true,
+    });
+    expect(dayFourRoute?.options.map(({ id }) => id)).toEqual([
+      "relaxed",
+      "complete",
+    ]);
+    expect(dayFourRoute?.options.map(({ stops }) => stops.length)).toEqual([
+      17, 19,
+    ]);
+    expect(
+      dayFourRoute?.options.map(({ segments }) => {
+        const walkingSegment = segments.find(
+          (segment) => segment.routingStatus === "verified",
+        );
+
+        return {
+          distanceMeters: walkingSegment?.distanceMeters,
+          durationMinutes: walkingSegment?.durationMinutes,
+        };
+      }),
+    ).toEqual([
+      { distanceMeters: 3335, durationMinutes: 41 },
+      { distanceMeters: 5125, durationMinutes: 63 },
+    ]);
   });
 
-  it("starts and finishes every mapped route at the Airbnb", () => {
+  it("starts at the current lodging and finishes at the lodging for that night", () => {
     for (const route of dailyRoutes) {
       for (const option of route.options) {
         expect(option.stops[0]?.placeId).toBe("madrid-airbnb-nunez-de-arce");
         expect(option.stops.at(-1)?.placeId).toBe(
-          "madrid-airbnb-nunez-de-arce",
+          route.localDate === "2027-06-02"
+            ? "barcelona-hospitalet-accommodation-area"
+            : "madrid-airbnb-nunez-de-arce",
         );
       }
     }
@@ -191,7 +225,7 @@ describe("EuroTrip 2027 daily routes", () => {
     }
   });
 
-  it("exposes only the explicitly approved accommodation return destination", () => {
+  it("exposes every explicitly approved route return destination", () => {
     const serializedRoutes = JSON.stringify(dailyRoutes).toLocaleLowerCase();
     const returnDestinations = dailyRoutes.flatMap(({ options }) =>
       options.flatMap((option) =>
@@ -202,7 +236,10 @@ describe("EuroTrip 2027 daily routes", () => {
     );
 
     expect(new Set(returnDestinations)).toEqual(
-      new Set(["Calle de Núñez de Arce, 14, 28012 Madrid, España"]),
+      new Set([
+        accommodationAddresses["madrid-centro"],
+        accommodationAddresses["barcelona-hospitalet"],
+      ]),
     );
     expect(serializedRoutes).not.toContain("private-accommodation:");
   });

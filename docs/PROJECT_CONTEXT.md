@@ -17,7 +17,11 @@ Aplicación web mobile-first y PWA para acompañar a 4 viajeros durante Europa 2
 - **Fecha límite general para pagar alojamientos mencionada:** 25/04/2027; confirmar plazos por reserva.
 
 ## 3. Las SEIS reservas Airbnb (confirmadas según capturas, ubicaciones por zona)
-**IMPORTANTE:** Las direcciones completas y nombres de anfitriones están en `docs/ACCOMMODATIONS_PRIVATE.md` (local, ignorado por Git). Como excepción explícita autorizada por el viajero el 27/10/2026, la dirección de `madrid-centro` puede mostrarse en el cliente para navegar de regreso; las otras cinco direcciones y todos los anfitriones siguen siendo privados.
+**IMPORTANTE:** El viajero autorizó explícitamente el 27/10/2026 que las
+direcciones completas de los seis alojamientos se muestren en el cliente y
+formen parte del build público. Los nombres de anfitriones, códigos de reserva
+y demás datos de las capturas continúan privados en
+`docs/ACCOMMODATIONS_PRIVATE.md` (local, ignorado por Git).
 
 | ID | Zona | Fechas | Noches | Check-in desde | Check-out |
 |---|---|---|---:|---|---|
@@ -72,7 +76,11 @@ confirmados dentro del día correspondiente y sus recordatorios.
 ## 8. Decisiones técnicas
 - Next.js App Router + React + TypeScript + Tailwind, primero MVP con datos no sensibles en JSON/TS.
 - Sin API de IA ni base de datos en la primera fase. Coste inicial objetivo $0 COP sujeto a límites de proveedores gratuitos.
-- Despliegue Vercel sin exponer alojamientos/datos privados no autorizados. La dirección de `madrid-centro` es la única excepción pública vigente. Los recorridos diarios son la siguiente prioridad: MapLibre y un proveedor con licencia adecuada para visualización, geometrías verificables para la ruta y Google Maps como navegación externa.
+- Despliegue Vercel con las seis direcciones de alojamiento publicadas por
+  autorización explícita del viajero. Anfitriones, códigos y documentos siguen
+  excluidos. Los recorridos diarios son la siguiente prioridad: MapLibre y un
+  proveedor con licencia adecuada para visualización, geometrías verificables
+  para la ruta y Google Maps como navegación externa.
 - ChatGPT Plus/Codex usados para planificar/programar, no API de IA en producción.
 - El día de llegada a Madrid ofrece una ruta relajada y una completa, sin horas
   rígidas y con posibilidad de cambiar a la corta durante el recorrido. Ambas
@@ -87,12 +95,19 @@ confirmados dentro del día correspondiente y sus recordatorios.
 - Todas las actividades del borrador muestran una ventana local orientativa.
   Estas horas organizan el ritmo del viaje, pero no sustituyen entradas,
   horarios de apertura ni transportes confirmados. En los recorridos detallados
-  de Madrid y Toledo, cada parada muestra además su propia franja aproximada.
+  de Madrid, Toledo y la llegada a Barcelona, cada parada muestra además su
+  propia franja aproximada.
 - El 1 de junio queda dedicado a Toledo con variantes relajada y completa. La
   caminata atraviesa el casco histórico de este a oeste desde Zocodover hasta
   el Puente de San Martín; se proponen taxi estación→Zocodover,
   San Martín→Mirador del Valle y Mirador→estación. El circuito completo parte
   y termina en `madrid-centro`. Trenes, taxis y entradas siguen sin reservar.
+- El 2 de junio es un día de traslado Madrid→Barcelona. Tras el check-in desde
+  las 14:00 y una pausa en L’Hospitalet, ambas variantes conectan en transporte
+  público con Plaça de Catalunya y recorren a pie La Rambla, Barrio Gótico,
+  Plaça Reial y Port Vell. Barceloneta es la extensión opcional del plan
+  completo. El regreso final al alojamiento es en transporte público o taxi y
+  la dirección exacta se muestra para navegación.
 
 ## 9. Estado del código
 Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.

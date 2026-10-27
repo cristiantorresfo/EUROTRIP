@@ -7,12 +7,12 @@ Versión actualizada: 14/10/2026. Contiene todas las reservas Airbnb (6) y una p
 2. Si aún NO tienes repositorio, esta carpeta puede ser el inicio del proyecto.
 3. Si YA tienes repositorio, copia `AGENTS.md` y `docs/` respetando cambios previos; **combina** las reglas de `.gitignore` en el tuyo (no reemplaces a ciegas).
 4. **Antes de `git add` / publicar**, comprueba `git status --ignored` y que `docs/ACCOMMODATIONS_PRIVATE.md` permanece excluido. Si estuvo trackeado, revisar historial; ignorarlo luego no borra la exposición anterior.
-5. Abre la extensión de Codex y pide leer `AGENTS.md`, `docs/PROJECT_CONTEXT.md`, `docs/ROADMAP.md`, `docs/DATA_MODEL.md` y `docs/TRANSPORT_PLAN.md`. Puede consultar el archivo privado local sólo para tareas de planificación/logística o una futura app con autenticación real.
-6. Empieza con prototipo público a base de zonas no sensibles. No subas nombres de anfitriones/direcciones/códigos de reserva a web sin protección.
+5. Abre la extensión de Codex y pide leer `AGENTS.md`, `docs/PROJECT_CONTEXT.md`, `docs/ROADMAP.md`, `docs/DATA_MODEL.md` y `docs/TRANSPORT_PLAN.md`. Puede consultar el archivo privado local cuando una tarea de planificación lo requiera.
+6. Las seis direcciones están autorizadas para publicación. No subas nombres de anfitriones, códigos de reserva, teléfonos ni documentos sin protección.
 
 ## Documentos
 - `AGENTS.md`: reglas e instrucciones de trabajo para Codex.
-- `docs/PROJECT_CONTEXT.md`: ruta del viaje, seis estancias, fechas y preferencias sin dirección completa.
+- `docs/PROJECT_CONTEXT.md`: ruta del viaje, seis estancias, fechas y decisiones de publicación.
 - `docs/TRANSPORT_PLAN.md`: ventanas recomendadas; no son horarios confirmados.
 - `docs/DATA_MODEL.md`: conceptos e identificadores sin datos sensibles.
 - `docs/ROADMAP.md`: fases, tareas y prioridades.
@@ -20,7 +20,7 @@ Versión actualizada: 14/10/2026. Contiene todas las reservas Airbnb (6) y una p
 - `.gitignore`: incluye el archivo privado y secretos comunes.
 
 ## Primer prompt para Codex
-> Lee `AGENTS.md` y los archivos de `docs/` excepto las direcciones privadas, salvo que necesites validar reservas. Resume los datos confirmados y las ventanas tentativas. Propón la arquitectura, el modelo TypeScript y las primeras pantallas de EuroTrip 2027 con Next.js. Soy frontend React/Next con poca experiencia de backend; guía las decisiones y no escribas código hasta que revise el plan. No uses APIs pagas.
+> Lee `AGENTS.md` y los archivos de `docs/`; consulta el archivo privado solo si la tarea lo requiere. Las seis direcciones están autorizadas para publicación, pero anfitriones, códigos y documentos siguen siendo privados. Resume los datos confirmados y las ventanas tentativas. Propón la arquitectura, el modelo TypeScript y las primeras pantallas de EuroTrip 2027 con Next.js. Soy frontend React/Next con poca experiencia de backend; guía las decisiones y no escribas código hasta que revise el plan. No uses APIs pagas.
 
 ## Desarrollo local
 

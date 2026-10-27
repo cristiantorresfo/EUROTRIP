@@ -16,7 +16,8 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 ## Fase 0 — Base segura y desplegable (completada)
 
 - [x] Consolidar 6 alojamientos, 15 noches, 4 viajeros y vuelos internacionales.
-- [x] Mantener direcciones y anfitriones no autorizados fuera de Git y del navegador público.
+- [x] Publicar las seis direcciones por autorización explícita y mantener fuera
+  de Git anfitriones, códigos y documentos no autorizados.
 - [x] Crear proyecto Next.js, modelos tipados, fixtures y pruebas de invariantes.
 - [x] Implementar diseño mobile-first, navegación y paleta visual clara.
 - [x] Publicar demo en Vercel sin información privada no autorizada.
@@ -60,6 +61,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [x] Extender el patrón al 1 de junio en Toledo con variantes relajada y
   completa, caminata este–oeste calculada y tramos estratégicos pendientes en
   tren/taxi desde y hasta el alojamiento de Madrid.
+- [x] Modelar el traslado del 2 de junio a Barcelona con check-in, descanso,
+  variantes por el centro histórico, extensión opcional a Barceloneta y
+  regreso estratégico a la dirección publicada en L’Hospitalet.
 - [ ] Validar el patrón en iPhone y extenderlo progresivamente a cada ciudad y
   excursión: Barcelona, París, Bolonia, Venecia, Florencia y Roma.
 
@@ -80,8 +84,8 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [ ] Sustituir cada ventana de transporte por el servicio real después de que el
   viajero lo compre fuera de la aplicación.
 - [ ] Registrar horarios de check-out, consignas, terminales, equipaje y entradas.
-- [ ] Implementar autenticación y autorización antes de servir las demás direcciones,
-  documentos o códigos de reserva al navegador.
+- [ ] Implementar autenticación y autorización antes de servir anfitriones,
+  documentos o códigos de reserva al navegador; las direcciones ya son públicas.
 - [ ] Evaluar Supabase/PostgreSQL y edición compartida solo si los cuatro viajeros
   necesitan sincronizar cambios.
 - [ ] Añadir registro editable de gastos únicamente si continúa siendo útil.
@@ -96,9 +100,8 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 
 ## Siguiente incremento recomendado
 
-Validar en iPhone la selección y los mapas adaptables de los tres primeros
-días. Después, comprar o definir las franjas del Prado y los trenes de Toledo;
-la próxima jornada será el traslado a Barcelona. Las demás direcciones
-exactas de alojamientos quedan fuera hasta contar con autenticación.
-`madrid-centro` es una excepción pública autorizada por el viajero para la
-navegación de regreso.
+Validar en iPhone la selección y los mapas adaptables de los cuatro primeros
+días. Después, comprar o definir las franjas del Prado, Toledo y el tren a
+Barcelona; la próxima jornada será el día completo de arquitectura de Gaudí.
+Las seis direcciones exactas están autorizadas para navegación pública; los
+demás datos privados continúan fuera del cliente.

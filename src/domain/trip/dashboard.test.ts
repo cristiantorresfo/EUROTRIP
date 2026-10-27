@@ -54,8 +54,8 @@ describe("dashboard summary", () => {
     expect(getItineraryProgress(tripCalendar, tripDayPlans)).toEqual({
       coveredDayCount: 15,
       totalDayCount: 17,
-      activityCount: 54,
-      recoveryBlockCount: 17,
+      activityCount: 60,
+      recoveryBlockCount: 18,
       reservedActivityCount: 0,
       coveragePercentage: 88,
     });

@@ -76,12 +76,14 @@ export const plannedTransportLegs = [
     destinationId: "barcelona",
     mode: "train",
     fareEstimate: null,
-    planningStatus: "planned",
+    planningStatus: "to_verify",
     bookingStatus: "not_booked",
-    preferredDepartureWindow: { start: "09:00", end: "10:30", source: "planning" },
+    preferredDepartureWindow: { start: "09:00", end: "09:30", source: "planning" },
     actualDepartureAt: null,
     actualArrivalAt: null,
     actualAirportOrStation: null,
+    notes:
+      "Buscar llegada aproximada entre 11:45 y 12:30 para alcanzar el check-in desde las 14:00. Operador, servicio, estación y horas reales siguen pendientes.",
   },
   {
     id: "barcelona-paris",

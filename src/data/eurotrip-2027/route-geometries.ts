@@ -54,6 +54,38 @@ function mergeValhallaShapes(
 }
 
 /**
+ * Barcelona walking sections calculated by Valhalla from OpenStreetMap data
+ * on 2026-10-27. Transfers from/to the accommodation are excluded because
+ * its entrance coordinates have not yet been verified.
+ */
+export const barcelonaDayFourRelaxedGeometry = mergeValhallaShapes([
+  "_x_}mAcnlcCbGwElDqC`Ay@`FkEjDyCbA{@bHgGvKqF\\QJEzBkA~DuBvk@kZvA}@vq@y^|@g@ZQtj@eYrIgG",
+  "k}x|mAi`qcCxIkG~u@qo@AdA|@~ChDoC|@s@`@]~@lCJlAXnBDXNZtLb]cBpAKFgD|BSN_GoPoOfNwPhNYPbGbQxAvD`BvE",
+  "gfw|mAm{ocCaBwEyAwDcGcQXQvPiNnOgN~FnPROfD}BJGbBqAuLc]O[EYYoBKmA_AmCa@\\}@r@iDnC}@_D@eAB{A@u@AcDYaQOoG_Cm@sBy@aOuJQKiHsEKhF",
+  "u~w|mAcltcCJiF_AoFh@qAtE{QxLsKhAqFhGyGrOqGcAsFcD_SkD}MzB}Cd@wB~DcKKMoReWwIgMwCyDiK{M]c@aJ}L",
+  "olx|mA}_{cCmH_KaH|Lc@z@aJvPiHpL",
+  "oty|mAy|ycCuA`CkG~KyNaR??",
+  "koz|mAy~ycCbEcH?}M{MoPiDdF]c@mBmC}B{CoBmC",
+  "gi{|mAap{cCnBlC|BzClBlC\\b@hDeFzMnPhFuGhFyFfC`DhGjJfH}JV]dIcL|B~CnS|X\\b@hKzMvCxDvIfMnRdWJLlMlPxIpLhHbKdPpT`KzMbAcAx@iAbIsMnAeBpPe\\xArD",
+  "als|mAqswcClG|OtLnQnKuJtBmBvQsMhAw@lGeJtBwCV[J`@j@|A\\dAl@hB|CsDnJcFlp@}]rh@{\\t\\kX`\\}UjHiE^UrBkBvAsA\\]p@u@}AcAZo@Zo@Zk@ZTLHPFRDNBV@J?TALCTGJEFEVQJINQHKP]JYBGH_@BMFg@?g@",
+  "g|j|mA{m|cC?SCm@Ii@CGOg@S_@IMOSIGGEZm@Vk@P[`@aAjAyCdAkCX_AwAkAkCw@_RiDgFaBvDoHXm@^kAd@wAtN}a@u@o@}EsD",
+]);
+
+export const barcelonaDayFourCompleteGeometry = mergeValhallaShapes([
+  "_x_}mAcnlcCbGwElDqC`Ay@`FkEjDyCbA{@bHgGvKqF\\QJEzBkA~DuBvk@kZvA}@vq@y^|@g@ZQtj@eYrIgG",
+  "k}x|mAi`qcCxIkG~u@qo@AdA|@~ChDoC|@s@`@]~@lCJlAXnBDXNZtLb]cBpAKFgD|BSN_GoPoOfNwPhNYPbGbQxAvD`BvE",
+  "gfw|mAm{ocCaBwEyAwDcGcQXQvPiNnOgN~FnPROfD}BJGbBqAuLc]O[EYYoBKmA_AmCa@\\}@r@iDnC}@_D@eAB{A@u@AcDYaQOoG_Cm@sBy@aOuJQKiHsEKhF",
+  "u~w|mAcltcCJiF_AoFh@qAtE{QxLsKhAqFhGyGrOqGcAsFcD_SkD}MzB}Cd@wB~DcKKMoReWwIgMwCyDiK{M]c@aJ}L",
+  "olx|mA}_{cCmH_KaH|Lc@z@aJvPiHpL",
+  "oty|mAy|ycCuA`CkG~KyNaR??",
+  "koz|mAy~ycCbEcH?}M{MoPiDdF]c@mBmC}B{CoBmC",
+  "gi{|mAap{cCnBlC|BzClBlC\\b@hDeFzMnPhFuGhFyFfC`DhGjJfH}JV]dIcL|B~CnS|X\\b@hKzMvCxDvIfMnRdWJLlMlPxIpLhHbKdPpT`KzMbAcAx@iAbIsMnAeBpPe\\xArD",
+  "als|mAqswcClG|OtLnQnKuJtBmBvQsMhAw@lGeJtBwCV[J`@j@|A\\dAl@hB|CsDnJcFlp@}]rh@{\\t\\kX`\\}UjHiE^UrBkBvAsA\\]p@u@}AcAZo@Zo@Zk@ZTLHPFRDNBV@J?TALCTGJEFEVQJINQHKP]JYBGH_@BMFg@?g@",
+  "g|j|mA{m|cC?SCm@Ii@CGOg@S_@IMOSIGGEZm@Vk@P[`@aAjAyCdAkCX_AwAkAkCw@_RiDgFaBvDoHXm@^kAd@wAtN}a@u@o@}EsD",
+  "ghk|mAyl_dCga@wZeKfA{YeMgb@gXuz@{j@mg@a^w@aAaFgTyAkAkZiW~BuKsTmGuFi@cG_IiAkBm@]oHcEsBuAfBaFYqBo@R_@JmAMkBs@gA_AiAgBy@oBeCuFkAkGsA{GkBaIa@eBk@eESqAQeAmA}E{AwFcC{HqE{M{DiLOg@iAwDWy@i@{Be@sBa@yBvEqL`KmXlKaYjE{K^{@`AqCr@_BZq@rB}ChCyCbCuB~ByA`CmAxAuAfGaBkA_IgCcRIq@Ko@_AeGIi@Ga@{@gGGe@Ig@y@mGKs@E_@eAoI_AwGIm@Ge@w@sFM{@EWE[eAuHiAoIoAcJ}@mGCUE]jA_@~b@iMfFyA|Bs@Im@y@wFIi@Ge@y@aGG]Io@}@oGKq@Gc@_AwGGe@Ii@u@mFKs@Ik@tFmBjY_IzLkDXg@HUd@Qw@yFUeBu@_GS}AXESyAe@iD_@{C{@{G{AyLaDkW|@]y@_ELwAa@UPwAJq@TiAd@qBj@mC`@}At@qCuLqGj@gClCxAPCRJbT`L",
+]);
+
+/**
  * Pedestrian geometries calculated by Valhalla from OpenStreetMap data on
  * 2026-10-27. Both include the authorized accommodation as start/end.
  */
