@@ -989,6 +989,271 @@ a {
   font-weight: 500;
 }
 
+.route-preview__summary {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.route-choice {
+  position: relative;
+  overflow: hidden;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 1.2rem;
+  background:
+    radial-gradient(circle at 100% 0%, rgb(255 56 92 / 38%), transparent 12rem),
+    linear-gradient(145deg, #251d20, #3a242b);
+  box-shadow: 0 0.9rem 2rem rgb(34 34 34 / 16%);
+  color: white;
+}
+
+.route-choice::after {
+  position: absolute;
+  top: -2.5rem;
+  right: -2rem;
+  width: 7rem;
+  height: 7rem;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 999px;
+  content: "";
+  pointer-events: none;
+}
+
+.route-choice__prompt > span {
+  display: inline-flex;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid rgb(255 255 255 / 16%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 9%);
+  color: #ffd7df;
+  font-size: 0.57rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.route-choice__prompt h4 {
+  margin: 0.6rem 0 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.route-choice__prompt p {
+  margin: 0.25rem 0 0;
+  color: rgb(255 255 255 / 68%);
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.route-option-picker {
+  display: grid;
+  margin-top: 0.75rem;
+  gap: 0.6rem;
+}
+
+.route-option-card {
+  --option-accent: var(--accent);
+  --option-soft: var(--featured-surface);
+
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+  min-height: 7.4rem;
+  padding: 0.9rem;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: 1rem;
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.7rem;
+  background: rgb(255 255 255 / 96%);
+  box-shadow: 0 0.45rem 1.2rem rgb(0 0 0 / 16%);
+  color: var(--foreground);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.route-option-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0.28rem;
+  background: var(--option-accent);
+  content: "";
+  opacity: 0.42;
+  transition: opacity 160ms ease;
+}
+
+.route-option-card[data-intensity="low"] {
+  --option-accent: #087f6b;
+  --option-soft: #e9f7f3;
+}
+
+.route-option-card[data-intensity="high"] {
+  --option-accent: var(--accent);
+  --option-soft: var(--featured-surface);
+}
+
+.route-option-card[data-selected="true"] {
+  border-color: var(--option-accent);
+  background: linear-gradient(145deg, #fff 30%, var(--option-soft));
+  box-shadow:
+    inset 0 0 0 1px var(--option-accent),
+    0 0.65rem 1.35rem rgb(0 0 0 / 18%);
+  transform: translateY(-1px);
+}
+
+.route-option-card[data-selected="true"]::before {
+  opacity: 1;
+}
+
+.route-option-card__icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.9rem;
+  place-items: center;
+  background: var(--option-soft);
+  color: var(--option-accent);
+}
+
+.route-option-card[data-selected="true"] .route-option-card__icon {
+  background: var(--option-accent);
+  color: white;
+}
+
+.route-option-card__content,
+.route-option-card__eyebrow,
+.route-option-card__name {
+  display: block;
+}
+
+.route-option-card__eyebrow {
+  color: var(--option-accent);
+  font-size: 0.54rem;
+  font-weight: 900;
+  letter-spacing: 0.045em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.route-option-card__content > strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.92rem;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.route-option-card__name {
+  margin-top: 0.12rem;
+  color: var(--muted);
+  font-size: 0.63rem;
+}
+
+.route-option-card__meta {
+  display: flex;
+  margin-top: 0.65rem;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.route-option-card__meta span {
+  padding: 0.25rem 0.4rem;
+  border-radius: 999px;
+  background: var(--option-soft);
+  color: var(--muted);
+  font-size: 0.56rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.route-option-card__state {
+  display: inline-flex;
+  min-height: 1.65rem;
+  padding: 0.3rem 0.48rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  background: white;
+  color: var(--muted);
+  font-size: 0.54rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.route-option-card[data-selected="true"] .route-option-card__state {
+  border-color: var(--option-accent);
+  background: var(--option-accent);
+  color: white;
+}
+
+.route-option-context {
+  display: grid;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.8rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.55rem;
+  border: 1px solid rgb(230 30 77 / 16%);
+  background: linear-gradient(135deg, #fff, var(--featured-surface));
+  color: var(--foreground);
+}
+
+.route-option-context > svg {
+  margin-top: 0.05rem;
+  color: var(--accent);
+}
+
+.route-option-context span,
+.route-option-context strong {
+  display: block;
+}
+
+.route-option-context span {
+  color: var(--accent);
+  font-size: 0.54rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.route-option-context strong {
+  margin-top: 0.1rem;
+  font-size: 0.76rem;
+}
+
+.route-option-context p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.65rem;
+  line-height: 1.45;
+}
+
+@media (hover: hover) {
+  .route-option-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+}
+
+@media (min-width: 36rem) {
+  .route-option-picker {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .route-preview__facts {
   display: grid;
   margin: 0.9rem 0 0;
@@ -1043,6 +1308,13 @@ a {
   color: white;
   font-size: 0.72rem;
   font-weight: 900;
+}
+
+.route-map__marker--roundtrip {
+  width: auto;
+  min-width: 2.65rem;
+  padding-inline: 0.35rem;
+  background: var(--success);
 }
 
 .route-map__fallback {
@@ -1106,6 +1378,22 @@ a {
   font-size: 0.82rem;
 }
 
+.route-stop-list__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.route-stop-list__title small {
+  padding: 0.2rem 0.4rem;
+  border-radius: 999px;
+  background: var(--warning-background);
+  color: var(--warning-foreground);
+  font-size: 0.55rem;
+  font-weight: 850;
+}
+
 .route-stop-list p,
 .route-stop-list a,
 .route-preview__note {
@@ -1135,10 +1423,75 @@ a {
 }
 
 .route-preview__note {
-  margin: 0;
+  margin: 0.55rem 0 0;
   padding: 0.7rem;
   border-radius: 0.75rem;
   background: rgb(255 255 255 / 72%);
+}
+
+.route-preview__return {
+  margin-top: 0.2rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.route-preview__return strong {
+  font-size: 0.7rem;
+}
+
+.route-preview__return p,
+.route-preview__return small {
+  display: block;
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.64rem;
+  line-height: 1.45;
+}
+
+.route-preview__return address {
+  margin-top: 0.55rem;
+  padding: 0.6rem;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 0.55rem 0.55rem 0;
+  background: var(--featured-surface);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.route-preview__return a {
+  display: inline-flex;
+  min-height: 2.35rem;
+  margin-top: 0.65rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.65rem;
+  align-items: center;
+  gap: 0.35rem;
+  background: var(--foreground);
+  color: white;
+  font-size: 0.66rem;
+  font-weight: 850;
+}
+
+.route-preview__switch {
+  display: flex;
+  width: 100%;
+  min-height: 2.75rem;
+  margin-top: 0.7rem;
+  padding: 0.7rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.8rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--surface);
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 850;
 }
 
 .route-preview__source {
@@ -1174,8 +1527,11 @@ a {
 }
 
 .route-stop-list a:focus-visible,
+.route-preview__return a:focus-visible,
 .route-preview__source a:focus-visible,
-.route-preview__action:focus-visible {
+.route-preview__action:focus-visible,
+.route-preview__switch:focus-visible,
+.route-option-picker button:focus-visible {
   outline: 3px solid var(--focus-ring);
   outline-offset: 2px;
 }

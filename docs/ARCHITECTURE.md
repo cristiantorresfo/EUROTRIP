@@ -1,6 +1,6 @@
 # Arquitectura inicial — EuroTrip 2027
 
-Actualizado: **16 de octubre de 2026**.
+Actualizado: **27 de octubre de 2026**.
 
 ## Norte del producto
 
@@ -49,14 +49,18 @@ Los lugares públicos y los planes diarios viven en fixtures separados. Las
 actividades se ordenan sin horas de inicio o fin y conservan `fixedReservation`
 en falso hasta que exista una reserva real. `DayOverview` consume el plan por
 fecha tanto en el detalle del itinerario como en la vista «Hoy»; los enlaces de
-Maps se construyen desde nombres de lugares públicos, nunca desde alojamientos.
+Maps se construyen desde lugares verificados. `madrid-centro` es la única
+ubicación de alojamiento autorizada como origen y destino público.
 
-`daily-routes.ts` inicia el patrón de recorridos con el 31 de mayo en Madrid.
-Sus dos paradas apuntan a lugares públicos con coordenadas y fuente de
-verificación. El segmento peatonal conserva una geometría GeoJSON calculada con
-Valhalla sobre datos de OpenStreetMap el 16/10/2026, además de distancia y
-duración estimadas. No se consulta el servidor público de rutas desde la app:
-el resultado queda versionado y debe revisarse cerca del viaje.
+`daily-routes.ts` conserva el piloto del 31 de mayo y añade el día de llegada
+del 30 de mayo como recorrido adaptable. `DailyRouteOption` contiene la ruta
+relajada y la completa; la primera es la opción predeterminada y la interfaz
+permite acortar el plan durante la marcha. Las paradas apuntan exclusivamente a
+lugares con coordenadas y fuente de verificación; incluyen la excepción pública
+de `madrid-centro`. Las geometrías GeoJSON se calcularon con Valhalla sobre
+datos de OpenStreetMap, salen y regresan al alojamiento y quedan
+versionadas con su fecha de consulta; la aplicación no llama al servidor
+público de rutas en tiempo de ejecución y debe revisarlas cerca del viaje.
 
 `DailyRouteMap` usa MapLibre GL JS y el estilo Positron de OpenFreeMap, sin API
 key. MapLibre mantiene la atribución visible del proveedor y de OpenStreetMap.
@@ -64,7 +68,8 @@ Las teselas son externas y necesitan conexión; el itinerario, las paradas, la
 geometría guardada y el enlace a Google Maps conservan su presentación de
 respaldo cuando el mapa base no carga.
 
-Los fixtures contienen exclusivamente zonas públicas y datos de planificación.
+Los fixtures contienen zonas públicas, datos de planificación y la única
+ubicación de alojamiento autorizada explícitamente (`madrid-centro`).
 Las reglas de fechas y alojamientos son funciones puras, independientes de
 React y de cualquier futura fuente de persistencia.
 
@@ -90,8 +95,8 @@ llevarlo a TypeScript se mantendrán estas reglas:
 - Estados discriminados para distinguir confirmado, planeado y por verificar.
 - Ventanas de transporte separadas de salidas y llegadas efectivamente
   reservadas.
-- Referencias privadas opacas; nunca direcciones en fixtures enviados al
-  navegador.
+- Referencias privadas opacas por defecto. Solo una dirección autorizada
+  explícitamente puede aparecer en un fixture enviado al navegador.
 - Reglas de dominio como funciones puras, probables candidatas a pruebas
   unitarias.
 
@@ -106,7 +111,8 @@ llevarlo a TypeScript se mantendrán estas reglas:
 Los mapas y recorridos son el siguiente incremento activo. Edición compartida,
 persistencia y documentos privados se incorporarán únicamente si son
 necesarios. Las direcciones requieren autenticación y autorización reales antes
-de servirse al navegador.
+de servirse al navegador, salvo la excepción explícita de `madrid-centro`
+autorizada para navegación de regreso.
 
 ## Información pendiente que afecta el producto
 
@@ -141,7 +147,9 @@ de servirse al navegador.
   navegación anterior/siguiente, traslados propuestos y contexto público de
   check-in/check-out. Las 15 jornadas activas incluyen un borrador ordenado de
   visitas, comidas y descansos sin horas ni reservas ficticias. El 31 de mayo
-  incluye además el primer recorrido piloto con dos puntos públicos verificados.
+  incluye además recorridos públicos calculados para el 30 y 31 de mayo. El día
+  de llegada permite alternar entre una ruta relajada y una completa sin horas
+  rígidas ni persistencia remota.
 - `/hoy`: selecciona la fecha civil relevante para el viaje y muestra una
   cuenta regresiva, la jornada activa o el estado de viaje finalizado. Se
   renderiza dinámicamente para no congelar la fecha en la compilación.
@@ -177,19 +185,21 @@ ni reutilización de logotipos o elementos distintivos de Airbnb.
 
 `src/app/manifest.ts` define el nombre, colores, accesos directos e iconos de la
 aplicación instalable. El service worker se registra únicamente en producción:
-las navegaciones usan estrategia *network first* para priorizar datos actuales
-y recurren a la última copia pública disponible o a `/offline` cuando falla la
-red. Los recursos versionados de Next.js y los iconos usan *cache first*.
+las navegaciones y los recursos versionados de Next.js usan estrategia *network
+first* para priorizar datos actuales y recurren a la última copia disponible o
+a `/offline` cuando falla la red. Los iconos usan *cache first*.
 
 La precarga se limita a Itinerario, Traslados, Presupuesto y la pantalla
-offline. No se interceptan APIs ni dominios externos, y el caché no contiene
-direcciones, documentos o datos privados. Los enlaces de Google Maps requieren
-conexión. El encabezado muestra «Datos públicos» porque esta fase todavía no
-tiene autenticación; llamarla privada sería una garantía falsa.
+offline. No se interceptan APIs ni dominios externos. El caché puede contener la
+dirección de `madrid-centro`, publicada por autorización explícita; no contiene
+las demás direcciones, documentos o datos privados. Los enlaces de Google Maps
+requieren conexión. El encabezado muestra «Datos públicos» porque esta fase
+todavía no tiene autenticación; llamarla privada sería una garantía falsa.
 
 La instalación, actualización y navegación offline fueron validadas por el
 usuario en un iPhone real desde el despliegue HTTPS de Vercel el 16/10/2026.
 
 Las jornadas activas contienen un borrador de actividades sin horas ficticias.
-Solo el piloto del 31 de mayo tiene actualmente geometría, distancia y duración
-de ruta; las demás jornadas esperarán a que se validen sus paradas públicas.
+Los recorridos del 30 y 31 de mayo tienen geometría, distancia y duración de
+caminata, y ambos salen y regresan a `madrid-centro`; las demás jornadas
+esperarán a que se validen sus paradas públicas.

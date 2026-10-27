@@ -1,6 +1,6 @@
 # Roadmap incremental — EuroTrip 2027
 
-Actualizado: **16 de octubre de 2026**.
+Actualizado: **27 de octubre de 2026**.
 
 ## Norte del producto
 
@@ -16,10 +16,10 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 ## Fase 0 — Base segura y desplegable (completada)
 
 - [x] Consolidar 6 alojamientos, 15 noches, 4 viajeros y vuelos internacionales.
-- [x] Mantener direcciones y anfitriones fuera de Git y del navegador público.
+- [x] Mantener direcciones y anfitriones no autorizados fuera de Git y del navegador público.
 - [x] Crear proyecto Next.js, modelos tipados, fixtures y pruebas de invariantes.
 - [x] Implementar diseño mobile-first, navegación y paleta visual clara.
-- [x] Publicar demo en Vercel sin información privada.
+- [x] Publicar demo en Vercel sin información privada no autorizada.
 - [x] Instalar y validar la PWA y su contenido público offline en un iPhone real.
 
 ## Fase 1 — Itinerario base consultable (completada)
@@ -35,11 +35,11 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 
 ## Fase 2 — Recorridos diarios y mapas (fase activa)
 
-- [x] Definir `DailyRoute`, `RouteStop` y `RouteSegment` sin direcciones privadas.
+- [x] Definir `DailyRoute`, `RouteStop` y `RouteSegment` sin direcciones privadas no autorizadas.
 - [x] Validar coordenadas públicas de las atracciones de una jornada piloto
   (Plaza Mayor y Puerta de la Independencia, 16/10/2026).
 - [x] Mostrar el orden piloto del 31 de mayo y permitir abrirlo externamente en
-  Google Maps, manteniendo distancia, duración y geometría como pendientes.
+  Google Maps.
 - [x] Construir el primer recorrido completo de Madrid: orden, paradas numeradas,
   descansos y medios de desplazamiento.
 - [x] Integrar MapLibre con un proveedor de mapas compatible y sin API paga para
@@ -48,6 +48,12 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
   no dibujar líneas rectas ni presentar estimaciones como rutas reales.
 - [x] Añadir resumen de distancia, duración y botón para abrir el recorrido en
   Google Maps.
+- [x] Modelar el 30 de mayo como recorrido adaptable con variante relajada y
+  completa, selección local y cambio a la ruta corta durante la marcha.
+- [x] Recalcular ambas variantes como circuitos peatonales que salen del
+  alojamiento `madrid-centro` y terminan en el mismo punto.
+- [x] Convertir también el recorrido del 31 de mayo en un circuito
+  `madrid-centro` → Plaza Mayor → Retiro → `madrid-centro`.
 - [ ] Validar el patrón en iPhone y extenderlo progresivamente a cada ciudad y
   excursión: Toledo, Barcelona, París, Bolonia, Venecia, Florencia y Roma.
 
@@ -68,7 +74,7 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [ ] Sustituir cada ventana de transporte por el servicio real después de que el
   viajero lo compre fuera de la aplicación.
 - [ ] Registrar horarios de check-out, consignas, terminales, equipaje y entradas.
-- [ ] Implementar autenticación y autorización antes de servir direcciones,
+- [ ] Implementar autenticación y autorización antes de servir las demás direcciones,
   documentos o códigos de reserva al navegador.
 - [ ] Evaluar Supabase/PostgreSQL y edición compartida solo si los cuatro viajeros
   necesitan sincronizar cambios.
@@ -84,7 +90,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 
 ## Siguiente incremento recomendado
 
-Validar el mapa piloto en iPhone y acordar las atracciones imprescindibles del
-grupo antes de extender el patrón. La próxima ciudad será Barcelona o París,
-según la prioridad confirmada por los viajeros. Las direcciones exactas de
-alojamientos quedan fuera hasta contar con autenticación.
+Validar en iPhone la selección y el mapa adaptable del 30 de mayo, además del
+piloto del 31 de mayo. Después, acordar las atracciones imprescindibles del
+grupo antes de extender el patrón; la próxima ciudad será Barcelona o París.
+Las demás direcciones exactas de alojamientos quedan fuera hasta contar con
+autenticación. `madrid-centro` es una excepción pública autorizada por el
+viajero para la navegación de regreso.

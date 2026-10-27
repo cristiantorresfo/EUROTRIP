@@ -9,8 +9,9 @@ Representarlo al inicio mediante interfaces TypeScript y fixtures; NO obliga a i
 - **Place:** id, city, title, geoCoordinates opcional y solo tras validación, category, visitDurationMin, officialUrl opcional.
 - **DayPlan:** id, localDate `YYYY-MM-DD`, baseCity, suggestedDayTrip opcional, plannedActivities y status (`confirmed|planned|estimated|to_verify`).
 - **Activity:** id, dayId, placeId opcional, title, category (`visit|meal|rest|transfer|other`), startsAtLocal/endsAtLocal nullable, expectedDurationMinutes, fixedReservation boolean, order, notes, status.
-- **DailyRoute:** recorrido de una jornada, asociado a `DayPlan`, con paradas ordenadas, segmentos, estado de verificación y resumen de distancia/duración nullable.
-- **RouteStop:** posición ordenada dentro de `DailyRoute`, vinculada a un `Place` público o a un punto privado opaco. Las coordenadas públicas deben estar validadas; una dirección de alojamiento nunca forma parte del fixture público.
+- **DailyRoute:** recorrido de una jornada, asociado a `DayPlan`, con una o más opciones, opción predeterminada y regla para cambiar de intensidad durante la marcha.
+- **DailyRouteOption:** variante concreta (`relaxed`, `complete`, etc.) con intensidad, criterio de selección, duración total orientativa, paradas ordenadas, segmentos calculados, regreso sugerido y destino de regreso opcional.
+- **RouteStop:** posición ordenada dentro de `DailyRoute`, vinculada a un `Place` público o a un punto privado opaco. Las coordenadas públicas deben estar validadas. `madrid-centro` es la única dirección de alojamiento autorizada actualmente como `Place` público para iniciar y cerrar el circuito.
 - **RouteSegment:** unión entre dos paradas consecutivas, con medio (`walk|metro|bus|train|other`), geometría verificable, distancia y duración nullable, proveedor y fecha de consulta.
 - **TransportLeg:** id, originId, destinationId, mode (`walk|metro|bus|train|flight|other`), preferredDepartureWindow optional, actualDepartureAt/actualArrivalAt nullable, fare estimate, `bookingStatus` (`not_booked|booked`), actualAirportOrStation optional. **No convertir ventanas en reservas.**
 - **Reminder:** aviso vinculado a una actividad, reserva o traslado confirmado; incluye instante con zona horaria, anticipación y mecanismo (`calendar|notification`).
@@ -26,7 +27,7 @@ Accommodations: seis registros con ids:
 5. `roma-termini` 2027-06-10→2027-06-13, check-in 14:00, 3 noches.
 6. `madrid-aeropuerto` 2027-06-13→2027-06-14, check-in 15:00, 1 noche.
 
-**Jamás incluir en un archivo cliente, JSON público, historia de Git o seed de DB pública los contenidos de `docs/ACCOMMODATIONS_PRIVATE.md` sin implementar autorizaciones.**
+**Jamás incluir en un archivo cliente, JSON público, historia de Git o seed de DB pública los contenidos de `docs/ACCOMMODATIONS_PRIVATE.md` sin una autorización explícita. La autorización vigente cubre únicamente dirección y coordenadas de `madrid-centro`.**
 
 ## Reglas del dominio
 1. Fechas de estancias son fechas locales, el check-out no es una noche adicional.
@@ -37,9 +38,10 @@ Accommodations: seis registros con ids:
 6. Guardar datetimes con zona horaria cuando se conozcan servicios; no inferir huso desde navegador para planificación en país diferente.
 7. Las distancias en línea recta no reemplazan rutas reales; no fingir precisión.
 8. Preservar reservas fijas y límites de apertura antes de reorganizar actividades.
-9. Las coordenadas de alojamientos requieren confirmación y controles de acceso si se usan en producción.
+9. Las coordenadas y direcciones de alojamientos requieren confirmación y controles de acceso si se usan en producción, salvo una autorización explícita y documentada del viajero. La única excepción actual es `madrid-centro`, geocodificado con Nominatim/OpenStreetMap el 27/10/2026 para iniciar y cerrar el recorrido.
 10. El archivo privado no se lee en tiempo de compilación para embeber su contenido en el frontend.
 11. COP y EUR se presentan por separado hasta contar con una tasa y fecha de referencia explícitas; nunca se suman automáticamente.
 12. La aplicación no compara ni compra transportes: incorpora el servicio real solamente después de que el viajero confirme la compra.
 13. El orden visual de las paradas no demuestra que una ruta sea transitable. La línea, distancia y duración deben proceder de un motor de rutas o de una fuente verificable y conservar su fecha de consulta.
 14. Los recordatorios críticos deben poder exportarse al calendario del teléfono; no depender exclusivamente de notificaciones web.
+15. Un día de llegada puede ofrecer una ruta base y una extensión. La selección es flexible, no una reserva, y puede cambiar durante el recorrido sin alterar los datos confirmados.

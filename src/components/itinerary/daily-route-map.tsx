@@ -29,11 +29,12 @@ interface RouteMapStop {
 }
 
 interface DailyRouteMapProps {
+  readonly label: string;
   readonly stops: readonly RouteMapStop[];
   readonly segment: VerifiedRouteSegment;
 }
 
-export function DailyRouteMap({ stops, segment }: DailyRouteMapProps) {
+export function DailyRouteMap({ label, stops, segment }: DailyRouteMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
 
@@ -92,18 +93,43 @@ export function DailyRouteMap({ stops, segment }: DailyRouteMapProps) {
       });
     });
 
-    const markers = stops.map((stop) => {
+    const markerStops = stops.reduce<
+      Array<RouteMapStop & { orderLabel: string; popupLabel: string }>
+    >((result, stop) => {
+      const existingStop = result.find(
+        ({ coordinates }) =>
+          coordinates.latitude === stop.coordinates.latitude &&
+          coordinates.longitude === stop.coordinates.longitude,
+      );
+
+      if (existingStop) {
+        existingStop.orderLabel = `${existingStop.orderLabel}/${stop.order}`;
+        existingStop.popupLabel = `${existingStop.popupLabel} · ${stop.label}`;
+        return result;
+      }
+
+      result.push({
+        ...stop,
+        orderLabel: String(stop.order),
+        popupLabel: stop.label,
+      });
+      return result;
+    }, []);
+
+    const markers = markerStops.map((stop) => {
       const markerElement = document.createElement("div");
-      markerElement.className = "route-map__marker";
-      markerElement.textContent = String(stop.order);
-      markerElement.setAttribute("aria-label", `${stop.order}. ${stop.label}`);
+      markerElement.className = `route-map__marker${
+        stop.orderLabel.includes("/") ? " route-map__marker--roundtrip" : ""
+      }`;
+      markerElement.textContent = stop.orderLabel;
+      markerElement.setAttribute("aria-label", stop.popupLabel);
 
       return new Marker({ element: markerElement })
         .setLngLat([
           stop.coordinates.longitude,
           stop.coordinates.latitude,
         ])
-        .setPopup(new Popup({ offset: 20 }).setText(stop.label))
+        .setPopup(new Popup({ offset: 20 }).setText(stop.popupLabel))
         .addTo(map);
     });
 
@@ -119,7 +145,7 @@ export function DailyRouteMap({ stops, segment }: DailyRouteMapProps) {
         ref={containerRef}
         className="route-map"
         role="img"
-        aria-label="Mapa del recorrido peatonal entre Plaza Mayor y El Retiro"
+        aria-label={label}
       />
       {failed ? (
         <p className="route-map__fallback">

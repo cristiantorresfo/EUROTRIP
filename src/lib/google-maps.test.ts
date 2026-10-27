@@ -55,4 +55,5 @@ describe("Google Maps directions URLs", () => {
       ]),
     ).toThrow(RangeError);
   });
+
 });

@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "eurotrip-2027";
-const CACHE_VERSION = "v2";
+const CACHE_VERSION = "v3";
 const PAGE_CACHE = `${CACHE_PREFIX}-pages-${CACHE_VERSION}`;
 const ASSET_CACHE = `${CACHE_PREFIX}-assets-${CACHE_VERSION}`;
 
@@ -92,10 +92,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  if (
-    url.pathname.startsWith("/_next/static/") ||
-    url.pathname.startsWith("/icons/")
-  ) {
+  if (url.pathname.startsWith("/_next/static/")) {
+    event.respondWith(networkFirstAsset(request));
+    return;
+  }
+
+  if (url.pathname.startsWith("/icons/")) {
     event.respondWith(cacheFirstAsset(request));
   }
 });
@@ -136,4 +138,20 @@ async function cacheFirstAsset(request) {
   }
 
   return response;
+}
+
+async function networkFirstAsset(request) {
+  const cache = await caches.open(ASSET_CACHE);
+
+  try {
+    const response = await fetch(request);
+
+    if (response.ok) {
+      await cache.put(request, response.clone());
+    }
+
+    return response;
+  } catch {
+    return (await cache.match(request)) ?? Response.error();
+  }
 }

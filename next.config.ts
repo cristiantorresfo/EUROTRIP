@@ -4,7 +4,30 @@ const nextConfig: NextConfig = {
   // Preserve the project's hand-written AGENTS.md without Next.js managed edits.
   agentRules: false,
   async headers() {
+    const developmentHeaders =
+      process.env.NODE_ENV !== "production"
+        ? [
+            {
+              source: "/:path*",
+              has: [
+                {
+                  type: "header" as const,
+                  key: "accept",
+                  value: ".*text/html.*",
+                },
+              ],
+              headers: [
+                {
+                  key: "Clear-Site-Data",
+                  value: '"cache", "storage"',
+                },
+              ],
+            },
+          ]
+        : [];
+
     return [
+      ...developmentHeaders,
       {
         source: "/sw.js",
         headers: [

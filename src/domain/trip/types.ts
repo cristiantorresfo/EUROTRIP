@@ -101,6 +101,8 @@ export interface DayPlan {
 
 export type RouteTravelMode = "walk" | "metro" | "bus" | "train" | "other";
 export type DailyRouteStatus = "draft" | "routed" | "verified";
+export type RouteIntensity = "low" | "medium" | "high";
+export type RouteStopPriority = "low" | "medium" | "high";
 
 export interface RouteStop {
   readonly id: string;
@@ -108,6 +110,13 @@ export interface RouteStop {
   readonly placeId: Place["id"];
   readonly label: string;
   readonly order: number;
+  readonly priority?: RouteStopPriority;
+  readonly estimatedVisitMinutes?: number;
+  readonly optional?: boolean;
+  readonly visitMode?: "exterior" | "walk_through";
+  readonly preferredMoment?: "sunset";
+  readonly highlights?: readonly string[];
+  readonly notes?: string;
 }
 
 export interface PendingRouteSegment {
@@ -142,14 +151,31 @@ export interface VerifiedRouteSegment {
 
 export type RouteSegment = PendingRouteSegment | VerifiedRouteSegment;
 
+export interface DailyRouteOption {
+  readonly id: string;
+  readonly name: string;
+  readonly recommendedWhen: string;
+  readonly intensity: RouteIntensity;
+  /** Human-readable total including visits and pauses, not only walking. */
+  readonly estimatedDuration: string;
+  readonly stops: readonly RouteStop[];
+  readonly segments: readonly RouteSegment[];
+  readonly returnRoute?: string;
+  readonly returnDestination?: string;
+  readonly returnNotes?: string;
+}
+
 export interface DailyRoute {
   readonly id: string;
   readonly dayPlanId: DayPlan["id"];
   readonly localDate: LocalDate;
   readonly title: string;
   readonly status: DailyRouteStatus;
-  readonly stops: readonly RouteStop[];
-  readonly segments: readonly RouteSegment[];
+  readonly summary?: string;
+  readonly defaultOptionId: DailyRouteOption["id"];
+  readonly options: readonly DailyRouteOption[];
+  readonly switchDuringRoute: boolean;
+  readonly switchRule?: string;
   readonly notes?: string;
 }
 

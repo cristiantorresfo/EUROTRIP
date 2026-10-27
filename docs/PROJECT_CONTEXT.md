@@ -1,9 +1,9 @@
 # Contexto del proyecto — EuroTrip 2027
 
-Actualizado: **16 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero.
+Actualizado: **27 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero.
 
 ## 1. Propósito
-Aplicación web mobile-first y PWA para acompañar a 4 viajeros durante Europa 2027. Su función principal es consultar el plan del día, ver paradas ordenadas y recorridos optimizados sobre un mapa, saber qué actividad sigue y recibir recordatorios del itinerario. Los vuelos y trenes se comparan y compran fuera de la aplicación; después se registran aquí como logística confirmada. La información privada solo podrá mostrarse cuando exista autenticación real.
+Aplicación web mobile-first y PWA para acompañar a 4 viajeros durante Europa 2027. Su función principal es consultar el plan del día, ver paradas ordenadas y recorridos optimizados sobre un mapa, saber qué actividad sigue y recibir recordatorios del itinerario. Los vuelos y trenes se comparan y compran fuera de la aplicación; después se registran aquí como logística confirmada. La información privada solo podrá mostrarse cuando exista autenticación real, salvo datos que el viajero autorice explícitamente a publicar.
 
 ## 2. Viaje — confirmado por el viajero
 - **Viajeros:** 4.
@@ -17,7 +17,7 @@ Aplicación web mobile-first y PWA para acompañar a 4 viajeros durante Europa 2
 - **Fecha límite general para pagar alojamientos mencionada:** 25/04/2027; confirmar plazos por reserva.
 
 ## 3. Las SEIS reservas Airbnb (confirmadas según capturas, ubicaciones por zona)
-**IMPORTANTE:** Las direcciones completas y nombres de anfitriones están EXCLUSIVAMENTE en `docs/ACCOMMODATIONS_PRIVATE.md` (local, ignorado por Git); no copiarlos a archivos públicos ni fixtures cliente.
+**IMPORTANTE:** Las direcciones completas y nombres de anfitriones están en `docs/ACCOMMODATIONS_PRIVATE.md` (local, ignorado por Git). Como excepción explícita autorizada por el viajero el 27/10/2026, la dirección de `madrid-centro` puede mostrarse en el cliente para navegar de regreso; las otras cinco direcciones y todos los anfitriones siguen siendo privados.
 
 | ID | Zona | Fechas | Noches | Check-in desde | Check-out |
 |---|---|---|---:|---|---|
@@ -72,8 +72,12 @@ confirmados dentro del día correspondiente y sus recordatorios.
 ## 8. Decisiones técnicas
 - Next.js App Router + React + TypeScript + Tailwind, primero MVP con datos no sensibles en JSON/TS.
 - Sin API de IA ni base de datos en la primera fase. Coste inicial objetivo $0 COP sujeto a límites de proveedores gratuitos.
-- Despliegue Vercel sin exponer alojamientos/datos privados. Los recorridos diarios son la siguiente prioridad: MapLibre y un proveedor con licencia adecuada para visualización, geometrías verificables para la ruta y Google Maps como navegación externa.
+- Despliegue Vercel sin exponer alojamientos/datos privados no autorizados. La dirección de `madrid-centro` es la única excepción pública vigente. Los recorridos diarios son la siguiente prioridad: MapLibre y un proveedor con licencia adecuada para visualización, geometrías verificables para la ruta y Google Maps como navegación externa.
 - ChatGPT Plus/Codex usados para planificar/programar, no API de IA en producción.
+- El día de llegada a Madrid ofrece una ruta relajada y una completa, sin horas
+  rígidas y con posibilidad de cambiar a la corta durante el recorrido. Ambas
+  parten del alojamiento `madrid-centro` y terminan allí; su dirección y
+  coordenadas son públicas por autorización explícita del viajero.
 
 ## 9. Estado del código
 Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.
