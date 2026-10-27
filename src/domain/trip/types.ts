@@ -101,7 +101,13 @@ export interface DayPlan {
   readonly status: PlanningStatus;
 }
 
-export type RouteTravelMode = "walk" | "metro" | "bus" | "train" | "other";
+export type RouteTravelMode =
+  | "walk"
+  | "metro"
+  | "bus"
+  | "train"
+  | "taxi"
+  | "other";
 export type DailyRouteStatus = "draft" | "routed" | "verified";
 export type RouteIntensity = "low" | "medium" | "high";
 export type RouteStopPriority = "low" | "medium" | "high";
@@ -116,6 +122,8 @@ export interface RouteStop {
   readonly estimatedVisitMinutes?: number;
   /** Flexible planning window; it may change when tickets or transport are booked. */
   readonly suggestedTimeWindow?: LocalTimeWindow;
+  /** False keeps long-distance transfer stops out of the focused local map. */
+  readonly mapVisible?: boolean;
   readonly optional?: boolean;
   readonly visitMode?: "exterior" | "walk_through";
   readonly preferredMoment?: "sunset";
@@ -128,6 +136,8 @@ export interface PendingRouteSegment {
   readonly fromStopId: RouteStop["id"];
   readonly toStopId: RouteStop["id"];
   readonly mode: RouteTravelMode;
+  readonly label?: string;
+  readonly notes?: string;
   readonly routingStatus: "pending";
   readonly distanceMeters: null;
   readonly durationMinutes: null;
@@ -141,6 +151,8 @@ export interface VerifiedRouteSegment {
   readonly fromStopId: RouteStop["id"];
   readonly toStopId: RouteStop["id"];
   readonly mode: RouteTravelMode;
+  readonly label?: string;
+  readonly notes?: string;
   readonly routingStatus: "verified";
   readonly distanceMeters: number;
   readonly durationMinutes: number;

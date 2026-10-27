@@ -67,10 +67,10 @@ describe("EuroTrip 2027 proposed day plans", () => {
       (place) => "geoCoordinates" in place,
     );
 
-    expect(geocodedPlaces).toHaveLength(22);
+    expect(geocodedPlaces).toHaveLength(34);
 
     for (const place of geocodedPlaces) {
-      expect(place.city).toBe("Madrid");
+      expect(["Madrid", "Toledo"]).toContain(place.city);
       expect(place.geoCoordinates.verificationStatus).toBe("verified");
       expect(place.geoCoordinates.sourceUrl).toMatch(/^https:\/\//);
       expect(["2026-10-16", "2026-10-27"]).toContain(

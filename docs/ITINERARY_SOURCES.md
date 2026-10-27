@@ -10,7 +10,12 @@ planificación, no tiempos publicados por las atracciones.
 ## España
 
 - Madrid: [Plaza Mayor](https://www.esmadrid.com/informacion-turistica/Plaza-mayor-madrid) y [Parque de El Retiro](https://www.esmadrid.com/informacion-tur%C3%ADstica/parque-del-retiro), Turismo Madrid.
-- Toledo: [casco histórico](https://turismo.toledo.es/toledo.html) y [Catedral Primada](https://turismo.toledo.es/recursos/id1450-santa-iglesia-catedral-primada-de-toledo.html), Patronato Municipal de Turismo.
+- Toledo: [casco histórico](https://turismo.toledo.es/toledo.html),
+  [Catedral Primada](https://www.catedralprimada.es/visita-cultural/entradas-catedral-toledo/),
+  [Santo Tomé](https://turismo.toledo.es/recursos/museos-y-monumentos/id2020-iglesia-de-santo-tome--entierro-del-senor-de-orgaz.html),
+  [Santa María la Blanca](https://turismo.toledo.es/recursos/museos-y-monumentos/id606-sinagoga-de-santa-maria-la-blanca.html),
+  [San Juan de los Reyes](https://turismo.toledo.es/recursos/museos-y-monumentos/id600-monasterio-de-san-juan-de-los-reyes.html)
+  y [Mirador del Valle](https://turismo.toledo.es/hacer/naturaleza-en-toledo.html).
 - Barcelona: [Sagrada Família](https://sagradafamilia.org/en/) y [Park Güell](https://parkguell.barcelona/en), sitios oficiales.
 
 ## Francia

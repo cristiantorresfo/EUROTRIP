@@ -31,10 +31,10 @@ export const tripCalendar: readonly TripDaySummary[] = [
     localDate: "2027-06-01",
     baseCity: "Madrid",
     locationLabel: "Toledo",
-    title: "Excursión desde Madrid",
-    detail: "Puede moverse al 31 de mayo",
+    title: "Toledo histórico y Mirador del Valle",
+    detail: "Excursión prevista; trenes, taxis y entradas pendientes",
     kind: "day_trip",
-    status: "tentative",
+    status: "to_verify",
   },
   {
     localDate: "2027-06-02",

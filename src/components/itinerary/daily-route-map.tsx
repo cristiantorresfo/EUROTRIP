@@ -47,6 +47,12 @@ export function DailyRouteMap({ label, stops, segment }: DailyRouteMapProps) {
     for (const [longitude, latitude] of segment.geometry.coordinates) {
       bounds.extend([longitude, latitude]);
     }
+    for (const stop of stops) {
+      bounds.extend([
+        stop.coordinates.longitude,
+        stop.coordinates.latitude,
+      ]);
+    }
 
     const map = new MapLibreMap({
       container,

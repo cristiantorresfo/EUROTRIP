@@ -87,7 +87,12 @@ confirmados dentro del día correspondiente y sus recordatorios.
 - Todas las actividades del borrador muestran una ventana local orientativa.
   Estas horas organizan el ritmo del viaje, pero no sustituyen entradas,
   horarios de apertura ni transportes confirmados. En los recorridos detallados
-  de Madrid, cada parada muestra además su propia franja aproximada.
+  de Madrid y Toledo, cada parada muestra además su propia franja aproximada.
+- El 1 de junio queda dedicado a Toledo con variantes relajada y completa. La
+  caminata atraviesa el casco histórico de este a oeste desde Zocodover hasta
+  el Puente de San Martín; se proponen taxi estación→Zocodover,
+  San Martín→Mirador del Valle y Mirador→estación. El circuito completo parte
+  y termina en `madrid-centro`. Trenes, taxis y entradas siguen sin reservar.
 
 ## 9. Estado del código
 Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.

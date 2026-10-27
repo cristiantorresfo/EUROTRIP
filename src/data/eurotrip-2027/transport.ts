@@ -44,13 +44,14 @@ export const plannedTransportLegs = [
     destinationId: "toledo",
     mode: "train",
     fareEstimate: null,
-    planningStatus: "tentative",
+    planningStatus: "to_verify",
     bookingStatus: "not_booked",
-    preferredDepartureWindow: { start: "08:30", end: "10:00", source: "planning" },
+    preferredDepartureWindow: { start: "08:30", end: "09:00", source: "planning" },
     actualDepartureAt: null,
     actualArrivalAt: null,
     actualAirportOrStation: null,
-    notes: "La excursión también podría realizarse el 31 de mayo.",
+    notes:
+      "Excursión prevista para el 1 de junio; servicio, hora y estación deben coincidir con el billete comprado.",
   },
   {
     id: "toledo-madrid-return",
@@ -59,12 +60,14 @@ export const plannedTransportLegs = [
     destinationId: "madrid",
     mode: "train",
     fareEstimate: null,
-    planningStatus: "tentative",
+    planningStatus: "to_verify",
     bookingStatus: "not_booked",
     preferredDepartureWindow: { start: "18:00", end: "20:00", source: "planning" },
     actualDepartureAt: null,
     actualArrivalAt: null,
     actualAirportOrStation: null,
+    notes:
+      "Elegir una salida con margen suficiente para taxi desde el Mirador del Valle y acceso al andén.",
   },
   {
     id: "madrid-barcelona",

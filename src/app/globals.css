@@ -1402,6 +1402,55 @@ a {
   line-height: 1.45;
 }
 
+.route-segment-list {
+  margin-top: 0.85rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+}
+
+.route-segment-list > strong {
+  font-size: 0.72rem;
+}
+
+.route-segment-list ul {
+  display: grid;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  gap: 0.55rem;
+  list-style: none;
+}
+
+.route-segment-list li {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.55rem;
+}
+
+.route-segment-list li > span {
+  padding: 0.28rem 0.4rem;
+  border-radius: 999px;
+  align-self: start;
+  background: var(--featured-surface);
+  color: var(--accent);
+  font-size: 0.6rem;
+  font-weight: 850;
+  text-align: center;
+}
+
+.route-segment-list b,
+.route-segment-list small {
+  display: block;
+  font-size: 0.65rem;
+  line-height: 1.45;
+}
+
+.route-segment-list small {
+  margin-top: 0.12rem;
+  color: var(--muted);
+}
+
 .route-stop-list p {
   display: flex;
   margin: 0.3rem 0 0;

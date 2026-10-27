@@ -32,7 +32,7 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [x] Presupuesto inicial COP/EUR sin conversiones ni pagos ficticios.
 - [x] Enlaces externos a Google Maps para lugares y terminales públicos.
 - [x] Mostrar una franja horaria orientativa en todas las actividades y en las
-  paradas detalladas de Madrid, sin confundirlas con reservas.
+  paradas detalladas de Madrid y Toledo, sin confundirlas con reservas.
 - [ ] Confirmar los intereses imprescindibles del grupo y su tolerancia a caminatas.
 
 ## Fase 2 — Recorridos diarios y mapas (fase activa)
@@ -57,8 +57,11 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [x] Convertir el 31 de mayo en un circuito adaptable desde/hasta
   `madrid-centro`, con Cibeles, Puerta de Alcalá, hitos interiores del Retiro,
   Prado, Neptuno y Barrio de las Letras; Mirador y Chueca quedan opcionales.
+- [x] Extender el patrón al 1 de junio en Toledo con variantes relajada y
+  completa, caminata este–oeste calculada y tramos estratégicos pendientes en
+  tren/taxi desde y hasta el alojamiento de Madrid.
 - [ ] Validar el patrón en iPhone y extenderlo progresivamente a cada ciudad y
-  excursión: Toledo, Barcelona, París, Bolonia, Venecia, Florencia y Roma.
+  excursión: Barcelona, París, Bolonia, Venecia, Florencia y Roma.
 
 ## Fase 3 — Modo viaje y recordatorios
 
@@ -93,9 +96,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 
 ## Siguiente incremento recomendado
 
-Validar en iPhone la selección y los mapas adaptables del 30 y 31 de mayo.
-Después, comprar o definir la franja del Prado para reordenar el Día 2 y
-extender el patrón; la próxima jornada será Toledo. Las demás direcciones
+Validar en iPhone la selección y los mapas adaptables de los tres primeros
+días. Después, comprar o definir las franjas del Prado y los trenes de Toledo;
+la próxima jornada será el traslado a Barcelona. Las demás direcciones
 exactas de alojamientos quedan fuera hasta contar con autenticación.
 `madrid-centro` es una excepción pública autorizada por el viajero para la
 navegación de regreso.

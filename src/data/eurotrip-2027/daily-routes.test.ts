@@ -11,10 +11,11 @@ describe("EuroTrip 2027 daily routes", () => {
   };
 
   it("stores adaptive routes for both Madrid days", () => {
-    expect(dailyRoutes).toHaveLength(2);
+    expect(dailyRoutes).toHaveLength(3);
     expect(dailyRoutes.map(({ localDate }) => localDate)).toEqual([
       "2027-05-30",
       "2027-05-31",
+      "2027-06-01",
     ]);
 
     const arrivalRoute = dailyRoutes[0];
@@ -70,9 +71,39 @@ describe("EuroTrip 2027 daily routes", () => {
       { distanceMeters: 5411, durationMinutes: 71 },
       { distanceMeters: 8148, durationMinutes: 105 },
     ]);
+
+    const dayThreeRoute = dailyRoutes[2];
+
+    expect(dayThreeRoute).toMatchObject({
+      dayPlanId: "day-2027-06-01",
+      defaultOptionId: "complete",
+      switchDuringRoute: true,
+    });
+    expect(dayThreeRoute?.options.map(({ id }) => id)).toEqual([
+      "relaxed",
+      "complete",
+    ]);
+    expect(dayThreeRoute?.options.map(({ stops }) => stops.length)).toEqual([
+      13, 16,
+    ]);
+    expect(
+      dayThreeRoute?.options.map(({ segments }) => {
+        const walkingSegment = segments.find(
+          (segment) => segment.routingStatus === "verified",
+        );
+
+        return {
+          distanceMeters: walkingSegment?.distanceMeters,
+          durationMinutes: walkingSegment?.durationMinutes,
+        };
+      }),
+    ).toEqual([
+      { distanceMeters: 2059, durationMinutes: 27 },
+      { distanceMeters: 2743, durationMinutes: 36 },
+    ]);
   });
 
-  it("starts and finishes every mapped Madrid route at the Airbnb", () => {
+  it("starts and finishes every mapped route at the Airbnb", () => {
     for (const route of dailyRoutes) {
       for (const option of route.options) {
         expect(option.stops[0]?.placeId).toBe("madrid-airbnb-nunez-de-arce");
@@ -128,19 +159,29 @@ describe("EuroTrip 2027 daily routes", () => {
   it("stores sourced pedestrian geometries instead of drawing straight lines", () => {
     for (const route of dailyRoutes) {
       for (const option of route.options) {
-        expect(option.segments).toHaveLength(1);
+        const verifiedSegments = option.segments.filter(
+          (segment) => segment.routingStatus === "verified",
+        );
 
-        const segment = option.segments[0];
+        expect(verifiedSegments).toHaveLength(1);
 
-        expect(segment?.routingStatus).toBe("verified");
+        for (const segment of verifiedSegments) {
+          expect(segment.distanceMeters).toBeGreaterThan(0);
+          expect(segment.durationMinutes).toBeGreaterThan(0);
+          expect(segment.geometry.type).toBe("LineString");
+          expect(segment.geometry.coordinates.length).toBeGreaterThan(100);
+          expect(segment.sourceUrl).toMatch(/^https:\/\/valhalla/);
+        }
+      }
+    }
+
+    for (const route of dailyRoutes.slice(0, 2)) {
+      for (const option of route.options) {
+        const segment = option.segments.find(
+          (candidate) => candidate.routingStatus === "verified",
+        );
+
         if (!segment || segment.routingStatus !== "verified") continue;
-
-        expect(segment.distanceMeters).toBeGreaterThan(0);
-        expect(segment.durationMinutes).toBeGreaterThan(0);
-        expect(segment.geometry.type).toBe("LineString");
-        expect(segment.geometry.coordinates.length).toBeGreaterThan(100);
-        expect(segment.sourceUrl).toMatch(/^https:\/\/valhalla/);
-
         expect(segment.geometry.coordinates[0]).toEqual(
           segment.geometry.coordinates.at(-1),
         );

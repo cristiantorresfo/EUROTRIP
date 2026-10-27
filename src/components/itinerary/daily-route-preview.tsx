@@ -18,6 +18,7 @@ import type {
   DailyRoute,
   Place,
   RouteIntensity,
+  RouteTravelMode,
 } from "@/domain/trip/types";
 import { buildGoogleMapsDirectionsUrl } from "@/lib/google-maps";
 
@@ -30,6 +31,15 @@ const intensityLabels: Record<RouteIntensity, string> = {
   low: "Baja",
   medium: "Media",
   high: "Alta",
+};
+
+const travelModeLabels: Record<RouteTravelMode, string> = {
+  walk: "A pie",
+  metro: "Metro",
+  bus: "Bus",
+  train: "Tren",
+  taxi: "Taxi",
+  other: "Traslado por definir",
 };
 
 export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
@@ -49,16 +59,31 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
       ? [{ stop, coordinates: place.geoCoordinates }]
       : [];
   });
-  const directionsUrl =
-    resolvedStops.length === selectedOption.stops.length &&
-    resolvedStops.length >= 2
-      ? buildGoogleMapsDirectionsUrl(
-          resolvedStops.map(({ coordinates }) => coordinates),
-        )
-      : null;
+  const mapStops = resolvedStops.filter(({ stop }) => stop.mapVisible !== false);
   const routedSegment = selectedOption.segments.find(
     (segment) => segment.routingStatus === "verified",
   );
+  const isFullyWalkable = selectedOption.segments.every(
+    (segment) =>
+      segment.routingStatus === "verified" && segment.mode === "walk",
+  );
+  const routedStartIndex = routedSegment
+    ? resolvedStops.findIndex(({ stop }) => stop.id === routedSegment.fromStopId)
+    : -1;
+  const routedEndIndex = routedSegment
+    ? resolvedStops.findIndex(({ stop }) => stop.id === routedSegment.toStopId)
+    : -1;
+  const directionStops = isFullyWalkable
+    ? resolvedStops
+    : routedStartIndex >= 0 && routedEndIndex > routedStartIndex
+      ? resolvedStops.slice(routedStartIndex, routedEndIndex + 1)
+      : [];
+  const directionsUrl =
+    directionStops.length >= 2
+      ? buildGoogleMapsDirectionsUrl(
+          directionStops.map(({ coordinates }) => coordinates),
+        )
+      : null;
   const relaxedOption = route.options.find((option) => option.id === "relaxed");
 
   return (
@@ -101,7 +126,7 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
             >
               {route.options.map((option) => {
                 const isSelected = option.id === selectedOption.id;
-                const isRelaxed = option.intensity === "low";
+                const isRelaxed = option.id === "relaxed";
                 const OptionIcon = isRelaxed ? Coffee : Zap;
 
                 return (
@@ -164,7 +189,7 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
           </div>
         </div>
 
-        {routedSegment && resolvedStops.length === selectedOption.stops.length ? (
+        {routedSegment && mapStops.length >= 2 ? (
           <>
             <dl className="route-preview__facts">
               <div>
@@ -183,7 +208,7 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
             <DailyRouteMap
               key={selectedOption.id}
               label={`Mapa de ${selectedOption.name.toLocaleLowerCase("es")}`}
-              stops={resolvedStops.map(({ stop, coordinates }) => ({
+              stops={mapStops.map(({ stop, coordinates }) => ({
                 id: stop.id,
                 label: stop.label,
                 order: stop.order,
@@ -192,6 +217,28 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
               segment={routedSegment}
             />
           </>
+        ) : null}
+
+        {selectedOption.segments.length > 1 ? (
+          <div className="route-segment-list">
+            <strong>Cómo se conecta el recorrido</strong>
+            <ul>
+              {selectedOption.segments.map((segment) => (
+                <li key={segment.id}>
+                  <span>{travelModeLabels[segment.mode]}</span>
+                  <div>
+                    <b>{segment.label ?? "Tramo del recorrido"}</b>
+                    <small>
+                      {segment.routingStatus === "verified"
+                        ? `${(segment.distanceMeters / 1000).toFixed(1)} km · ≈ ${segment.durationMinutes} min calculados`
+                        : "Pendiente de confirmar"}
+                    </small>
+                    {segment.notes ? <small>{segment.notes}</small> : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : null}
 
         <ol className="route-stop-list">
@@ -297,7 +344,9 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Abrir esta variante en Google Maps
+            {isFullyWalkable
+              ? "Abrir esta variante en Google Maps"
+              : "Abrir la caminata histórica en Google Maps"}
             <ExternalLink aria-hidden="true" size={15} />
           </a>
         ) : null}

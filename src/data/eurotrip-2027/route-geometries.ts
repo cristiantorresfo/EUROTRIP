@@ -57,6 +57,33 @@ function mergeValhallaShapes(
  * Pedestrian geometries calculated by Valhalla from OpenStreetMap data on
  * 2026-10-27. Both include the authorized accommodation as start/end.
  */
+/**
+ * Toledo walking sections calculated by Valhalla from OpenStreetMap data on
+ * 2026-10-27. Taxi and train transfers are intentionally excluded.
+ */
+export const toledoDayThreeRelaxedGeometry = mergeValhallaShapes(
+  [
+  "mny_kArfmtFpClC|Ao@T]rFzD~FzC`B|@j@VNLbFzEx@|@hBtAJNo@`FaKjLbDtDeCnG{CbKbCnF|A`DPZlGfG",
+  "ofx_kA|fptFfBdBzBnBRkGO}K[eDlBa@x`@fEpJb@D?j@@nALxIfAXbC`@?fX?tDG`Ca@r@MnHmDVt@n@fBBLLlKDfB|A`FrCrCAbGNdZ]`^",
+  "kft_kAf|rtFG~GCjChGvExHlG`@x@nGvMDd@NnBVdDq@vMs@hLJdBHvCiEpB{Av@}@|@YvAB~Ax@~NkFfN}AxFuFfNn@zBp@`C{Fx@oMnH}J~D",
+  "kgu_kAxsxtFCkAuFpDaE`DoC`DaFbKeBnCsCbD{AmByInP{D~GyLjQDt@p@jDrAfBmAfDaAt@m@`D_B`K_FdJwCzH[v@u@|AaAnBiBzDq@pA_CxFqC|DJzFiAxK{B~Pw@`IfCdSn@rAh@xAhA~AnIzD|JrEnMnG\\NdDjCI`F{AnKo@nDoAbCvAjHvBjJ`L_FnB^bDrBZu@nAq@dBaA",
+  "}cv_kArgbuFeB`AoAp@[t@Zf@l@jCrD|Og@RH`@jA_@Nj@mAv@H`@`BSJb@qAv@Jl@`BULd@{A|@Nf@hBq@Pn@kBz@Jb@dCs@w@nGyBByABwPyDkHXwCnAmBv@qJlLdC~@nLp@~KThDNnB^z@Zr@f@l@r@d@~@^nAPtApKZdJ|A~J~FzAr@h@XvXn]"
+],
+);
+
+export const toledoDayThreeCompleteGeometry = mergeValhallaShapes(
+  [
+  "mny_kArfmtFpClC|Ao@T]rFzD~FzC`B|@j@VNLbFzEtIr@pBEvHQxFu@dDsETgF?CpBoBd@{@~@AbCGnCg@pKaC~HoAdEwEdBIlA{AcC{C@cBaVI?s@cAAeCA",
+  "qtv_kA`mltFdC@bA@?r@`VHAbBbCzCmAzAeBHeEvE_InAqK`CoCf@cCF_A@e@z@qBnB?BUfFeDrEyFt@wHPmDxD~BhQi@vA_AxGKtCKvCt@dFZdDN|KSjG{BoBgBeB",
+  "ofx_kA|fptFfBdBzBnBRkGO}K[eDlBa@x`@fEpJb@D?j@@nALxIfAXbC`@?fX?tDG`Ca@r@MnHmDVt@n@fBBLLlKDfB|A`FrCrCAbGNdZ]`^",
+  "kft_kAf|rtFG~GCjChGvExHlG`@x@nGvMDd@NnBVdDq@vMs@hLJdBHvCiEpB{Av@}@|@YvAB~Ax@~NkFfN}AxFuFfNn@zBp@`CgBjGw@rDWfCc@vHu@vLa@vDaApIsBdQSlB~JlF",
+  "_it_kAryztF_KmFRmBrBeQ`AqI{EgJw@a@MG}A}@kAq@wGeIa@uAOg@",
+  "kgu_kAxsxtFNf@`@tAvGdIjAp@|A|@LFv@`@zEfJaApIsBdQSlBc@zCaApKmAjMBfBJxC\\z@_AvMeBfNSnAYtBaA`H_ApGoBnOgA~MnArAlCwARKdCu@jFwC",
+  "ovt_kAhj~tFkFvCeCt@b@hEl@zFNhARdBj@vGf@~CVxBmd@lTyPhJkDnA{FbCI`F{AnKo@nDoAbCvAjHvBjJ`L_FnB^bDrBZu@nAq@dBaA",
+  "}cv_kArgbuFeB`AoAp@[t@Zf@l@jCrD|Og@RH`@jA_@Nj@mAv@H`@`BSJb@qAv@Jl@`BULd@{A|@Nf@hBq@Pn@kBz@Jb@dCs@w@nGyBByABwPyDkHXwCnAmBv@qJlLdC~@nLp@~KThDNnB^z@Zr@f@l@r@d@~@^nAPtApKZdJ|A~J~FzAr@h@XvXn]"
+],
+);
+
 export const madridDayTwoRelaxedGeometry = mergeValhallaShapes(
   [
   "q_walA~b|`Fak@{D_PkWcAuAEEqHmJGGy@_AaJgHaEAw@[}AiAoAaA_@}@wKeHyCkCg[uR~@cDeAqAuCkDuAuCa@{@s@sBmNuo@I_@EYMs@SeA_Pa`AXmAaCoQsBqEk@qDaFe\\IcDCe@Gg@g@oDgDoVc@yDEa@Gm@QaBaBkE}@wHqAiKqDyYa@{CqBmTqBgULuBTqA}AK]HcEbAgGxAa@Jq@PoCl@m@mHeAcJWi@mC}A}CoBwA_BwCaEkAaBsDqAJs@Hm@HqC{CoONcGh@uCx@j@dEvDfCvC`D|E~FnJ",
