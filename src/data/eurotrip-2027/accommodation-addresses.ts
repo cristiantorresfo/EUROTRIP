@@ -1,6 +1,8 @@
 /**
  * Direcciones autorizadas explícitamente por el viajero para mostrarse en el
- * cliente y formar parte del build público desde el 27/10/2026.
+ * cliente y formar parte del build público desde el 27/10/2026. El viajero
+ * autorizó también su envío a proveedores externos de geocodificación el
+ * 28/10/2026.
  */
 export const accommodationAddresses = {
   "madrid-centro": "Calle de Núñez de Arce, 14, 28012 Madrid, España",

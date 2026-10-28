@@ -62,18 +62,25 @@ describe("EuroTrip 2027 proposed day plans", () => {
     }
   });
 
-  it("limits verified coordinates to public route stops", () => {
+  it("limits sourced coordinates to public route stops", () => {
     const geocodedPlaces = tripPlaces.filter(
       (place) => "geoCoordinates" in place,
     );
 
-    expect(geocodedPlaces).toHaveLength(47);
+    expect(geocodedPlaces).toHaveLength(54);
 
     for (const place of geocodedPlaces) {
-      expect(["Madrid", "Toledo", "Barcelona"]).toContain(place.city);
-      expect(place.geoCoordinates.verificationStatus).toBe("verified");
+      expect([
+        "Madrid",
+        "Toledo",
+        "Barcelona",
+        "L’Hospitalet de Llobregat",
+      ]).toContain(place.city);
+      expect(["verified", "approximate"]).toContain(
+        place.geoCoordinates.verificationStatus,
+      );
       expect(place.geoCoordinates.sourceUrl).toMatch(/^https:\/\//);
-      expect(["2026-10-16", "2026-10-27"]).toContain(
+      expect(["2026-10-16", "2026-10-27", "2026-10-28"]).toContain(
         place.geoCoordinates.verifiedAt,
       );
       expect(place.geoCoordinates.latitude).toBeGreaterThanOrEqual(-90);
@@ -81,5 +88,18 @@ describe("EuroTrip 2027 proposed day plans", () => {
       expect(place.geoCoordinates.longitude).toBeGreaterThanOrEqual(-180);
       expect(place.geoCoordinates.longitude).toBeLessThanOrEqual(180);
     }
+
+    const barcelonaAccommodation = tripPlaces.find(
+      ({ id }) => id === "barcelona-hospitalet-accommodation-area",
+    );
+
+    expect(
+      barcelonaAccommodation && "geoCoordinates" in barcelonaAccommodation
+        ? barcelonaAccommodation.geoCoordinates
+        : undefined,
+    ).toMatchObject({
+      verificationStatus: "approximate",
+      sourceUrl: "https://www.openstreetmap.org/way/650098840",
+    });
   });
 });

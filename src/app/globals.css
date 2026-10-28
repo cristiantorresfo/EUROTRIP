@@ -1316,6 +1316,33 @@ a {
   height: clamp(16rem, 65vw, 22rem);
 }
 
+.route-map__legend {
+  display: flex;
+  padding: 0.55rem 0.7rem;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 0.4rem 0.8rem;
+  background: rgb(255 255 255 / 92%);
+  color: var(--muted);
+  font-size: 0.58rem;
+  font-weight: 750;
+}
+
+.route-map__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.route-map__legend i {
+  width: 1.4rem;
+  border-top: 3px solid var(--accent);
+}
+
+.route-map__legend i[data-kind="proposed"] {
+  border-top: 3px dashed #8a5b16;
+}
+
 .route-map__marker {
   display: grid;
   width: 2rem;

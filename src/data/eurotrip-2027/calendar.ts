@@ -49,9 +49,11 @@ export const tripCalendar: readonly TripDaySummary[] = [
     localDate: "2027-06-03",
     baseCity: "Barcelona",
     locationLabel: "Barcelona",
-    title: "Día en Barcelona",
+    title: "Gaudí esencial y Montjuïc opcional",
+    detail:
+      "Park Güell y Sagrada Família por reservar · exteriores de Passeig de Gràcia · regreso al alojamiento",
     kind: "base",
-    status: "planned",
+    status: "to_verify",
   },
   {
     localDate: "2027-06-04",

@@ -11,13 +11,14 @@ describe("EuroTrip 2027 daily routes", () => {
     return (hours ?? 0) * 60 + (minutes ?? 0);
   };
 
-  it("stores the first four adaptive daily routes", () => {
-    expect(dailyRoutes).toHaveLength(4);
+  it("stores the first five adaptive daily routes", () => {
+    expect(dailyRoutes).toHaveLength(5);
     expect(dailyRoutes.map(({ localDate }) => localDate)).toEqual([
       "2027-05-30",
       "2027-05-31",
       "2027-06-01",
       "2027-06-02",
+      "2027-06-03",
     ]);
 
     const arrivalRoute = dailyRoutes[0];
@@ -133,14 +134,54 @@ describe("EuroTrip 2027 daily routes", () => {
       { distanceMeters: 3335, durationMinutes: 41 },
       { distanceMeters: 5125, durationMinutes: 63 },
     ]);
+
+    const dayFiveRoute = dailyRoutes[4];
+
+    expect(dayFiveRoute).toMatchObject({
+      dayPlanId: "day-2027-06-03",
+      defaultOptionId: "relaxed",
+      switchDuringRoute: true,
+    });
+    expect(dayFiveRoute?.options.map(({ id }) => id)).toEqual([
+      "relaxed",
+      "complete",
+    ]);
+    expect(dayFiveRoute?.options.map(({ stops }) => stops.length)).toEqual([
+      9, 11,
+    ]);
+    expect(
+      dayFiveRoute?.options.map(({ segments }) =>
+        segments
+          .filter((segment) => segment.routingStatus === "verified")
+          .map(({ distanceMeters, durationMinutes }) => ({
+            distanceMeters,
+            durationMinutes,
+          })),
+      ),
+    ).toEqual([
+      [{ distanceMeters: 543, durationMinutes: 7 }],
+      [
+        { distanceMeters: 543, durationMinutes: 7 },
+        { distanceMeters: 1066, durationMinutes: 15 },
+      ],
+    ]);
+    expect(
+      dayFiveRoute?.options.map((option) =>
+        "choiceLabel" in option ? option.choiceLabel : undefined,
+      ),
+    ).toEqual(["Terminamos con calma", "Añadimos Montjuïc"]);
   });
 
   it("starts at the current lodging and finishes at the lodging for that night", () => {
     for (const route of dailyRoutes) {
       for (const option of route.options) {
-        expect(option.stops[0]?.placeId).toBe("madrid-airbnb-nunez-de-arce");
+        expect(option.stops[0]?.placeId).toBe(
+          route.localDate === "2027-06-03"
+            ? "barcelona-hospitalet-accommodation-area"
+            : "madrid-airbnb-nunez-de-arce",
+        );
         expect(option.stops.at(-1)?.placeId).toBe(
-          route.localDate === "2027-06-02"
+          route.localDate === "2027-06-02" || route.localDate === "2027-06-03"
             ? "barcelona-hospitalet-accommodation-area"
             : "madrid-airbnb-nunez-de-arce",
         );
@@ -197,13 +238,13 @@ describe("EuroTrip 2027 daily routes", () => {
           (segment) => segment.routingStatus === "verified",
         );
 
-        expect(verifiedSegments).toHaveLength(1);
+        expect(verifiedSegments.length).toBeGreaterThan(0);
 
         for (const segment of verifiedSegments) {
           expect(segment.distanceMeters).toBeGreaterThan(0);
           expect(segment.durationMinutes).toBeGreaterThan(0);
           expect(segment.geometry.type).toBe("LineString");
-          expect(segment.geometry.coordinates.length).toBeGreaterThan(100);
+          expect(segment.geometry.coordinates.length).toBeGreaterThan(2);
           expect(segment.sourceUrl).toMatch(/^https:\/\/valhalla/);
         }
       }

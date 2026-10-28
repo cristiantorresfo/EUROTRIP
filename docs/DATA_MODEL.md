@@ -9,11 +9,11 @@ Representarlo al inicio mediante interfaces TypeScript y fixtures; NO obliga a i
   checkOutByLocal nullable (sin dato de momento), nights, status (`confirmed`)
   y privateLocationRef como identificador estable.
 - **CityStay:** id, city, arrivalDate, departureDate, accommodationId. Madrid tiene dos estancias/ids distintos.
-- **Place:** id, city, title, geoCoordinates opcional y solo tras validación, category, visitDurationMin, officialUrl opcional.
+- **Place:** id, city, title, geoCoordinates opcional y con estado `verified|approximate`, category, visitDurationMin, officialUrl opcional.
 - **DayPlan:** id, localDate `YYYY-MM-DD`, baseCity, suggestedDayTrip opcional, plannedActivities y status (`confirmed|planned|estimated|to_verify`).
 - **Activity:** id, dayId, placeId opcional, title, category (`visit|meal|rest|transfer|other`), startsAtLocal/endsAtLocal nullable, `suggestedTimeWindow` de planificación, expectedDurationMinutes, fixedReservation boolean, order, notes, status. La ventana sugerida no implica una reserva.
 - **DailyRoute:** recorrido de una jornada, asociado a `DayPlan`, con una o más opciones, opción predeterminada y regla para cambiar de intensidad durante la marcha.
-- **DailyRouteOption:** variante concreta (`relaxed`, `complete`, etc.) con intensidad, criterio de selección, duración total orientativa, paradas ordenadas, segmentos calculados, regreso sugerido y destino de regreso opcional.
+- **DailyRouteOption:** variante concreta (`relaxed`, `complete`, etc.) con intensidad, criterio de selección, textos breves opcionales para distinguir su tarjeta, duración total orientativa, paradas ordenadas, segmentos calculados, regreso sugerido y destino de regreso opcional.
 - **RouteStop:** posición ordenada dentro de `DailyRoute`, vinculada a un
   `Place` público, con `suggestedTimeWindow` opcional. Las coordenadas deben
   estar validadas; las seis direcciones de alojamiento están autorizadas para
@@ -46,9 +46,11 @@ teléfonos, documentos ni los demás contenidos privados de las capturas.**
 6. Guardar datetimes con zona horaria cuando se conozcan servicios; no inferir huso desde navegador para planificación en país diferente.
 7. Las distancias en línea recta no reemplazan rutas reales; no fingir precisión.
 8. Preservar reservas fijas y límites de apertura antes de reorganizar actividades.
-9. Las seis direcciones de alojamiento están autorizadas para publicación. Las
-   coordenadas solo se añaden después de validarlas con un proveedor; por ahora
-   `madrid-centro` es el único alojamiento geocodificado.
+9. Las seis direcciones de alojamiento están autorizadas para publicación y,
+   desde el 28/10/2026, para enviarse a proveedores externos de geocodificación.
+   `madrid-centro` tiene coordenada verificada. `barcelona-hospitalet` conserva
+   una coordenada aproximada del tramo de calle porque el proveedor no resolvió
+   el portal 20; la UI debe mostrar esa diferencia.
 10. El archivo privado no se lee en tiempo de compilación para embeber su contenido en el frontend.
 11. COP y EUR se presentan por separado hasta contar con una tasa y fecha de referencia explícitas; nunca se suman automáticamente.
 12. La aplicación no compara ni compra transportes: incorpora el servicio real solamente después de que el viajero confirme la compra.
@@ -56,3 +58,8 @@ teléfonos, documentos ni los demás contenidos privados de las capturas.**
 14. Los recordatorios críticos deben poder exportarse al calendario del teléfono; no depender exclusivamente de notificaciones web.
 15. Un día de llegada puede ofrecer una ruta base y una extensión. La selección es flexible, no una reserva, y puede cambiar durante el recorrido sin alterar los datos confirmados.
 16. Las horas orientativas de actividades y paradas usan ventanas locales con fuente `planning`. Deben sustituirse o ajustarse cuando exista una entrada o un transporte comprado, sin copiarlas a `startsAtLocal`/`endsAtLocal` como si fueran datos confirmados.
+17. Una opción puede contener varias geometrías peatonales verificadas y tramos
+    de transporte pendientes. El mapa dibuja las primeras con línea sólida. Una
+    conexión pendiente puede representarse con una línea recta discontinua solo
+    si la leyenda aclara que es un enlace esquemático y que no sigue la vía,
+    línea de transporte ni duración reales.

@@ -64,6 +64,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [x] Modelar el traslado del 2 de junio a Barcelona con check-in, descanso,
   variantes por el centro histórico, extensión opcional a Barceloneta y
   regreso estratégico a la dirección publicada en L’Hospitalet.
+- [x] Modelar el 3 de junio desde/hasta el alojamiento de Barcelona con Park
+  Güell, Sagrada Família, exteriores de Casa Milà y Casa Batlló, pausas,
+  variantes diferenciadas y extensión opcional al mirador de Montjuïc.
 - [ ] Validar el patrón en iPhone y extenderlo progresivamente a cada ciudad y
   excursión: Barcelona, París, Bolonia, Venecia, Florencia y Roma.
 
@@ -100,8 +103,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 
 ## Siguiente incremento recomendado
 
-Validar en iPhone la selección y los mapas adaptables de los cuatro primeros
+Validar en iPhone la selección y los mapas adaptables de los cinco primeros
 días. Después, comprar o definir las franjas del Prado, Toledo y el tren a
-Barcelona; la próxima jornada será el día completo de arquitectura de Gaudí.
+Barcelona, además de las entradas de Park Güell y Sagrada Família. La próxima
+jornada por detallar será el traslado Barcelona→París.
 Las seis direcciones exactas están autorizadas para navegación pública; los
 demás datos privados continúan fuera del cliente.

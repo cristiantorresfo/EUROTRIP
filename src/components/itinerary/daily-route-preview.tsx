@@ -60,18 +60,35 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
       : [];
   });
   const mapStops = resolvedStops.filter(({ stop }) => stop.mapVisible !== false);
-  const routedSegment = selectedOption.segments.find(
-    (segment) => segment.routingStatus === "verified",
+  const routedSegments = selectedOption.segments.filter(
+    (segment): segment is Extract<
+      (typeof selectedOption.segments)[number],
+      { routingStatus: "verified" }
+    > => segment.routingStatus === "verified",
+  );
+  const routedDistanceMeters = routedSegments.reduce(
+    (total, segment) => total + segment.distanceMeters,
+    0,
+  );
+  const routedDurationMinutes = routedSegments.reduce(
+    (total, segment) => total + segment.durationMinutes,
+    0,
   );
   const isFullyWalkable = selectedOption.segments.every(
     (segment) =>
       segment.routingStatus === "verified" && segment.mode === "walk",
   );
-  const routedStartIndex = routedSegment
-    ? resolvedStops.findIndex(({ stop }) => stop.id === routedSegment.fromStopId)
+  const singleRoutedSegment =
+    routedSegments.length === 1 ? routedSegments[0] : undefined;
+  const routedStartIndex = singleRoutedSegment
+    ? resolvedStops.findIndex(
+        ({ stop }) => stop.id === singleRoutedSegment.fromStopId,
+      )
     : -1;
-  const routedEndIndex = routedSegment
-    ? resolvedStops.findIndex(({ stop }) => stop.id === routedSegment.toStopId)
+  const routedEndIndex = singleRoutedSegment
+    ? resolvedStops.findIndex(
+        ({ stop }) => stop.id === singleRoutedSegment.toStopId,
+      )
     : -1;
   const directionStops = isFullyWalkable
     ? resolvedStops
@@ -144,14 +161,16 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
                     </span>
                     <span className="route-option-card__content">
                       <span className="route-option-card__eyebrow">
-                        {isRelaxed
-                          ? "Recomendado al llegar"
-                          : "Para aprovechar la tarde"}
+                        {option.choiceEyebrow ??
+                          (isRelaxed
+                            ? "Recomendado al llegar"
+                            : "Para aprovechar la tarde")}
                       </span>
                       <strong>
-                        {isRelaxed
-                          ? "Estamos cansados"
-                          : "Tenemos buena energía"}
+                        {option.choiceLabel ??
+                          (isRelaxed
+                            ? "Estamos cansados"
+                            : "Tenemos buena energía")}
                       </strong>
                       <span className="route-option-card__name">
                         {option.name}
@@ -189,16 +208,16 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
           </div>
         </div>
 
-        {routedSegment && mapStops.length >= 2 ? (
+        {routedSegments.length > 0 && mapStops.length >= 2 ? (
           <>
             <dl className="route-preview__facts">
               <div>
-                <dt>Distancia</dt>
-                <dd>{(routedSegment.distanceMeters / 1000).toFixed(1)} km</dd>
+                <dt>Distancia calculada</dt>
+                <dd>{(routedDistanceMeters / 1000).toFixed(1)} km</dd>
               </div>
               <div>
-                <dt>Caminata</dt>
-                <dd>≈ {routedSegment.durationMinutes} min</dd>
+                <dt>A pie calculado</dt>
+                <dd>≈ {routedDurationMinutes} min</dd>
               </div>
               <div>
                 <dt>Intensidad</dt>
@@ -214,7 +233,7 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
                 order: stop.order,
                 coordinates,
               }))}
-              segment={routedSegment}
+              segments={selectedOption.segments}
             />
           </>
         ) : null}
@@ -242,47 +261,61 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
         ) : null}
 
         <ol className="route-stop-list">
-          {resolvedStops.map(({ stop, coordinates }) => (
-            <li key={stop.id}>
-              <span aria-hidden="true">{stop.order}</span>
-              <div>
-                <div className="route-stop-list__title">
-                  <h4>{stop.label}</h4>
-                  {stop.optional ? <small>Opcional</small> : null}
-                </div>
-                {stop.suggestedTimeWindow ? (
-                  <p className="route-stop-list__time">
-                    <Clock3 aria-hidden="true" size={13} />
-                    <strong>
-                      {stop.suggestedTimeWindow.start}–
-                      {stop.suggestedTimeWindow.end}
-                    </strong>
-                    <span>orientativo</span>
+          {selectedOption.stops.map((stop) => {
+            const coordinates = places.find(
+              (place) => place.id === stop.placeId,
+            )?.geoCoordinates;
+
+            return (
+              <li key={stop.id}>
+                <span aria-hidden="true">{stop.order}</span>
+                <div>
+                  <div className="route-stop-list__title">
+                    <h4>{stop.label}</h4>
+                    {stop.optional ? <small>Opcional</small> : null}
+                  </div>
+                  {stop.suggestedTimeWindow ? (
+                    <p className="route-stop-list__time">
+                      <Clock3 aria-hidden="true" size={13} />
+                      <strong>
+                        {stop.suggestedTimeWindow.start}–
+                        {stop.suggestedTimeWindow.end}
+                      </strong>
+                      <span>orientativo</span>
+                    </p>
+                  ) : null}
+                  <p>
+                    <MapPinCheck aria-hidden="true" size={13} />
+                    {stop.estimatedVisitMinutes
+                      ? `≈ ${stop.estimatedVisitMinutes} min`
+                      : coordinates
+                        ? coordinates.verificationStatus === "verified"
+                          ? "Coordenada pública verificada"
+                          : "Ubicación aproximada de la calle"
+                        : "Ubicación o traslado por verificar"}
+                    {stop.visitMode === "exterior" ? " · solo exterior" : ""}
+                    {stop.preferredMoment === "sunset"
+                      ? " · al atardecer"
+                      : ""}
                   </p>
-                ) : null}
-                <p>
-                  <MapPinCheck aria-hidden="true" size={13} />
-                  {stop.estimatedVisitMinutes
-                    ? `≈ ${stop.estimatedVisitMinutes} min`
-                    : "Coordenada pública verificada"}
-                  {stop.visitMode === "exterior" ? " · solo exterior" : ""}
-                  {stop.preferredMoment === "sunset" ? " · al atardecer" : ""}
-                </p>
-                {stop.highlights?.length ? (
-                  <p>{stop.highlights.join(" · ")}</p>
-                ) : null}
-                {stop.notes ? <p>{stop.notes}</p> : null}
-                <a
-                  href={coordinates.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Ver coordenada
-                  <ExternalLink aria-hidden="true" size={12} />
-                </a>
-              </div>
-            </li>
-          ))}
+                  {stop.highlights?.length ? (
+                    <p>{stop.highlights.join(" · ")}</p>
+                  ) : null}
+                  {stop.notes ? <p>{stop.notes}</p> : null}
+                  {coordinates ? (
+                    <a
+                      href={coordinates.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Ver coordenada
+                      <ExternalLink aria-hidden="true" size={12} />
+                    </a>
+                  ) : null}
+                </div>
+              </li>
+            );
+          })}
         </ol>
 
         {selectedOption.returnRoute ? (
@@ -316,18 +349,21 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
         ) : null}
         {route.notes ? <p className="route-preview__note">{route.notes}</p> : null}
 
-        {routedSegment ? (
+        {routedSegments[0] ? (
           <p className="route-preview__source">
-            Caminata calculada con Valhalla y datos de OpenStreetMap el{" "}
+            {routedSegments.length === 1
+              ? "Caminata calculada"
+              : "Caminatas calculadas"}{" "}
+            con Valhalla y datos de OpenStreetMap el{" "}
             {new Intl.DateTimeFormat("es-CO", {
               day: "numeric",
               month: "short",
               year: "numeric",
               timeZone: "UTC",
-            }).format(new Date(`${routedSegment.verifiedAt}T00:00:00Z`))}
+            }).format(new Date(`${routedSegments[0].verifiedAt}T00:00:00Z`))}
             . No reemplaza señalización, cierres ni condiciones reales.
             <a
-              href={routedSegment.sourceUrl}
+              href={routedSegments[0].sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -346,7 +382,7 @@ export function DailyRoutePreview({ route, places }: DailyRoutePreviewProps) {
           >
             {isFullyWalkable
               ? "Abrir esta variante en Google Maps"
-              : "Abrir la caminata histórica en Google Maps"}
+              : "Abrir el tramo peatonal en Google Maps"}
             <ExternalLink aria-hidden="true" size={15} />
           </a>
         ) : null}

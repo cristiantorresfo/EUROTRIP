@@ -52,7 +52,7 @@ export interface CityStay {
 export interface GeoCoordinates {
   readonly latitude: number;
   readonly longitude: number;
-  readonly verificationStatus: "verified";
+  readonly verificationStatus: "verified" | "approximate";
   readonly sourceUrl: string;
   readonly verifiedAt: LocalDate;
 }
@@ -172,6 +172,9 @@ export type RouteSegment = PendingRouteSegment | VerifiedRouteSegment;
 export interface DailyRouteOption {
   readonly id: string;
   readonly name: string;
+  /** Short copy used by the option card; falls back to the generic labels. */
+  readonly choiceEyebrow?: string;
+  readonly choiceLabel?: string;
   readonly recommendedWhen: string;
   readonly intensity: RouteIntensity;
   /** Human-readable total including visits and pauses, not only walking. */

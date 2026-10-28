@@ -81,6 +81,10 @@ confirmados dentro del día correspondiente y sus recordatorios.
   excluidos. Los recorridos diarios son la siguiente prioridad: MapLibre y un
   proveedor con licencia adecuada para visualización, geometrías verificables
   para la ruta y Google Maps como navegación externa.
+- Desde el 28/10/2026, el viajero autoriza enviar las direcciones de alojamiento
+  compartidas —anteriores y futuras— a proveedores externos de geocodificación.
+  Si un proveedor solo resuelve la calle, la coordenada debe marcarse como
+  aproximada y nunca presentarse como el portal exacto.
 - ChatGPT Plus/Codex usados para planificar/programar, no API de IA en producción.
 - El día de llegada a Madrid ofrece una ruta relajada y una completa, sin horas
   rígidas y con posibilidad de cambiar a la corta durante el recorrido. Ambas
@@ -108,6 +112,20 @@ confirmados dentro del día correspondiente y sus recordatorios.
   Plaça Reial y Port Vell. Barceloneta es la extensión opcional del plan
   completo. El regreso final al alojamiento es en transporte público o taxi y
   la dirección exacta se muestra para navegación.
+- El 3 de junio parte y termina en el alojamiento de L’Hospitalet. Prioriza
+  Park Güell (franja objetivo 09:30), Sagrada Família (franja objetivo 12:15),
+  Casa Milà y Casa Batlló por el exterior. La variante recomendada regresa
+  después de Passeig de Gràcia; la completa añade Plaça d’Espanya y el mirador
+  exterior del Palau Nacional de Montjuïc. Las entradas, líneas de transporte
+  y horarios de 2027 siguen pendientes. Como referencia consultada el
+  28/10/2026, las tarifas oficiales vigentes eran 18 € para Park Güell y 26 €
+  para la entrada base de Sagrada Família:
+  [Park Güell](https://parkguell.barcelona/index.php/es/planifica-la-visita/tarifas-y-horarios)
+  y [Sagrada Família](https://sagradafamilia.org/tarifes).
+  El mapa diferencia caminatas calculadas mediante línea sólida y conexiones
+  de transporte pendientes mediante línea discontinua esquemática. La posición
+  del alojamiento es aproximada al tramo de Carrer d’Enric Morera porque
+  Nominatim no resolvió el número 20.
 
 ## 9. Estado del código
 Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.

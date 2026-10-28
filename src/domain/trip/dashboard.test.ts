@@ -34,8 +34,8 @@ describe("dashboard summary", () => {
     ).toMatchObject({
       kind: "activity",
       localDate: "2027-06-03",
-      title: "Sagrada Família",
-      status: "to_verify",
+      title: "Desayuno y preparación en el alojamiento",
+      status: "planned",
     });
   });
 
@@ -54,8 +54,8 @@ describe("dashboard summary", () => {
     expect(getItineraryProgress(tripCalendar, tripDayPlans)).toEqual({
       coveredDayCount: 15,
       totalDayCount: 17,
-      activityCount: 60,
-      recoveryBlockCount: 18,
+      activityCount: 69,
+      recoveryBlockCount: 21,
       reservedActivityCount: 0,
       coveragePercentage: 88,
     });

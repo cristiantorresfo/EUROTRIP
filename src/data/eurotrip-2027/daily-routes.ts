@@ -9,6 +9,8 @@ import type {
 import {
   barcelonaDayFourCompleteGeometry,
   barcelonaDayFourRelaxedGeometry,
+  barcelonaDayFiveMontjuicGeometry,
+  barcelonaDayFivePasseigGeometry,
   madridArrivalCompleteGeometry,
   madridArrivalRelaxedGeometry,
   madridDayTwoCompleteGeometry,
@@ -227,6 +229,133 @@ function barcelonaRouteSegments(
   ];
 }
 
+function barcelonaDayFiveRouteSegments(
+  optionId: "relaxed" | "complete",
+): readonly RouteSegment[] {
+  const stopId = (suffix: string) =>
+    `barcelona-day-five-${optionId}-${suffix}`;
+  const pending = (
+    id: string,
+    fromStopId: string,
+    toStopId: string,
+    mode: "metro" | "taxi" | "train" | "other",
+    label: string,
+    notes: string,
+  ): RouteSegment => ({
+    id: `barcelona-day-five-${optionId}-${id}`,
+    fromStopId,
+    toStopId,
+    mode,
+    label,
+    notes,
+    routingStatus: "pending",
+    distanceMeters: null,
+    durationMinutes: null,
+    geometry: null,
+    sourceUrl: null,
+    verifiedAt: null,
+  });
+
+  const sharedSegments: readonly RouteSegment[] = [
+    pending(
+      "accommodation-park",
+      stopId("accommodation-start"),
+      stopId("park-arrival"),
+      "other",
+      "Alojamiento → Park Güell",
+      "Transporte público propuesto y taxi como alternativa. Ruta y duración por confirmar cerca del viaje.",
+    ),
+    pending(
+      "park-sagrada",
+      stopId("park-visit"),
+      stopId("sagrada-access"),
+      "taxi",
+      "Park Güell → Sagrada Família",
+      "Taxi propuesto para conservar energía; tráfico y tiempo real pendientes.",
+    ),
+    pending(
+      "sagrada-passeig",
+      stopId("sagrada-visit"),
+      stopId("casa-mila"),
+      "metro",
+      "Sagrada Família → Passeig de Gràcia",
+      "Metro propuesto después del almuerzo; línea, accesos y operación de 2027 por verificar.",
+    ),
+    {
+      id: `barcelona-day-five-${optionId}-passeig-walk`,
+      fromStopId: stopId("casa-mila"),
+      toStopId: stopId("casa-batllo"),
+      mode: "walk",
+      label: "Casa Milà → Casa Batlló",
+      notes:
+        "Caminata calculada por Passeig de Gràcia entre los dos exteriores modernistas.",
+      routingStatus: "verified",
+      distanceMeters: 543,
+      durationMinutes: 7,
+      geometry: {
+        type: "LineString",
+        coordinates: barcelonaDayFivePasseigGeometry,
+      },
+      sourceUrl:
+        "https://valhalla.github.io/valhalla/api/route/api-reference/",
+      verifiedAt: "2026-10-28",
+    },
+  ];
+
+  if (optionId === "relaxed") {
+    return [
+      ...sharedSegments,
+      pending(
+        "return",
+        stopId("coffee-decision"),
+        stopId("accommodation-return"),
+        "other",
+        "Passeig de Gràcia → alojamiento",
+        "Regreso propuesto en transporte público; combinación y duración exactas por verificar.",
+      ),
+    ];
+  }
+
+  return [
+    ...sharedSegments,
+    pending(
+      "passeig-espanya",
+      stopId("coffee-decision"),
+      stopId("placa-espanya"),
+      "metro",
+      "Passeig de Gràcia → Plaça d’Espanya",
+      "Metro propuesto; servicio, accesos y duración real de 2027 por verificar.",
+    ),
+    {
+      id: "barcelona-day-five-complete-montjuic-walk",
+      fromStopId: stopId("placa-espanya"),
+      toStopId: stopId("palau-nacional"),
+      mode: "walk",
+      label: "Plaça d’Espanya → Palau Nacional",
+      notes:
+        "Subida exterior calculada hasta el mirador. Confirmar escaleras mecánicas, obras y accesibilidad el mismo día.",
+      routingStatus: "verified",
+      distanceMeters: 1066,
+      durationMinutes: 15,
+      geometry: {
+        type: "LineString",
+        coordinates: barcelonaDayFiveMontjuicGeometry,
+      },
+      sourceUrl:
+        "https://valhalla.github.io/valhalla/api/route/api-reference/",
+      verifiedAt: "2026-10-28",
+    },
+    pending(
+      "return",
+      stopId("palau-nacional"),
+      stopId("accommodation-return"),
+      "train",
+      "Montjuïc → alojamiento",
+      "Regreso propuesto a pie hasta la red de FGC y continuación al alojamiento; operación real pendiente.",
+    ),
+  ];
+}
+
 const routeStopTimeWindows = {
   "arrival-relaxed-airbnb-start": planningWindow("16:50", "17:00"),
   "arrival-relaxed-santa-ana": planningWindow("17:05", "17:20"),
@@ -338,6 +467,26 @@ const routeStopTimeWindows = {
   "barcelona-complete-barceloneta": planningWindow("21:00", "21:55"),
   "barcelona-complete-dinner": planningWindow("21:55", "22:45"),
   "barcelona-complete-accommodation-return": planningWindow("22:45", "23:30"),
+  "barcelona-day-five-relaxed-accommodation-start": planningWindow("08:00", "08:10"),
+  "barcelona-day-five-relaxed-park-arrival": planningWindow("09:20", "09:30"),
+  "barcelona-day-five-relaxed-park-visit": planningWindow("09:30", "11:15"),
+  "barcelona-day-five-relaxed-sagrada-access": planningWindow("12:00", "12:15"),
+  "barcelona-day-five-relaxed-sagrada-visit": planningWindow("12:15", "14:00"),
+  "barcelona-day-five-relaxed-casa-mila": planningWindow("15:45", "16:15"),
+  "barcelona-day-five-relaxed-casa-batllo": planningWindow("16:15", "17:00"),
+  "barcelona-day-five-relaxed-coffee-decision": planningWindow("17:00", "17:45"),
+  "barcelona-day-five-relaxed-accommodation-return": planningWindow("18:30", "19:00"),
+  "barcelona-day-five-complete-accommodation-start": planningWindow("08:00", "08:10"),
+  "barcelona-day-five-complete-park-arrival": planningWindow("09:20", "09:30"),
+  "barcelona-day-five-complete-park-visit": planningWindow("09:30", "11:15"),
+  "barcelona-day-five-complete-sagrada-access": planningWindow("12:00", "12:15"),
+  "barcelona-day-five-complete-sagrada-visit": planningWindow("12:15", "14:00"),
+  "barcelona-day-five-complete-casa-mila": planningWindow("15:45", "16:15"),
+  "barcelona-day-five-complete-casa-batllo": planningWindow("16:15", "17:00"),
+  "barcelona-day-five-complete-coffee-decision": planningWindow("17:00", "17:45"),
+  "barcelona-day-five-complete-placa-espanya": planningWindow("18:05", "18:15"),
+  "barcelona-day-five-complete-palau-nacional": planningWindow("18:40", "19:30"),
+  "barcelona-day-five-complete-accommodation-return": planningWindow("20:30", "21:15"),
 } as const satisfies Record<string, LocalTimeWindow>;
 
 const dailyRouteSeeds = [
@@ -1702,6 +1851,273 @@ const dailyRouteSeeds = [
     ],
     notes:
       "Sagrada Família, Park Güell y Passeig de Gràcia quedan para el día completo. El interior de la Catedral y el horario de la Boqueria deben revisarse en 2027.",
+  },
+  {
+    id: "route-2027-06-03-barcelona-gaudi",
+    dayPlanId: "day-2027-06-03",
+    localDate: "2027-06-03",
+    title: "Gaudí esencial con extensión opcional a Montjuïc",
+    status: "routed",
+    summary:
+      "Día completo desde y hasta el alojamiento: Park Güell y Sagrada Família con franjas objetivo, exteriores de Casa Milà y Casa Batlló, pausas protegidas y Montjuïc solo si queda energía.",
+    defaultOptionId: "relaxed",
+    switchDuringRoute: true,
+    switchRule:
+      "La decisión se toma a las 17:45 después del café. Si hay cansancio, calor o retraso, termina en Casa Batlló y regresa al alojamiento; Montjuïc nunca desplaza Park Güell, Sagrada Família ni la pausa de almuerzo.",
+    options: [
+      {
+        id: "relaxed",
+        name: "Gaudí esencial y regreso temprano",
+        choiceEyebrow: "Ritmo recomendado",
+        choiceLabel: "Terminamos con calma",
+        recommendedWhen:
+          "Queremos conservar energía para el traslado del día siguiente o alguna visita tomó más tiempo.",
+        intensity: "medium",
+        estimatedDuration: "≈ 11 horas con traslados, visitas y pausas",
+        stops: [
+          {
+            id: "barcelona-day-five-relaxed-accommodation-start",
+            activityId: "2027-06-03-breakfast-preparation",
+            placeId: "barcelona-hospitalet-accommodation-area",
+            label: "Alojamiento · salida",
+            order: 1,
+            priority: "high",
+            notes: "Desayuno terminado y salida puntual hacia Park Güell.",
+          },
+          {
+            id: "barcelona-day-five-relaxed-park-arrival",
+            activityId: "2027-06-03-transfer-park-guell",
+            placeId: "barcelona-park-guell",
+            label: "Park Güell · margen de acceso",
+            order: 2,
+            priority: "high",
+            notes:
+              "Diez minutos de margen antes de la franja objetivo; entrada todavía no comprada.",
+          },
+          {
+            id: "barcelona-day-five-relaxed-park-visit",
+            activityId: "2027-06-03-park-guell",
+            placeId: "barcelona-park-guell",
+            label: "Park Güell",
+            order: 3,
+            priority: "high",
+            estimatedVisitMinutes: 105,
+            highlights: ["Zona monumental", "Arquitectura de Gaudí", "Miradores"],
+            notes: "Franja objetivo de 09:30; confirmar y comprar para 2027.",
+          },
+          {
+            id: "barcelona-day-five-relaxed-sagrada-access",
+            activityId: "2027-06-03-park-sagrada-transfer",
+            placeId: "barcelona-sagrada-familia",
+            label: "Sagrada Família · exterior y acceso",
+            order: 4,
+            priority: "high",
+            estimatedVisitMinutes: 15,
+            visitMode: "exterior",
+            notes:
+              "Usar este margen para fotografías, control y acceso; confirmar la puerta indicada en la entrada.",
+          },
+          {
+            id: "barcelona-day-five-relaxed-sagrada-visit",
+            activityId: "2027-06-03-sagrada-familia",
+            placeId: "barcelona-sagrada-familia",
+            label: "Sagrada Família · interior",
+            order: 5,
+            priority: "high",
+            estimatedVisitMinutes: 105,
+            highlights: ["Nave central", "Fachadas", "Audioguía si está incluida"],
+            notes: "Franja objetivo de 12:15; entrada todavía no comprada.",
+          },
+          {
+            id: "barcelona-day-five-relaxed-casa-mila",
+            activityId: "2027-06-03-casa-mila",
+            placeId: "barcelona-casa-mila",
+            label: "Casa Milà – La Pedrera",
+            order: 6,
+            priority: "high",
+            estimatedVisitMinutes: 30,
+            visitMode: "exterior",
+            notes: "Sin entrada al edificio.",
+          },
+          {
+            id: "barcelona-day-five-relaxed-casa-batllo",
+            activityId: "2027-06-03-casa-batllo",
+            placeId: "barcelona-casa-batllo",
+            label: "Casa Batlló y Passeig de Gràcia",
+            order: 7,
+            priority: "high",
+            estimatedVisitMinutes: 45,
+            visitMode: "exterior",
+            notes: "Sin entrada al edificio.",
+          },
+          {
+            id: "barcelona-day-five-relaxed-coffee-decision",
+            activityId: "2027-06-03-coffee-decision",
+            placeId: "barcelona-casa-batllo",
+            label: "Café y decisión final",
+            order: 8,
+            priority: "high",
+            estimatedVisitMinutes: 45,
+            notes: "En esta variante se termina aquí y se regresa con calma.",
+          },
+          {
+            id: "barcelona-day-five-relaxed-accommodation-return",
+            activityId: "2027-06-03-return-dinner",
+            placeId: "barcelona-hospitalet-accommodation-area",
+            label: "Alojamiento · regreso final",
+            order: 9,
+            priority: "high",
+            notes: "Cena flexible cerca del alojamiento.",
+          },
+        ],
+        segments: barcelonaDayFiveRouteSegments("relaxed"),
+        returnRoute:
+          "Casa Batlló → alojamiento en L’Hospitalet en transporte público",
+        returnDestination: barcelonaAccommodationAddress,
+        returnNotes:
+          "Combinación y duración por verificar cerca del viaje; usar la dirección exacta publicada como destino.",
+      },
+      {
+        id: "complete",
+        name: "Gaudí + mirador de Montjuïc",
+        choiceEyebrow: "Extensión opcional",
+        choiceLabel: "Añadimos Montjuïc",
+        recommendedWhen:
+          "Terminamos Passeig de Gràcia sin retrasos y el grupo conserva buena energía para otra subida.",
+        intensity: "high",
+        estimatedDuration: "≈ 13,5 horas con traslados, visitas y pausas",
+        stops: [
+          {
+            id: "barcelona-day-five-complete-accommodation-start",
+            activityId: "2027-06-03-breakfast-preparation",
+            placeId: "barcelona-hospitalet-accommodation-area",
+            label: "Alojamiento · salida",
+            order: 1,
+            priority: "high",
+            notes: "Desayuno terminado y salida puntual hacia Park Güell.",
+          },
+          {
+            id: "barcelona-day-five-complete-park-arrival",
+            activityId: "2027-06-03-transfer-park-guell",
+            placeId: "barcelona-park-guell",
+            label: "Park Güell · margen de acceso",
+            order: 2,
+            priority: "high",
+            notes:
+              "Diez minutos de margen antes de la franja objetivo; entrada todavía no comprada.",
+          },
+          {
+            id: "barcelona-day-five-complete-park-visit",
+            activityId: "2027-06-03-park-guell",
+            placeId: "barcelona-park-guell",
+            label: "Park Güell",
+            order: 3,
+            priority: "high",
+            estimatedVisitMinutes: 105,
+            highlights: ["Zona monumental", "Arquitectura de Gaudí", "Miradores"],
+            notes: "Franja objetivo de 09:30; confirmar y comprar para 2027.",
+          },
+          {
+            id: "barcelona-day-five-complete-sagrada-access",
+            activityId: "2027-06-03-park-sagrada-transfer",
+            placeId: "barcelona-sagrada-familia",
+            label: "Sagrada Família · exterior y acceso",
+            order: 4,
+            priority: "high",
+            estimatedVisitMinutes: 15,
+            visitMode: "exterior",
+            notes:
+              "Usar este margen para fotografías, control y acceso; confirmar la puerta indicada en la entrada.",
+          },
+          {
+            id: "barcelona-day-five-complete-sagrada-visit",
+            activityId: "2027-06-03-sagrada-familia",
+            placeId: "barcelona-sagrada-familia",
+            label: "Sagrada Família · interior",
+            order: 5,
+            priority: "high",
+            estimatedVisitMinutes: 105,
+            highlights: ["Nave central", "Fachadas", "Audioguía si está incluida"],
+            notes: "Franja objetivo de 12:15; entrada todavía no comprada.",
+          },
+          {
+            id: "barcelona-day-five-complete-casa-mila",
+            activityId: "2027-06-03-casa-mila",
+            placeId: "barcelona-casa-mila",
+            label: "Casa Milà – La Pedrera",
+            order: 6,
+            priority: "high",
+            estimatedVisitMinutes: 30,
+            visitMode: "exterior",
+            notes: "Sin entrada al edificio.",
+          },
+          {
+            id: "barcelona-day-five-complete-casa-batllo",
+            activityId: "2027-06-03-casa-batllo",
+            placeId: "barcelona-casa-batllo",
+            label: "Casa Batlló y Passeig de Gràcia",
+            order: 7,
+            priority: "high",
+            estimatedVisitMinutes: 45,
+            visitMode: "exterior",
+            notes: "Sin entrada al edificio.",
+          },
+          {
+            id: "barcelona-day-five-complete-coffee-decision",
+            activityId: "2027-06-03-coffee-decision",
+            placeId: "barcelona-casa-batllo",
+            label: "Café y decisión final",
+            order: 8,
+            priority: "high",
+            estimatedVisitMinutes: 45,
+            notes:
+              "Continuar solo si el grupo está bien y el itinerario sigue en hora.",
+          },
+          {
+            id: "barcelona-day-five-complete-placa-espanya",
+            activityId: "2027-06-03-montjuic-extension",
+            placeId: "barcelona-placa-espanya",
+            label: "Plaça d’Espanya",
+            order: 9,
+            priority: "medium",
+            estimatedVisitMinutes: 10,
+            visitMode: "exterior",
+            optional: true,
+          },
+          {
+            id: "barcelona-day-five-complete-palau-nacional",
+            activityId: "2027-06-03-montjuic-extension",
+            placeId: "barcelona-palacio-nacional-montjuic",
+            label: "Palau Nacional y mirador de Montjuïc",
+            order: 10,
+            priority: "medium",
+            estimatedVisitMinutes: 50,
+            visitMode: "exterior",
+            optional: true,
+            highlights: ["Avenida de la Reina Maria Cristina", "Vistas de Barcelona"],
+            notes:
+              "Sin museo, castillo ni teleférico. Confirmar accesibilidad y obras antes de subir.",
+          },
+          {
+            id: "barcelona-day-five-complete-accommodation-return",
+            activityId: "2027-06-03-return-dinner",
+            placeId: "barcelona-hospitalet-accommodation-area",
+            label: "Alojamiento · regreso final",
+            order: 11,
+            priority: "high",
+            notes: "Cena flexible cerca del alojamiento.",
+          },
+        ],
+        segments: barcelonaDayFiveRouteSegments("complete"),
+        returnRoute:
+          "Palau Nacional → red de FGC → alojamiento en L’Hospitalet",
+        returnDestination: barcelonaAccommodationAddress,
+        returnNotes:
+          "La conexión FGC y la duración real siguen pendientes; usar la dirección exacta publicada como destino.",
+      },
+    ],
+    notes:
+      "Park Güell (18 € por persona) y Sagrada Família (entrada base de 26 € por persona) son referencias oficiales consultadas el 28/10/2026, no precios ni reservas de 2027. Total de referencia para cuatro: 176 €. Revalidar antes de comprar.",
   },
 ] as const satisfies readonly DailyRoute[];
 

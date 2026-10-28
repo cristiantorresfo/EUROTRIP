@@ -10,7 +10,7 @@ import {
   setWorkerUrl,
 } from "maplibre-gl";
 
-import type { GeoCoordinates, VerifiedRouteSegment } from "@/domain/trip/types";
+import type { GeoCoordinates, RouteSegment } from "@/domain/trip/types";
 
 const OPEN_FREE_MAP_STYLE = "https://tiles.openfreemap.org/styles/positron";
 
@@ -31,21 +31,42 @@ interface RouteMapStop {
 interface DailyRouteMapProps {
   readonly label: string;
   readonly stops: readonly RouteMapStop[];
-  readonly segment: VerifiedRouteSegment;
+  readonly segments: readonly RouteSegment[];
 }
 
-export function DailyRouteMap({ label, stops, segment }: DailyRouteMapProps) {
+export function DailyRouteMap({ label, stops, segments }: DailyRouteMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
 
-    if (!container || stops.length < 2) return;
+    if (!container || stops.length < 2 || segments.length === 0) return;
+
+    const verifiedSegments = segments.filter(
+      (segment) => segment.routingStatus === "verified",
+    );
+    const proposedConnections = segments.flatMap((segment) => {
+      if (segment.routingStatus !== "pending") return [];
+
+      const from = stops.find((stop) => stop.id === segment.fromStopId);
+      const to = stops.find((stop) => stop.id === segment.toStopId);
+
+      return from && to
+        ? [
+            [
+              [from.coordinates.longitude, from.coordinates.latitude],
+              [to.coordinates.longitude, to.coordinates.latitude],
+            ],
+          ]
+        : [];
+    });
 
     const bounds = new LngLatBounds();
-    for (const [longitude, latitude] of segment.geometry.coordinates) {
-      bounds.extend([longitude, latitude]);
+    for (const segment of verifiedSegments) {
+      for (const [longitude, latitude] of segment.geometry.coordinates) {
+        bounds.extend([longitude, latitude]);
+      }
     }
     for (const stop of stops) {
       bounds.extend([
@@ -64,15 +85,43 @@ export function DailyRouteMap({ label, stops, segment }: DailyRouteMapProps) {
     map.addControl(new NavigationControl({ showCompass: false }), "top-right");
     map.on("error", () => setFailed(true));
     map.on("load", () => {
+      if (proposedConnections.length > 0) {
+        map.addSource("daily-route-proposed", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            properties: {},
+            geometry: {
+              type: "MultiLineString",
+              coordinates: proposedConnections,
+            },
+          },
+        });
+        map.addLayer({
+          id: "daily-route-proposed-line",
+          type: "line",
+          source: "daily-route-proposed",
+          paint: {
+            "line-color": "#8a5b16",
+            "line-width": 3,
+            "line-dasharray": [2, 2],
+            "line-opacity": 0.8,
+          },
+        });
+      }
+
       map.addSource("daily-route", {
         type: "geojson",
         data: {
           type: "Feature",
           properties: {},
           geometry: {
-            type: "LineString",
-            coordinates: segment.geometry.coordinates.map(
-              ([longitude, latitude]) => [longitude, latitude],
+            type: "MultiLineString",
+            coordinates: verifiedSegments.map((segment) =>
+              segment.geometry.coordinates.map(([longitude, latitude]) => [
+                longitude,
+                latitude,
+              ]),
             ),
           },
         },
@@ -143,7 +192,7 @@ export function DailyRouteMap({ label, stops, segment }: DailyRouteMapProps) {
       for (const marker of markers) marker.remove();
       map.remove();
     };
-  }, [segment, stops]);
+  }, [segments, stops]);
 
   return (
     <div className="route-map-shell">
@@ -153,6 +202,18 @@ export function DailyRouteMap({ label, stops, segment }: DailyRouteMapProps) {
         role="img"
         aria-label={label}
       />
+      <div className="route-map__legend" aria-label="Leyenda del mapa">
+        <span>
+          <i data-kind="verified" aria-hidden="true" />
+          Caminata calculada
+        </span>
+        {segments.some((segment) => segment.routingStatus === "pending") ? (
+          <span>
+            <i data-kind="proposed" aria-hidden="true" />
+            Conexión propuesta · no sigue la vía exacta
+          </span>
+        ) : null}
+      </div>
       {failed ? (
         <p className="route-map__fallback">
           El mapa base no pudo cargarse. El orden y el enlace a Google Maps
