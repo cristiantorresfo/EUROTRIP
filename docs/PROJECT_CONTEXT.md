@@ -1,6 +1,6 @@
 # Contexto del proyecto — EuroTrip 2027
 
-Actualizado: **27 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero.
+Actualizado: **29 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero y los recorridos detallados de los días 1–6.
 
 ## 1. Propósito
 Aplicación web mobile-first y PWA para acompañar a 4 viajeros durante Europa 2027. Su función principal es consultar el plan del día, ver paradas ordenadas y recorridos optimizados sobre un mapa, saber qué actividad sigue y recibir recordatorios del itinerario. Los vuelos y trenes se comparan y compran fuera de la aplicación; después se registran aquí como logística confirmada. La información privada solo podrá mostrarse cuando exista autenticación real, salvo datos que el viajero autorice explícitamente a publicar.
@@ -126,6 +126,15 @@ confirmados dentro del día correspondiente y sus recordatorios.
   de transporte pendientes mediante línea discontinua esquemática. La posición
   del alojamiento es aproximada al tramo de Carrer d’Enric Morera porque
   Nominatim no resolvió el número 20.
+- El 4 de junio es un día de traslado Barcelona→París. El vuelo directo sigue
+  sin comprar y la ventana de búsqueda propuesta es 10:00–11:30; no se ha
+  elegido ORY ni CDG. La dirección `paris-centro` sí tiene coordenada exacta
+  verificada. Después del check-in desde las 15:00, ambas variantes conservan
+  Trocadéro, Pont d’Iéna y la Torre Eiffel por el exterior. La opción principal
+  intenta activar Batobus y terminar en Saint-Germain-des-Prés; la relajada lo
+  sustituye por Champ-de-Mars. El pase vigente consultado el 29/10/2026 cuesta
+  23 € por adulto y dura 24 horas consecutivas desde el primer uso, pero la
+  compra y la operación de junio de 2027 siguen pendientes.
 
 ## 9. Estado del código
 Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.

@@ -59,10 +59,11 @@ export const tripCalendar: readonly TripDaySummary[] = [
     localDate: "2027-06-04",
     baseCity: "París",
     locationLabel: "Barcelona → París",
-    title: "Vuelo propuesto y tarde en París",
-    detail: "Sin comprar · salida objetivo 08:00–11:00",
+    title: "Llegada a París, Torre Eiffel y Sena",
+    detail:
+      "Vuelo sin comprar · salida objetivo 10:00–11:30 · Batobus condicionado a la llegada",
     kind: "travel",
-    status: "planned",
+    status: "to_verify",
   },
   {
     localDate: "2027-06-05",

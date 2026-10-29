@@ -18,7 +18,7 @@ Representarlo al inicio mediante interfaces TypeScript y fixtures; NO obliga a i
   `Place` público, con `suggestedTimeWindow` opcional. Las coordenadas deben
   estar validadas; las seis direcciones de alojamiento están autorizadas para
   publicación aunque todavía no todas tengan coordenadas verificadas.
-- **RouteSegment:** unión entre dos paradas consecutivas, con medio (`walk|metro|bus|train|taxi|other`), geometría verificable, distancia y duración nullable, proveedor y fecha de consulta. Un tramo pendiente no debe dibujarse como si estuviera calculado.
+- **RouteSegment:** unión entre dos paradas consecutivas, con medio (`walk|metro|bus|train|flight|boat|taxi|other`), geometría verificable, distancia y duración nullable, proveedor y fecha de consulta. Un tramo pendiente no debe dibujarse como si estuviera calculado.
 - **TransportLeg:** id, originId, destinationId, mode (`walk|metro|bus|train|flight|other`), preferredDepartureWindow optional, actualDepartureAt/actualArrivalAt nullable, fare estimate, `bookingStatus` (`not_booked|booked`), actualAirportOrStation optional. **No convertir ventanas en reservas.**
 - **Reminder:** aviso vinculado a una actividad, reserva o traslado confirmado; incluye instante con zona horaria, anticipación y mecanismo (`calendar|notification`).
 - **Expense:** id, amount, currency, category, paidBy, splits, paidStatus, exchangeRateAtBooking opcional.
@@ -50,7 +50,8 @@ teléfonos, documentos ni los demás contenidos privados de las capturas.**
    desde el 28/10/2026, para enviarse a proveedores externos de geocodificación.
    `madrid-centro` tiene coordenada verificada. `barcelona-hospitalet` conserva
    una coordenada aproximada del tramo de calle porque el proveedor no resolvió
-   el portal 20; la UI debe mostrar esa diferencia.
+   el portal 20; `paris-centro` tiene coordenada exacta del número 199. La UI
+   debe mostrar cualquier diferencia de precisión.
 10. El archivo privado no se lee en tiempo de compilación para embeber su contenido en el frontend.
 11. COP y EUR se presentan por separado hasta contar con una tasa y fecha de referencia explícitas; nunca se suman automáticamente.
 12. La aplicación no compara ni compra transportes: incorpora el servicio real solamente después de que el viajero confirme la compra.
@@ -63,3 +64,6 @@ teléfonos, documentos ni los demás contenidos privados de las capturas.**
     conexión pendiente puede representarse con una línea recta discontinua solo
     si la leyenda aclara que es un enlace esquemático y que no sigue la vía,
     línea de transporte ni duración reales.
+18. En un día de vuelo sin billete, aeropuerto y horas permanecen pendientes.
+    Una cronología usada para diseñar la tarde es un escenario condicional y no
+    debe llenar `actualDepartureAt`, `actualArrivalAt` ni `actualAirportOrStation`.

@@ -15,6 +15,8 @@ import {
   madridArrivalRelaxedGeometry,
   madridDayTwoCompleteGeometry,
   madridDayTwoRelaxedGeometry,
+  parisDaySixBatobusGeometry,
+  parisDaySixRelaxedGeometry,
   toledoDayThreeCompleteGeometry,
   toledoDayThreeRelaxedGeometry,
 } from "./route-geometries";
@@ -25,6 +27,7 @@ const madridCenterAccommodationAddress =
   accommodationAddresses["madrid-centro"];
 const barcelonaAccommodationAddress =
   accommodationAddresses["barcelona-hospitalet"];
+const parisAccommodationAddress = accommodationAddresses["paris-centro"];
 
 function planningWindow(start: LocalTime, end: LocalTime): LocalTimeWindow {
   return { start, end, source: "planning" };
@@ -356,6 +359,125 @@ function barcelonaDayFiveRouteSegments(
   ];
 }
 
+function parisDaySixRouteSegments(
+  optionId: "batobus" | "relaxed",
+  geometry: VerifiedRouteSegment["geometry"]["coordinates"],
+  distanceMeters: number,
+  durationMinutes: number,
+): readonly RouteSegment[] {
+  const stopId = (suffix: string) => `paris-${optionId}-${suffix}`;
+  const pending = (
+    id: string,
+    fromStopId: string,
+    toStopId: string,
+    mode: "metro" | "flight" | "boat" | "other",
+    label: string,
+    notes: string,
+  ): RouteSegment => ({
+    id: `paris-${optionId}-${id}`,
+    fromStopId,
+    toStopId,
+    mode,
+    label,
+    notes,
+    routingStatus: "pending",
+    distanceMeters: null,
+    durationMinutes: null,
+    geometry: null,
+    sourceUrl: null,
+    verifiedAt: null,
+  });
+
+  const walkingEnd = optionId === "batobus" ? "batobus-dock" : "champ-de-mars";
+  const sharedSegments: readonly RouteSegment[] = [
+    pending(
+      "accommodation-bcn",
+      stopId("barcelona-accommodation-start"),
+      stopId("bcn-airport"),
+      "other",
+      "Airbnb de Barcelona → aeropuerto BCN",
+      "FGC + L9 Sud o taxi son alternativas por comparar. Terminal, margen y duración dependen del vuelo comprado.",
+    ),
+    pending(
+      "flight",
+      stopId("bcn-airport"),
+      stopId("paris-airport"),
+      "flight",
+      "Barcelona → París",
+      "Vuelo directo preferido, todavía sin comprar. Aeropuerto, servicio y horas reales pendientes.",
+    ),
+    pending(
+      "airport-accommodation",
+      stopId("paris-airport"),
+      stopId("paris-accommodation"),
+      "other",
+      "Aeropuerto de París → Airbnb",
+      "Comparar taxi oficial y transporte público cuando se confirme si la llegada es a ORY o CDG.",
+    ),
+    pending(
+      "accommodation-trocadero",
+      stopId("paris-accommodation"),
+      stopId("trocadero"),
+      "metro",
+      "Airbnb → Trocadéro",
+      "Línea 9 propuesta desde Strasbourg–Saint-Denis; operación y accesos de 2027 por verificar.",
+    ),
+    {
+      id: `paris-${optionId}-eiffel-walk`,
+      fromStopId: stopId("trocadero"),
+      toStopId: stopId(walkingEnd),
+      mode: "walk",
+      label:
+        optionId === "batobus"
+          ? "Trocadéro → Torre Eiffel → embarcadero"
+          : "Trocadéro → Torre Eiffel → Champ-de-Mars",
+      notes:
+        "Geometría calculada pasando por Jardins du Trocadéro, Pont d’Iéna y la Torre Eiffel.",
+      routingStatus: "verified",
+      distanceMeters,
+      durationMinutes,
+      geometry: { type: "LineString", coordinates: geometry },
+      sourceUrl:
+        "https://valhalla.github.io/valhalla/api/route/api-reference/",
+      verifiedAt: "2026-10-29",
+    },
+  ];
+
+  if (optionId === "batobus") {
+    return [
+      ...sharedSegments,
+      pending(
+        "batobus",
+        stopId("batobus-dock"),
+        stopId("saint-germain"),
+        "boat",
+        "Batobus Tour Eiffel → Saint-Germain-des-Prés",
+        "Pase de 24 horas y salida compatibles pendientes; no embarcar si compromete el regreso.",
+      ),
+      pending(
+        "return",
+        stopId("saint-germain"),
+        stopId("paris-accommodation-return"),
+        "metro",
+        "Saint-Germain-des-Prés → Airbnb",
+        "Línea 4 propuesta hasta Réaumur–Sébastopol; operación de 2027 por verificar.",
+      ),
+    ];
+  }
+
+  return [
+    ...sharedSegments,
+    pending(
+      "return",
+      stopId("champ-de-mars"),
+      stopId("paris-accommodation-return"),
+      "metro",
+      "Champ-de-Mars → Airbnb",
+      "Caminar a École Militaire y usar L8 hasta Strasbourg–Saint-Denis es la propuesta por verificar.",
+    ),
+  ];
+}
+
 const routeStopTimeWindows = {
   "arrival-relaxed-airbnb-start": planningWindow("16:50", "17:00"),
   "arrival-relaxed-santa-ana": planningWindow("17:05", "17:20"),
@@ -487,6 +609,25 @@ const routeStopTimeWindows = {
   "barcelona-day-five-complete-placa-espanya": planningWindow("18:05", "18:15"),
   "barcelona-day-five-complete-palau-nacional": planningWindow("18:40", "19:30"),
   "barcelona-day-five-complete-accommodation-return": planningWindow("20:30", "21:15"),
+  "paris-batobus-barcelona-accommodation-start": planningWindow("08:00", "09:00"),
+  "paris-batobus-bcn-airport": planningWindow("09:00", "11:00"),
+  "paris-batobus-paris-airport": planningWindow("13:00", "14:00"),
+  "paris-batobus-paris-accommodation": planningWindow("15:15", "16:30"),
+  "paris-batobus-trocadero": planningWindow("17:10", "17:45"),
+  "paris-batobus-pont-iena": planningWindow("17:45", "18:05"),
+  "paris-batobus-eiffel": planningWindow("18:05", "18:25"),
+  "paris-batobus-batobus-dock": planningWindow("18:25", "18:45"),
+  "paris-batobus-saint-germain": planningWindow("19:30", "20:30"),
+  "paris-batobus-paris-accommodation-return": planningWindow("21:00", "21:15"),
+  "paris-relaxed-barcelona-accommodation-start": planningWindow("08:00", "09:00"),
+  "paris-relaxed-bcn-airport": planningWindow("09:00", "11:00"),
+  "paris-relaxed-paris-airport": planningWindow("13:00", "14:00"),
+  "paris-relaxed-paris-accommodation": planningWindow("15:15", "16:30"),
+  "paris-relaxed-trocadero": planningWindow("17:10", "18:00"),
+  "paris-relaxed-pont-iena": planningWindow("18:00", "18:30"),
+  "paris-relaxed-eiffel": planningWindow("18:30", "19:00"),
+  "paris-relaxed-champ-de-mars": planningWindow("19:00", "19:40"),
+  "paris-relaxed-paris-accommodation-return": planningWindow("20:30", "21:00"),
 } as const satisfies Record<string, LocalTimeWindow>;
 
 const dailyRouteSeeds = [
@@ -2118,6 +2259,265 @@ const dailyRouteSeeds = [
     ],
     notes:
       "Park Güell (18 € por persona) y Sagrada Família (entrada base de 26 € por persona) son referencias oficiales consultadas el 28/10/2026, no precios ni reservas de 2027. Total de referencia para cuatro: 176 €. Revalidar antes de comprar.",
+  },
+  {
+    id: "route-2027-06-04-paris-arrival",
+    dayPlanId: "day-2027-06-04",
+    localDate: "2027-06-04",
+    title: "Llegada a París, Torre Eiffel y primera tarde junto al Sena",
+    status: "routed",
+    summary:
+      "Día de traslado desde el alojamiento de Barcelona hasta el Airbnb de París. La tarde conserva Trocadéro, Pont d’Iéna y el exterior de la Torre Eiffel; Batobus solo se activa si el vuelo y la operación real lo permiten.",
+    defaultOptionId: "batobus_evening",
+    switchDuringRoute: true,
+    switchRule:
+      "Decidir a las 16:30 después del check-in. Si se llega tarde, hay cansancio, llueve fuerte o no existe una salida compatible de Batobus, cambiar al plan relajado y permanecer en tierra.",
+    options: [
+      {
+        id: "batobus_evening",
+        name: "Torre Eiffel + Batobus",
+        choiceEyebrow: "Opción principal condicionada",
+        choiceLabel: "Batobus si llegamos a tiempo",
+        recommendedWhen:
+          "El vuelo llega dentro del escenario previsto, terminamos el check-in antes de las 16:30 y existe una salida compatible.",
+        intensity: "medium",
+        estimatedDuration: "≈ 13 horas incluyendo aeropuertos, vuelo y pausas",
+        stops: [
+          {
+            id: "paris-batobus-barcelona-accommodation-start",
+            activityId: "2027-06-04-barcelona-airport",
+            placeId: "barcelona-hospitalet-accommodation-area",
+            label: "Airbnb de Barcelona · salida",
+            order: 1,
+            priority: "high",
+            mapVisible: false,
+            notes:
+              "La hora es un escenario de planificación y se ajustará al vuelo comprado.",
+          },
+          {
+            id: "paris-batobus-bcn-airport",
+            activityId: "2027-06-04-barcelona-airport",
+            placeId: "airport-barcelona-el-prat",
+            label: "Aeropuerto BCN · margen y embarque",
+            order: 2,
+            priority: "high",
+            mapVisible: false,
+            notes: "Terminal y hora real pendientes.",
+          },
+          {
+            id: "paris-batobus-paris-airport",
+            activityId: "2027-06-04-paris-airport-transfer",
+            placeId: "airport-paris-arrival-pending",
+            label: "Aeropuerto de París · llegada y equipaje",
+            order: 3,
+            priority: "high",
+            mapVisible: false,
+            notes: "ORY y CDG siguen siendo alternativas; no hay aeropuerto confirmado.",
+          },
+          {
+            id: "paris-batobus-paris-accommodation",
+            activityId: "2027-06-04-checkin-recovery",
+            placeId: "paris-rue-saint-denis-accommodation",
+            label: "Airbnb de París · check-in y descanso",
+            order: 4,
+            priority: "high",
+            notes:
+              "Dejar maletas, comer algo y reevaluar el plan antes de salir.",
+          },
+          {
+            id: "paris-batobus-trocadero",
+            activityId: "2027-06-04-trocadero",
+            placeId: "paris-trocadero",
+            label: "Trocadéro",
+            order: 5,
+            priority: "high",
+            estimatedVisitMinutes: 35,
+            visitMode: "exterior",
+            highlights: ["Vista frontal de la Torre Eiffel", "Palais de Chaillot"],
+          },
+          {
+            id: "paris-batobus-pont-iena",
+            activityId: "2027-06-04-pont-iena",
+            placeId: "paris-pont-iena",
+            label: "Jardins du Trocadéro y Pont d’Iéna",
+            order: 6,
+            priority: "high",
+            estimatedVisitMinutes: 20,
+            visitMode: "walk_through",
+          },
+          {
+            id: "paris-batobus-eiffel",
+            activityId: "2027-06-04-eiffel-exterior",
+            placeId: "paris-eiffel",
+            label: "Torre Eiffel · exterior",
+            order: 7,
+            priority: "high",
+            estimatedVisitMinutes: 20,
+            visitMode: "exterior",
+            notes: "Sin subida ni entrada reservada.",
+          },
+          {
+            id: "paris-batobus-batobus-dock",
+            activityId: "2027-06-04-evening-branch",
+            placeId: "paris-batobus-eiffel",
+            label: "Batobus · parada Tour Eiffel",
+            order: 8,
+            priority: "medium",
+            estimatedVisitMinutes: 20,
+            optional: true,
+            notes:
+              "Ubicación aproximada del Port de la Bourdonnais. Confirmar acceso, salida y operación antes de activar el pase.",
+          },
+          {
+            id: "paris-batobus-saint-germain",
+            activityId: "2027-06-04-dinner-return",
+            placeId: "paris-saint-germain",
+            label: "Saint-Germain-des-Prés · paseo y cena",
+            order: 9,
+            priority: "medium",
+            estimatedVisitMinutes: 60,
+            optional: true,
+            notes: "Restaurante sin fijar; elegir cerca del desembarque.",
+          },
+          {
+            id: "paris-batobus-paris-accommodation-return",
+            activityId: "2027-06-04-dinner-return",
+            placeId: "paris-rue-saint-denis-accommodation",
+            label: "Airbnb de París · regreso final",
+            order: 10,
+            priority: "high",
+          },
+        ],
+        segments: parisDaySixRouteSegments(
+          "batobus",
+          parisDaySixBatobusGeometry,
+          2012,
+          27,
+        ),
+        returnRoute:
+          "Saint-Germain-des-Prés → Réaumur–Sébastopol → Airbnb",
+        returnDestination: parisAccommodationAddress,
+        returnNotes:
+          "Línea 4 propuesta; regresar sin actividades adicionales y confirmar el servicio real en 2027.",
+      },
+      {
+        id: "relaxed",
+        name: "Torre Eiffel + Champ-de-Mars",
+        choiceEyebrow: "Plan sin presión",
+        choiceLabel: "Tarde tranquila en tierra",
+        recommendedWhen:
+          "El vuelo se retrasa, llegamos cansados o Batobus no ofrece una salida útil.",
+        intensity: "low",
+        estimatedDuration: "≈ 12,5–13 horas incluyendo el traslado",
+        stops: [
+          {
+            id: "paris-relaxed-barcelona-accommodation-start",
+            activityId: "2027-06-04-barcelona-airport",
+            placeId: "barcelona-hospitalet-accommodation-area",
+            label: "Airbnb de Barcelona · salida",
+            order: 1,
+            priority: "high",
+            mapVisible: false,
+            notes:
+              "La hora es un escenario de planificación y se ajustará al vuelo comprado.",
+          },
+          {
+            id: "paris-relaxed-bcn-airport",
+            activityId: "2027-06-04-barcelona-airport",
+            placeId: "airport-barcelona-el-prat",
+            label: "Aeropuerto BCN · margen y embarque",
+            order: 2,
+            priority: "high",
+            mapVisible: false,
+            notes: "Terminal y hora real pendientes.",
+          },
+          {
+            id: "paris-relaxed-paris-airport",
+            activityId: "2027-06-04-paris-airport-transfer",
+            placeId: "airport-paris-arrival-pending",
+            label: "Aeropuerto de París · llegada y equipaje",
+            order: 3,
+            priority: "high",
+            mapVisible: false,
+            notes: "ORY y CDG siguen siendo alternativas; no hay aeropuerto confirmado.",
+          },
+          {
+            id: "paris-relaxed-paris-accommodation",
+            activityId: "2027-06-04-checkin-recovery",
+            placeId: "paris-rue-saint-denis-accommodation",
+            label: "Airbnb de París · check-in y descanso",
+            order: 4,
+            priority: "high",
+            notes: "Dejar maletas, comer algo y descansar antes de salir.",
+          },
+          {
+            id: "paris-relaxed-trocadero",
+            activityId: "2027-06-04-trocadero",
+            placeId: "paris-trocadero",
+            label: "Trocadéro",
+            order: 5,
+            priority: "high",
+            estimatedVisitMinutes: 50,
+            visitMode: "exterior",
+            highlights: ["Vista frontal de la Torre Eiffel", "Palais de Chaillot"],
+          },
+          {
+            id: "paris-relaxed-pont-iena",
+            activityId: "2027-06-04-pont-iena",
+            placeId: "paris-pont-iena",
+            label: "Jardins du Trocadéro y Pont d’Iéna",
+            order: 6,
+            priority: "high",
+            estimatedVisitMinutes: 30,
+            visitMode: "walk_through",
+          },
+          {
+            id: "paris-relaxed-eiffel",
+            activityId: "2027-06-04-eiffel-exterior",
+            placeId: "paris-eiffel",
+            label: "Torre Eiffel · exterior",
+            order: 7,
+            priority: "high",
+            estimatedVisitMinutes: 30,
+            visitMode: "exterior",
+            notes: "Sin subida ni entrada reservada.",
+          },
+          {
+            id: "paris-relaxed-champ-de-mars",
+            activityId: "2027-06-04-evening-branch",
+            placeId: "paris-champ-de-mars",
+            label: "Champ-de-Mars",
+            order: 8,
+            priority: "medium",
+            estimatedVisitMinutes: 40,
+            optional: true,
+            notes: "Pausa tranquila y regreso sin depender de un embarque.",
+          },
+          {
+            id: "paris-relaxed-paris-accommodation-return",
+            activityId: "2027-06-04-dinner-return",
+            placeId: "paris-rue-saint-denis-accommodation",
+            label: "Airbnb de París · regreso final",
+            order: 9,
+            priority: "high",
+            notes: "Cena cerca del alojamiento.",
+          },
+        ],
+        segments: parisDaySixRouteSegments(
+          "relaxed",
+          parisDaySixRelaxedGeometry,
+          2016,
+          27,
+        ),
+        returnRoute:
+          "Champ-de-Mars → École Militaire → Strasbourg–Saint-Denis → Airbnb",
+        returnDestination: parisAccommodationAddress,
+        returnNotes:
+          "Línea 8 propuesta; duración y operación reales por verificar en 2027.",
+      },
+    ],
+    notes:
+      "Batobus cuesta actualmente 23 € por adulto y su pase dura 24 horas consecutivas desde el primer uso: 92 € para cuatro como referencia consultada el 29/10/2026, no como compra ni tarifa garantizada para 2027. Los taxis oficiales publicados para 2025 eran 45 € desde ORY y 56 € desde CDG hacia la rive droite; revalidar al comprar el vuelo.",
   },
 ] as const satisfies readonly DailyRoute[];
 

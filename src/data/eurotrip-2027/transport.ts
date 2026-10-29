@@ -92,12 +92,14 @@ export const plannedTransportLegs = [
     destinationId: "paris",
     mode: "flight",
     fareEstimate: null,
-    planningStatus: "planned",
+    planningStatus: "to_verify",
     bookingStatus: "not_booked",
-    preferredDepartureWindow: { start: "08:00", end: "11:00", source: "planning" },
+    preferredDepartureWindow: { start: "10:00", end: "11:30", source: "planning" },
     actualDepartureAt: null,
     actualArrivalAt: null,
     actualAirportOrStation: null,
+    notes:
+      "Vuelo directo preferido. Comparar BCN→ORY y BCN→CDG con equipaje y traslados; el escenario de las 11:00 permite planear la tarde, pero no es un servicio confirmado.",
   },
   {
     id: "paris-bologna",

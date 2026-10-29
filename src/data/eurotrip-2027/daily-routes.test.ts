@@ -11,14 +11,15 @@ describe("EuroTrip 2027 daily routes", () => {
     return (hours ?? 0) * 60 + (minutes ?? 0);
   };
 
-  it("stores the first five adaptive daily routes", () => {
-    expect(dailyRoutes).toHaveLength(5);
+  it("stores the first six adaptive daily routes", () => {
+    expect(dailyRoutes).toHaveLength(6);
     expect(dailyRoutes.map(({ localDate }) => localDate)).toEqual([
       "2027-05-30",
       "2027-05-31",
       "2027-06-01",
       "2027-06-02",
       "2027-06-03",
+      "2027-06-04",
     ]);
 
     const arrivalRoute = dailyRoutes[0];
@@ -170,20 +171,54 @@ describe("EuroTrip 2027 daily routes", () => {
         "choiceLabel" in option ? option.choiceLabel : undefined,
       ),
     ).toEqual(["Terminamos con calma", "Añadimos Montjuïc"]);
+
+    const daySixRoute = dailyRoutes[5];
+
+    expect(daySixRoute).toMatchObject({
+      dayPlanId: "day-2027-06-04",
+      defaultOptionId: "batobus_evening",
+      switchDuringRoute: true,
+    });
+    expect(daySixRoute?.options.map(({ id }) => id)).toEqual([
+      "batobus_evening",
+      "relaxed",
+    ]);
+    expect(daySixRoute?.options.map(({ stops }) => stops.length)).toEqual([
+      10, 9,
+    ]);
+    expect(
+      daySixRoute?.options.map(({ segments }) => {
+        const walkingSegment = segments.find(
+          (segment) => segment.routingStatus === "verified",
+        );
+
+        return {
+          distanceMeters: walkingSegment?.distanceMeters,
+          durationMinutes: walkingSegment?.durationMinutes,
+          coordinateCount: walkingSegment?.geometry?.coordinates.length,
+        };
+      }),
+    ).toEqual([
+      { distanceMeters: 2012, durationMinutes: 27, coordinateCount: 141 },
+      { distanceMeters: 2016, durationMinutes: 27, coordinateCount: 154 },
+    ]);
   });
 
   it("starts at the current lodging and finishes at the lodging for that night", () => {
     for (const route of dailyRoutes) {
       for (const option of route.options) {
         expect(option.stops[0]?.placeId).toBe(
-          route.localDate === "2027-06-03"
+          route.localDate === "2027-06-03" || route.localDate === "2027-06-04"
             ? "barcelona-hospitalet-accommodation-area"
             : "madrid-airbnb-nunez-de-arce",
         );
         expect(option.stops.at(-1)?.placeId).toBe(
-          route.localDate === "2027-06-02" || route.localDate === "2027-06-03"
-            ? "barcelona-hospitalet-accommodation-area"
-            : "madrid-airbnb-nunez-de-arce",
+          route.localDate === "2027-06-04"
+            ? "paris-rue-saint-denis-accommodation"
+            : route.localDate === "2027-06-02" ||
+                route.localDate === "2027-06-03"
+              ? "barcelona-hospitalet-accommodation-area"
+              : "madrid-airbnb-nunez-de-arce",
         );
       }
     }
@@ -280,6 +315,7 @@ describe("EuroTrip 2027 daily routes", () => {
       new Set([
         accommodationAddresses["madrid-centro"],
         accommodationAddresses["barcelona-hospitalet"],
+        accommodationAddresses["paris-centro"],
       ]),
     );
     expect(serializedRoutes).not.toContain("private-accommodation:");

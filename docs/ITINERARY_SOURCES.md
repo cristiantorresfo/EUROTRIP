@@ -1,6 +1,7 @@
 # Fuentes del borrador de itinerario — EuroTrip 2027
 
-Consultadas el **14 de octubre de 2026**.
+Consultadas inicialmente el **14 de octubre de 2026**; fuentes de Barcelona y
+París ampliadas el **29 de octubre de 2026**.
 
 Estas fuentes permiten identificar lugares y canales oficiales. Los horarios,
 precios, disponibilidad, cierres y condiciones de junio de 2027 deben revisarse
@@ -28,7 +29,13 @@ planificación, no tiempos publicados por las atracciones.
 
 ## Francia
 
-- París: [Museo del Louvre](https://www.louvre.fr/en/visit) y [Torre Eiffel](https://www.toureiffel.paris/en/explore), sitios oficiales.
+- París: [Museo del Louvre](https://www.louvre.fr/en/visit),
+  [Torre Eiffel](https://www.toureiffel.paris/en/explore),
+  [Batobus](https://www.batobus.com/en/passes),
+  [línea 9 de RATP](https://www.ratp.fr/vos-lignes/metro/9) y
+  [tarifas reguladas de taxi](https://www.service-public.fr/particuliers/actualites/A15396?lang=fr),
+  sitios oficiales. El pase Batobus de 23 € y las tarifas de taxi publicadas
+  son referencias actuales, no compromisos para junio de 2027.
 
 ## Italia y Ciudad del Vaticano
 

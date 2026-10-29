@@ -1,6 +1,6 @@
 # Roadmap incremental — EuroTrip 2027
 
-Actualizado: **27 de octubre de 2026**.
+Actualizado: **29 de octubre de 2026**.
 
 ## Norte del producto
 
@@ -67,6 +67,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [x] Modelar el 3 de junio desde/hasta el alojamiento de Barcelona con Park
   Güell, Sagrada Família, exteriores de Casa Milà y Casa Batlló, pausas,
   variantes diferenciadas y extensión opcional al mirador de Montjuïc.
+- [x] Modelar el 4 de junio desde el alojamiento de Barcelona hasta el de París
+  con vuelo y aeropuertos pendientes, check-in, recorrido exterior por
+  Trocadéro y Torre Eiffel, variante Batobus y alternativa en Champ-de-Mars.
 - [ ] Validar el patrón en iPhone y extenderlo progresivamente a cada ciudad y
   excursión: Barcelona, París, Bolonia, Venecia, Florencia y Roma.
 
@@ -103,9 +106,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 
 ## Siguiente incremento recomendado
 
-Validar en iPhone la selección y los mapas adaptables de los cinco primeros
+Validar en iPhone la selección y los mapas adaptables de los seis primeros
 días. Después, comprar o definir las franjas del Prado, Toledo y el tren a
-Barcelona, además de las entradas de Park Güell y Sagrada Família. La próxima
-jornada por detallar será el traslado Barcelona→París.
+Barcelona, además de las entradas de Park Güell y Sagrada Família y el vuelo
+Barcelona→París. La próxima jornada por detallar será el día completo de París.
 Las seis direcciones exactas están autorizadas para navegación pública; los
 demás datos privados continúan fuera del cliente.

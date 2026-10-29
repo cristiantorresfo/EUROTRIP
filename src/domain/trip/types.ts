@@ -108,6 +108,8 @@ export type RouteTravelMode =
   | "metro"
   | "bus"
   | "train"
+  | "flight"
+  | "boat"
   | "taxi"
   | "other";
 export type DailyRouteStatus = "draft" | "routed" | "verified";

@@ -972,6 +972,59 @@ export const madridArrivalRelaxedGeometry = [
   [-3.701312, 40.415241],
 ] as const satisfies readonly (readonly [number, number])[];
 
+function decodePolyline6(
+  encoded: string,
+): readonly (readonly [number, number])[] {
+  const coordinates: Array<readonly [number, number]> = [];
+  let index = 0;
+  let latitude = 0;
+  let longitude = 0;
+
+  const readDelta = () => {
+    let result = 0;
+    let shift = 0;
+    let byte = 0;
+
+    do {
+      byte = encoded.charCodeAt(index) - 63;
+      index += 1;
+      result |= (byte & 0x1f) << shift;
+      shift += 5;
+    } while (byte >= 0x20);
+
+    return result & 1 ? ~(result >> 1) : result >> 1;
+  };
+
+  while (index < encoded.length) {
+    latitude += readDelta();
+    longitude += readDelta();
+    coordinates.push([longitude / 1_000_000, latitude / 1_000_000]);
+  }
+
+  return coordinates;
+}
+
+function joinPolyline6(
+  encodedLegs: readonly string[],
+): readonly (readonly [number, number])[] {
+  return encodedLegs.flatMap((encoded, legIndex) => {
+    const coordinates = decodePolyline6(encoded);
+    return legIndex === 0 ? coordinates : coordinates.slice(1);
+  });
+}
+
+export const parisDaySixBatobusGeometry = joinPolyline6([
+  "mhje|AkerjC^a@R_@dByC}CgFqIsNgAWq@JImA{@oG_A_HQoAWkBhAaArAq@lE}Bb@Yq@uDeEsHaEkT~@wD`@{FFeD_DcOmCgMiBkMaA_LKiHHiFz@aOa@}EoAwFaBsD|I}O`@cArIkOpGiHrD_DhAa@vDqAlBAeAuDhDE|IiAdDbA`eAtVbCj@j@NlCp@hMfDpHIfR`AbB}BbBfC\\m@b\\ml@",
+  "akde|A{s{jCd_@aq@xJqQh@x@vC`FfAzA|@fBnCc@Js@PsCLcBd@aB`AgBnBqDx@yApf@ly@v@iAxHiN|D_DnD}AhCiAtE}Ch@k@rByBtCiExCcGfAkCeAsCc@uG_@cDo@cDsA}KiAmHgCkFiBiBcDgBeEm@{LhAoGMuHkM",
+  "yiae|A{j`kC{GeLsGkA_Ln@yCuE_F_BaI}BgBSuADoBZ_Eh@sEjFISsBwFmA`CcEnFk@t@tg@rz@}@pAaB|C_AhBu@fAi@dAkBtDs@fAl@|@dAdBtCpE`@p@h@x@vC`FfAzA|@fBmDtG{ArCaA|AbKdQu@|@aBjC{L_SyCoA{GaL}@}Eei@w{@sAlCuCvGqLsQ",
+]);
+
+export const parisDaySixRelaxedGeometry = joinPolyline6([
+  "mhje|AkerjC^a@R_@dByC}CgFqIsNgAWq@JImA{@oG_A_HQoAWkBhAaArAq@lE}Bb@Yq@uDeEsHaEkT~@wD`@{FFeD_DcOmCgMiBkMaA_LKiHHiFz@aOa@}EoAwFaBsD|I}O`@cArIkOpGiHrD_DhAa@vDqAlBAeAuDhDE|IiAdDbA`eAtVbCj@j@NlCp@hMfDpHIfR`AbB}BbBfC\\m@b\\ml@",
+  "akde|A{s{jCd_@aq@xJqQh@x@vC`FfAzA|@fBnCc@Js@PsCLcBd@aB`AgBnBqDx@yApf@ly@v@iAxHiN|D_DnD}AhCiAtE}Ch@k@rByBtCiExCcGfAkCeAsCc@uG_@cDo@cDsA}KiAmHgCkFiBiBcDgBeEm@{LhAoGMuHkM",
+  "yiae|A{j`kCtHjMhDjDfBrGkAtNU|HWnUBtFj@nJtAjHb@hAv@jB`@fA|D_DnD}AhCiAtE}Ch@k@rByBtCiExCcGfAkClAyElAiJtAkL`CsGl@kAf@eAhA_C~@qBn@sAcBqCkEeHiBmLs@_FCu@MyEHiDn@sEvAqHv@qGEiDEsA]mBeEkHhFmJxRc^bF}J~EeJjFkJrMsVnC{DnB`ApC|@xAaEkBs@_CsAeCyBqCgEm@kA",
+]);
+
 /**
  * Pedestrian geometry calculated by Valhalla from OpenStreetMap data on
  * 2026-10-27. Round trip from the explicitly authorized Madrid accommodation.

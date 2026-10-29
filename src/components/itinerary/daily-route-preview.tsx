@@ -38,6 +38,8 @@ const travelModeLabels: Record<RouteTravelMode, string> = {
   metro: "Metro",
   bus: "Bus",
   train: "Tren",
+  flight: "Vuelo",
+  boat: "Barco",
   taxi: "Taxi",
   other: "Traslado por definir",
 };

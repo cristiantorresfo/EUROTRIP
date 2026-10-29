@@ -20,7 +20,7 @@ itinerario y a los recordatorios del día correspondiente.
 |---|---|---|---|---|
 | 2027-06-01 | Madrid ↔ Toledo | Renfe Avant propuesto | Ida 08:30–09:00 / vuelta 18:00–20:00 | Excursión prevista; conservar margen entre Mirador, taxi, estación y tren |
 | 2027-06-02 | Madrid → Barcelona | Tren rápido | 09:00–09:30 | Buscar llegada aproximada 11:45–12:30, ir primero al alojamiento y hacer check-in desde las 14:00; ajustar a servicios reales |
-| 2027-06-04 | Barcelona → París | Vuelo directo preferido | 08:00–11:00 | Aprovechar tarde en París, check-in 15:00; calcular salida del Airbnb y llegada a aeropuerto BCN |
+| 2027-06-04 | Barcelona → París | Vuelo directo preferido | 10:00–11:30 | Aprovechar tarde en París sin forzar una salida excesivamente temprana; check-in 15:00; calcular salida del Airbnb y llegada a aeropuerto BCN |
 | 2027-06-07 | París → Bolonia | Vuelo directo si existe útil | 09:00–11:30 | Llegar a Bolonia temprano, check-in 15:00; dejar tarde para centro histórico |
 | 2027-06-08 (tentativo) | Bolonia ↔ Venecia | Tren | Ida 07:30–09:00 / vuelta 18:30–21:00 | Visitar la Venecia insular; buscar llegada a Venezia Santa Lucia, no Venezia Mestre |
 | 2027-06-09 (tentativo) | Bolonia ↔ Florencia | Tren | Ida 08:00–09:30 / vuelta 18:30–21:00 | Llegada a Firenze Santa Maria Novella y día completo sin prisas |
