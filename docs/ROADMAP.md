@@ -70,6 +70,9 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 - [x] Modelar el 4 de junio desde el alojamiento de Barcelona hasta el de París
   con vuelo y aeropuertos pendientes, check-in, recorrido exterior por
   Trocadéro y Torre Eiffel, variante Batobus y alternativa en Champ-de-Mars.
+- [x] Modelar el 5 de junio desde/hasta el alojamiento de París con Notre-Dame,
+  Batobus condicionado, Louvre exterior, Tullerías/Concorde, Champs-Élysées,
+  Arco del Triunfo y una variante relajada que conserva los imprescindibles.
 - [ ] Validar el patrón en iPhone y extenderlo progresivamente a cada ciudad y
   excursión: Barcelona, París, Bolonia, Venecia, Florencia y Roma.
 
@@ -106,9 +109,10 @@ la aplicación, edición compartida o un backend sin una necesidad concreta.
 
 ## Siguiente incremento recomendado
 
-Validar en iPhone la selección y los mapas adaptables de los seis primeros
+Validar en iPhone la selección y los mapas adaptables de los siete primeros
 días. Después, comprar o definir las franjas del Prado, Toledo y el tren a
 Barcelona, además de las entradas de Park Güell y Sagrada Família y el vuelo
-Barcelona→París. La próxima jornada por detallar será el día completo de París.
+Barcelona→París. La próxima jornada por detallar será el segundo día completo
+de París, el 6 de junio.
 Las seis direcciones exactas están autorizadas para navegación pública; los
 demás datos privados continúan fuera del cliente.

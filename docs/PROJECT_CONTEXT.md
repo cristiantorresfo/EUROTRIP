@@ -1,6 +1,6 @@
 # Contexto del proyecto — EuroTrip 2027
 
-Actualizado: **29 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero y los recorridos detallados de los días 1–6.
+Actualizado: **29 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero y los recorridos detallados de los días 1–7.
 
 ## 1. Propósito
 Aplicación web mobile-first y PWA para acompañar a 4 viajeros durante Europa 2027. Su función principal es consultar el plan del día, ver paradas ordenadas y recorridos optimizados sobre un mapa, saber qué actividad sigue y recibir recordatorios del itinerario. Los vuelos y trenes se comparan y compran fuera de la aplicación; después se registran aquí como logística confirmada. La información privada solo podrá mostrarse cuando exista autenticación real, salvo datos que el viajero autorice explícitamente a publicar.
@@ -135,6 +135,17 @@ confirmados dentro del día correspondiente y sus recordatorios.
   sustituye por Champ-de-Mars. El pase vigente consultado el 29/10/2026 cuesta
   23 € por adulto y dura 24 horas consecutivas desde el primer uso, pero la
   compra y la operación de junio de 2027 siguen pendientes.
+- El 5 de junio parte y termina en el alojamiento de París. Ambas variantes
+  conservan Notre-Dame, el exterior del Louvre, Champs-Élysées y el Arco del
+  Triunfo. La completa añade Hôtel de Ville y la caminata por Tullerías hasta
+  Concorde; la relajada sustituye esos tramos por metro. Batobus se propone de
+  Notre-Dame a Louvre con una hora que incluye espera y se reemplaza si no
+  opera o demora demasiado. El pase es el mismo bloque de 24 horas considerado
+  el día anterior y no debe contarse dos veces. Notre-Dame es gratuita y su
+  reserva opcional se habilita cerca de la visita. El Louvre es solo exterior;
+  la terraza del Arco también queda opcional. La ceremonia de la llama se
+  programa actualmente a las 18:30, pero todo horario, acceso y tarifa debe
+  verificarse para 2027.
 
 ## 9. Estado del código
 Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.

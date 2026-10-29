@@ -1025,6 +1025,23 @@ export const parisDaySixRelaxedGeometry = joinPolyline6([
   "yiae|A{j`kCtHjMhDjDfBrGkAtNU|HWnUBtFj@nJtAjHb@hAv@jB`@fA|D_DnD}AhCiAtE}Ch@k@rByBtCiExCcGfAkClAyElAiJtAkL`CsGl@kAf@eAhA_C~@qBn@sAcBqCkEeHiBmLs@_FCu@MyEHiDn@sEvAqHv@qGEiDEsA]mBeEkHhFmJxRc^bF}J~EeJjFkJrMsVnC{DnB`ApC|@xAaEkBs@_CsAeCyBqCgEm@kA",
 ]);
 
+export const parisDaySevenHotelNotreGeometry = joinPolyline6([
+  "ed}d|AenqnCr@yE~Ew[^cCj@wD^PfBv@|OzG^PvEzCPzS\\Zp@l@h@f@TRhBfB`Ax@XHeAhG{ZxfAQfClAlErh@d]^Xv@WRPpAdAbAz@TPNrAWnAYvAzd@|ZvA`Adk@~^h@XbBnANJ`E|CxNlJ~GnElAyFrPcw@??",
+]);
+
+export const parisDaySevenNotreDockGeometry = joinPolyline6([
+  "eovd|AymlnC??sPbw@mAxFr@d@rO`Kn@`@fDbC|B~A",
+]);
+
+export const parisDaySevenLouvreConcordeGeometry = joinPolyline6([
+  "affe|AinqmCuEcUoAkGf@cAtAuCdBeBrFq]r@_GNcAh@sD_GkG{EiCcKu@wT`uAUtAg@zC{BeA[QgD_Bc@SsAo@mAk@cBy@sFkCeRkJc@YeLfh@qEhSoCbMKf@]`BUbAQx@Ox@Qx@Mj@S`AS~@SdAYtAi@bCaVrcA_EbRcSt|@cCfLiAvEr@fAS`AUbA}@jEw@vDQ|@y@lDUhAaCtLvAfAz@j@rHrE|D`CwFjW{P~v@}TvcAaEvQsG|Y{ChNzCnBfXlQnXtQ~E`DsCnM",
+  "kvke|Ao{_mC_Odq@kKve@eQ~w@{GqEkRpImA~FiDfPhBnMdB~L|GpEgVtgA[lAcAtDwNno@kKyGeC}AqCzLiBjI",
+]);
+
+export const parisDaySevenChampsArcGeometry = joinPolyline6([
+  "yzwe|AkyykCwHx]m@lCWjAsCpMaApEyDhQgEqCOIiBmA{DgC}Kvg@k@nCg@zBYpAI`@kBpIyCbNcJdb@eNvn@cGpXmC`M}DvQaAnEc@jBe@vBa@lBGVqExSaPtt@UbAUbAS`AOt@}Mzm@}BnK?dB_DpN{@jBuCfN[rAQ|@Sz@GZmCjMoIv`@kIj`@aAdByLlj@YrACLQr@YpAI^sBjJKj@WhAUbAKb@I^FhDS`AcBzHiCzLxBxAmAvFm@lCy@tDeC|JcEzM_N`\\WxAeEfTv@f@Ha@v@oD",
+]);
+
 /**
  * Pedestrian geometry calculated by Valhalla from OpenStreetMap data on
  * 2026-10-27. Round trip from the explicitly authorized Madrid accommodation.

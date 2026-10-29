@@ -69,9 +69,11 @@ export const tripCalendar: readonly TripDaySummary[] = [
     localDate: "2027-06-05",
     baseCity: "París",
     locationLabel: "París",
-    title: "Día en París",
+    title: "París monumental: Notre-Dame, Louvre y Arco",
+    detail:
+      "Batobus condicionado · Louvre solo exterior · dos variantes desde y hasta el Airbnb",
     kind: "base",
-    status: "planned",
+    status: "to_verify",
   },
   {
     localDate: "2027-06-06",

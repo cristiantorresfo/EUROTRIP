@@ -67,7 +67,7 @@ describe("EuroTrip 2027 proposed day plans", () => {
       (place) => "geoCoordinates" in place,
     );
 
-    expect(geocodedPlaces).toHaveLength(61);
+    expect(geocodedPlaces).toHaveLength(69);
 
     for (const place of geocodedPlaces) {
       expect([
