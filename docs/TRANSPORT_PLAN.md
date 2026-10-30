@@ -51,7 +51,11 @@ NOTA: Las fechas de Venecia/Florencia son reversibles; el orden final debe consi
   extensión a Barceloneta depende de energía y hora real de llegada.
 - 03/06: día completo Barcelona.
 - 04/06: vuelo a París, tarde París.
-- 05/06 y 06/06: París días completos.
+- 05/06: París monumental.
+- 06/06: Versalles desde París; L4 + RER C propuestos por Saint-Michel–Notre-Dame,
+  salida objetivo 07:30 y regreso al mismo alojamiento. Verificar obras del
+  domingo y destino Versailles Château–Rive Gauche. Tren turístico interno
+  solo en la extensión a Trianon; sin servicios ni billetes confirmados.
 - 07/06: vuelo a Bolonia, paseo por centro histórico.
 - 08/06: excursión Venecia.
 - 09/06: excursión Florencia.

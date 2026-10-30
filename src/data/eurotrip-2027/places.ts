@@ -1,6 +1,8 @@
 import type { Place } from "@/domain/trip/types";
+import { versaillesPlaces } from "./versailles-day-eight";
 
 export const tripPlaces = [
+  ...versaillesPlaces,
   {
     id: "madrid-airbnb-nunez-de-arce",
     city: "Madrid",

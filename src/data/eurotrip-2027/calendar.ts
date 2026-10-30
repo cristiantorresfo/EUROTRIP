@@ -78,10 +78,11 @@ export const tripCalendar: readonly TripDaySummary[] = [
   {
     localDate: "2027-06-06",
     baseCity: "París",
-    locationLabel: "París",
-    title: "Día en París",
-    kind: "base",
-    status: "planned",
+    locationLabel: "Versalles",
+    title: "Versalles: Palacio, jardines y fuentes",
+    detail: "Passport sin reservar · Trianon opcional · regreso al Airbnb y equipaje para Italia",
+    kind: "day_trip",
+    status: "to_verify",
   },
   {
     localDate: "2027-06-07",

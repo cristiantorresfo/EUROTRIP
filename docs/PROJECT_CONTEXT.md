@@ -1,6 +1,6 @@
 # Contexto del proyecto — EuroTrip 2027
 
-Actualizado: **29 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero y los recorridos detallados de los días 1–7.
+Actualizado: **30 de octubre de 2026**, con seis capturas de reservas Airbnb facilitadas por el viajero y los recorridos detallados de los días 1–8.
 
 ## 1. Propósito
 Aplicación web mobile-first y PWA para acompañar a 4 viajeros durante Europa 2027. Su función principal es consultar el plan del día, ver paradas ordenadas y recorridos optimizados sobre un mapa, saber qué actividad sigue y recibir recordatorios del itinerario. Los vuelos y trenes se comparan y compran fuera de la aplicación; después se registran aquí como logística confirmada. La información privada solo podrá mostrarse cuando exista autenticación real, salvo datos que el viajero autorice explícitamente a publicar.
@@ -146,6 +146,29 @@ confirmados dentro del día correspondiente y sus recordatorios.
   la terraza del Arco también queda opcional. La ceremonia de la llama se
   programa actualmente a las 18:30, pero todo horario, acceso y tarifa debe
   verificarse para 2027.
+
+- El 6 de junio queda dedicado a Versalles por decisión del viajero. Se conserva
+  París como base y el alojamiento como inicio/fin. Salida orientativa 07:30,
+  Palacio 09:30–11:40, jardines 11:40–12:50 y almuerzo 12:50–14:00. A las 14:00
+  se elige entre fuentes y jardines con regreso 17:30–18:30 (predeterminada) o
+  Trianon en tren turístico con regreso 18:30–19:30. El Pequeño Trianón es
+  opcional incluso en la completa; se le deja margen de traslado desde el Gran
+  Trianón. La noche se reserva para cenar, descansar y preparar equipaje.
+  Passport, RER C, fuentes y tren turístico siguen pendientes para 2027.
+  Referencias oficiales consultadas el 30/10/2026: Passport de temporada alta
+  35 € por adulto (140 € para cuatro), Metro–Train–RER 2,55 € por trayecto
+  (20,40 € ida/vuelta para cuatro) y tren turístico 9 € por circuito con paradas
+  (36 € para cuatro). Los 5 € del documento de entrada corresponden a un
+  trayecto sencillo, no garantizan toda la extensión. Totales de referencia:
+  160,40 € relajada y 196,40 € con circuito turístico, sin comida, bebidas ni
+  posibles costes de soporte de transporte. Jardines y Trianon ya están
+  incluidos en Passport; no duplicar entradas. Confirmar reingreso desde el
+  Gran Canal porque las condiciones vigentes indican una sola entrada a los
+  jardines; adaptar el almuerzo al interior del recinto de pago si hace falta.
+  Fuentes: [Passport](https://en.chateauversailles.fr/2026-ticketing),
+  [tren turístico](https://en.chateauversailles.fr/plan-your-visit/facilities/little-train),
+  [Metro–Train–RER](https://www.iledefrance-mobilites.fr/titres-et-tarifs/detail/ticket-metro-train-rer)
+  y [fuentes musicales](https://en.chateauversailles.fr/news/shows/musical-fountains-show-and-musical-gardens).
 
 ## 9. Estado del código
 Codex debe inspeccionar el proyecto local antes de presumir que existe. No asumir que el código, backend, DB, claves o reservas internas existen.

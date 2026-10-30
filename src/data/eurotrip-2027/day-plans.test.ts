@@ -67,7 +67,7 @@ describe("EuroTrip 2027 proposed day plans", () => {
       (place) => "geoCoordinates" in place,
     );
 
-    expect(geocodedPlaces).toHaveLength(69);
+    expect(geocodedPlaces).toHaveLength(76);
 
     for (const place of geocodedPlaces) {
       expect([
@@ -76,6 +76,7 @@ describe("EuroTrip 2027 proposed day plans", () => {
         "Barcelona",
         "L’Hospitalet de Llobregat",
         "París",
+        "Versalles",
       ]).toContain(place.city);
       expect(["verified", "approximate"]).toContain(
         place.geoCoordinates.verificationStatus,
@@ -86,6 +87,7 @@ describe("EuroTrip 2027 proposed day plans", () => {
         "2026-10-27",
         "2026-10-28",
         "2026-10-29",
+        "2026-10-30",
       ]).toContain(
         place.geoCoordinates.verifiedAt,
       );

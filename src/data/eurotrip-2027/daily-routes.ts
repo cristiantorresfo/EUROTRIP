@@ -25,6 +25,7 @@ import {
   toledoDayThreeRelaxedGeometry,
 } from "./route-geometries";
 import { accommodationAddresses } from "./accommodation-addresses";
+import { versaillesDayEightRoute } from "./versailles-day-eight";
 
 const arrivalActivityId = "2027-05-30-madrid-austrias";
 const madridCenterAccommodationAddress =
@@ -2970,7 +2971,7 @@ const dailyRouteSeeds = [
   },
 ] as const satisfies readonly DailyRoute[];
 
-export const dailyRoutes = dailyRouteSeeds.map((route) => ({
+export const dailyRoutes = [...dailyRouteSeeds.map((route) => ({
   ...route,
   options: route.options.map((option) => ({
     ...option,
@@ -2979,4 +2980,4 @@ export const dailyRoutes = dailyRouteSeeds.map((route) => ({
       suggestedTimeWindow: routeStopTimeWindows[stop.id],
     })),
   })),
-})) satisfies readonly DailyRoute[];
+})), versaillesDayEightRoute] satisfies readonly DailyRoute[];

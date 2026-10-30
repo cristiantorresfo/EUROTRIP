@@ -11,8 +11,8 @@ describe("EuroTrip 2027 daily routes", () => {
     return (hours ?? 0) * 60 + (minutes ?? 0);
   };
 
-  it("stores the first seven adaptive daily routes", () => {
-    expect(dailyRoutes).toHaveLength(7);
+  it("stores the first eight adaptive daily routes", () => {
+    expect(dailyRoutes).toHaveLength(8);
     expect(dailyRoutes.map(({ localDate }) => localDate)).toEqual([
       "2027-05-30",
       "2027-05-31",
@@ -21,6 +21,7 @@ describe("EuroTrip 2027 daily routes", () => {
       "2027-06-03",
       "2027-06-04",
       "2027-06-05",
+      "2027-06-06",
     ]);
 
     const arrivalRoute = dailyRoutes[0];
@@ -255,12 +256,12 @@ describe("EuroTrip 2027 daily routes", () => {
         expect(option.stops[0]?.placeId).toBe(
           route.localDate === "2027-06-03" || route.localDate === "2027-06-04"
             ? "barcelona-hospitalet-accommodation-area"
-            : route.localDate === "2027-06-05"
+            : route.localDate === "2027-06-05" || route.localDate === "2027-06-06"
               ? "paris-rue-saint-denis-accommodation"
               : "madrid-airbnb-nunez-de-arce",
         );
         expect(option.stops.at(-1)?.placeId).toBe(
-          route.localDate === "2027-06-04" || route.localDate === "2027-06-05"
+          route.localDate === "2027-06-04" || route.localDate === "2027-06-05" || route.localDate === "2027-06-06"
             ? "paris-rue-saint-denis-accommodation"
             : route.localDate === "2027-06-02" ||
                 route.localDate === "2027-06-03"
@@ -277,7 +278,7 @@ describe("EuroTrip 2027 daily routes", () => {
   });
 
   it("keeps every option ordered and linked to public activities and places", () => {
-    const publicPlaceIds = new Set(tripPlaces.map(({ id }) => id));
+    const publicPlaceIds = new Set<string>(tripPlaces.map(({ id }) => id));
 
     for (const route of dailyRoutes) {
       const dayPlan = tripDayPlans.find(({ id }) => id === route.dayPlanId);
@@ -311,6 +312,24 @@ describe("EuroTrip 2027 daily routes", () => {
         }
       }
     }
+  });
+
+  it("preserves the Versailles essentials while keeping Trianon optional", () => {
+    const route = dailyRoutes.find(({ localDate }) => localDate === "2027-06-06");
+    expect(route?.defaultOptionId).toBe("relaxed");
+
+    for (const option of route?.options ?? []) {
+      for (const placeId of ["versailles-palace", "versailles-gardens", "versailles-grand-canal"]) {
+        expect(option.stops.some((stop) => stop.placeId === placeId && !("optional" in stop && stop.optional))).toBe(true);
+      }
+      const trianonStops = option.stops.filter(({ placeId }) => placeId.includes("trianon"));
+      expect(trianonStops).toHaveLength(option.id === "relaxed" ? 0 : 2);
+      expect(trianonStops.every((stop) => "optional" in stop && stop.optional)).toBe(true);
+      expect(option.segments.filter(({ mode }) => mode === "train").every(({ routingStatus }) => routingStatus === "pending")).toBe(true);
+    }
+    const plan = tripDayPlans.find(({ localDate }) => localDate === "2027-06-06");
+    expect(plan?.baseCity).toBe("París");
+    expect(plan && "suggestedDayTrip" in plan ? plan.suggestedDayTrip : undefined).toBe("Versalles");
   });
 
   it("stores sourced pedestrian geometries instead of drawing straight lines", () => {

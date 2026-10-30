@@ -972,6 +972,17 @@ export const madridArrivalRelaxedGeometry = [
   [-3.701312, 40.415241],
 ] as const satisfies readonly (readonly [number, number])[];
 
+/** Public pedestrian paths in Versailles, calculated with Valhalla on 2026-10-30. */
+export const versaillesStationPalaceGeometry = joinPolyline6([
+  "aapa|Amf}`CSlAQz@}@zEwCaBoAs@MIkAo@MGMr@QjE]fByAxIo@a@g@[_GgEiCiBaAq@uQwI{j@uZaEoAmEpX}D~T]pBiF|YsCzO}B~NKbAkV|pAUpAa@SqFeEOb@oAjDi@rCEVI\\iAe@qAi@sFbTkEt@aUppA{BrMSjAUxAEVm]hsB`Bv@jDzBhAzAtApDj@zCPzChI`Es@tDQhAgHzb@wAbJpEhPyPh`AsKaGo@YqBeA",
+]);
+
+export const versaillesPalaceCanalGeometry = joinPolyline6([
+  "mjxa|Aekk`CsFuCcA|FSfA_@bC_MqGsSrrAs@vE[bBUlAk@vCtE|GdEdG~AjR}@fF[jCwHkCLa@\\{EOaF_AkEs@qA",
+  "m|ya|Asqg`Cr@pA~@jEN`F]zEM`@}@~CoBtCgCtAuCNoCw@_Q`aAyA~H{L~QiLfq@iTroAsOf~@aQl`A[~Lm@M",
+  "{v}a|Ak~z_C_Cc@uAKg@EuCZcAQs@Gk@?iAL{@TkAn@y@x@UXeCpAQNqAzA{@hA{@~Ag@hAq@jCgAdHsFoAm_@eR",
+]);
+
 function decodePolyline6(
   encoded: string,
 ): readonly (readonly [number, number])[] {
